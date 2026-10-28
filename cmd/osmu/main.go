@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"osmu/pkg/editor"
+	"osmu/pkg/engine"
 	"osmu/pkg/lsp"
 	"osmu/pkg/osmulang"
 	"osmu/pkg/platform"
@@ -16,10 +17,6 @@ import (
 )
 
 func main() {
-	if _, err := os.Stat("projects"); os.IsNotExist(err) {
-		_ = runtime.MaterializeExamples(".")
-	}
-
 	args := os.Args[1:]
 	cmd := "editor"
 	var subArgs []string
@@ -36,6 +33,8 @@ func main() {
 	switch cmd {
 	case "editor", "gui", "open":
 		runEditor(subArgs)
+	case "play", "game":
+		runPlayGame(subArgs)
 	case "projects", "list":
 		runListProjects()
 	case "init-projects":
@@ -70,6 +69,7 @@ func printUsage() {
 
 Usage:
   osmu [editor] [path/to/project]       Launch the 2D/3D Graphical Editor (optionally loading a project)
+  osmu play <path/to/project>           Launch the game in standalone player mode (full window, no editor UI)
   osmu open <path/to/project>           Open a specific project folder or project.osmu.json in the Editor
   osmu projects                         List all discovered OSMU projects on disk
   osmu check [dir | file.osmu]          Compile & statically type-check .osmu scripts
@@ -155,9 +155,12 @@ func runLSP() {
 func runSimulation(args []string) {
 	projs := runtime.DiscoverProjects("projects")
 	if len(projs) == 0 {
-		projs = runtime.BuiltinProjects()
+		projs = runtime.DiscoverProjects(".")
 	}
-	proj := projs[0]
+	var proj *runtime.Project
+	if len(projs) > 0 {
+		proj = projs[0]
+	}
 	steps := 40
 	for i := 0; i < len(args); i++ {
 		if args[i] == "--steps" && i+1 < len(args) {
@@ -168,6 +171,11 @@ func runSimulation(args []string) {
 		} else if loaded, err := runtime.LoadProject(args[i]); err == nil {
 			proj = loaded
 		}
+	}
+
+	if proj == nil || proj.ActiveScene == nil {
+		fmt.Fprintln(os.Stderr, "Error: No project found to run simulation. Please specify a project path: osmu run <path/to/project>")
+		os.Exit(1)
 	}
 
 	sc := proj.ActiveScene
@@ -192,9 +200,14 @@ func runScreenshot(args []string) {
 	projIdx := 0
 	steps := 12
 	showModal := false
+	standalonePlay := false
 	for i, a := range args {
 		if a == "--modal" {
 			showModal = true
+			continue
+		}
+		if a == "--play" {
+			standalonePlay = true
 			continue
 		}
 		switch i {
@@ -208,7 +221,16 @@ func runScreenshot(args []string) {
 	}
 
 	app := editor.NewEditorApp(nil)
-	app.ActivateProject(projIdx)
+	if projIdx >= 0 && projIdx < len(app.Projects) {
+		app.ActivateProject(projIdx)
+	}
+	if standalonePlay {
+		app.StandalonePlay = true
+		if app.Scene != nil && strings.Contains(strings.ToLower(app.Scene.Name), "minesweeper") {
+			app.Cam2DZoom = 34.0
+			app.Cam2DOffset = engine.V2(25.0, 0.0)
+		}
+	}
 	if steps > 0 && app.Scene != nil {
 		app.Scene.StartPlay()
 		for i := 0; i < steps; i++ {
@@ -220,7 +242,11 @@ func runScreenshot(args []string) {
 		fmt.Fprintf(os.Stderr, "Failed to save screenshot: %v\n", err)
 		os.Exit(1)
 	}
-	fmt.Printf("Saved OSMU Editor screenshot to %s (Project %d: %s)\n", outPath, projIdx, app.CurrentProject.Manifest.Name)
+	projName := "None"
+	if app.CurrentProject != nil {
+		projName = app.CurrentProject.Manifest.Name
+	}
+	fmt.Printf("Saved OSMU screenshot to %s (Project %d: %s)\n", outPath, projIdx, projName)
 }
 
 func runEditor(args []string) {
@@ -291,6 +317,130 @@ func runEditor(args []string) {
 		fmt.Printf("Note: Native desktop display not active (%v); running Web Studio server on http://127.0.0.1:%s\n", err, webPort)
 	} else {
 		fmt.Printf("OSMU Web Studio running at http://127.0.0.1:%s\n", webPort)
+	}
+
+	if maxFrames > 0 {
+		return
+	}
+	select {}
+}
+
+func runPlayGame(args []string) {
+	app := editor.NewEditorApp(nil)
+	app.StandalonePlay = true
+
+	target := ""
+	webPort := "8420"
+	webOnly := false
+	maxFrames := 0
+
+	for i := 0; i < len(args); i++ {
+		switch args[i] {
+		case "--web":
+			webOnly = true
+		case "--web-port":
+			if i+1 < len(args) {
+				webPort = args[i+1]
+				i++
+			}
+		case "--frames":
+			if i+1 < len(args) {
+				maxFrames, _ = strconv.Atoi(args[i+1])
+				i++
+			}
+		default:
+			if !strings.HasPrefix(args[i], "-") && target == "" {
+				target = args[i]
+			}
+		}
+	}
+
+	if target == "" {
+		if _, err := os.Stat("project.osmu.json"); err == nil {
+			target = "."
+		}
+	}
+
+	if target != "" {
+		matched := false
+		for i, p := range app.Projects {
+			if strings.EqualFold(p.Manifest.Name, target) ||
+				strings.Contains(strings.ToLower(p.Manifest.Name), strings.ToLower(target)) ||
+				strings.Contains(strings.ToLower(p.RootDir), strings.ToLower(target)) {
+				app.ActivateProject(i)
+				matched = true
+				break
+			}
+		}
+		if !matched {
+			if idx, err := strconv.Atoi(target); err == nil && idx >= 0 && idx < len(app.Projects) {
+				app.ActivateProject(idx)
+				matched = true
+			}
+		}
+		if !matched {
+			if err := app.LoadProjectFromPath(target); err != nil {
+				fmt.Fprintf(os.Stderr, "Error: could not load project %q: %v\n", target, err)
+				os.Exit(1)
+			}
+		}
+	} else {
+		fmt.Fprintln(os.Stderr, "Error: No project specified to play.")
+		fmt.Fprintln(os.Stderr, "Usage: osmu play <path/to/project>")
+		fmt.Fprintln(os.Stderr, "Example: osmu play projects/04_minesweeper_2d")
+		os.Exit(1)
+	}
+
+	if app.Scene == nil {
+		fmt.Fprintln(os.Stderr, "Error: Selected project has no valid scenes to play.")
+		os.Exit(1)
+	}
+
+	app.Scene.StartPlay()
+	if strings.Contains(strings.ToLower(app.Scene.Name), "minesweeper") {
+		app.Cam2DZoom = 34.0
+		app.Cam2DOffset = engine.V2(25.0, 0.0)
+	}
+
+	ws := editor.NewWebServer(app)
+	go func() {
+		_ = http.ListenAndServe("127.0.0.1:"+webPort, ws.Handler())
+	}()
+
+	if !webOnly {
+		title := "OSMU Game Player"
+		if app.CurrentProject != nil {
+			title = fmt.Sprintf("%s — OSMU Game", app.CurrentProject.Manifest.Name)
+		}
+		win, err := platform.NewWindow(title, 1280, 760)
+		if err == nil {
+			app.Win = win
+			defer win.Close()
+			in := platform.NewInputState(1280, 760)
+			last := time.Now()
+			frames := 0
+			for !in.ShouldClose {
+				now := time.Now()
+				dt := now.Sub(last).Seconds()
+				last = now
+
+				in.ResetFrameDeltas()
+				win.PollEvents(in)
+				ops := app.UpdateAndBuildDrawList(in, dt)
+				win.DrawOps(in.Width, in.Height, ops)
+				win.SwapBuffers()
+
+				frames++
+				if maxFrames > 0 && frames >= maxFrames {
+					break
+				}
+				time.Sleep(16 * time.Millisecond)
+			}
+			return
+		}
+		fmt.Printf("Note: Native desktop display not active (%v); running Web Studio on http://127.0.0.1:%s\n", err, webPort)
+	} else {
+		fmt.Printf("OSMU Game running at http://127.0.0.1:%s\n", webPort)
 	}
 
 	if maxFrames > 0 {

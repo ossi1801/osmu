@@ -42,6 +42,8 @@ type EditorApp struct {
 	PathInputFocused  bool
 	StatusBanner      string
 	StatusBannerTime  time.Time
+	// Standalone Game Mode (Dedicated game player without editor UI)
+	StandalonePlay bool
 
 	// 3D Orbit Camera
 	CamYaw    float64
@@ -76,15 +78,17 @@ type EditorApp struct {
 	cmds []platform.DrawCmd
 }
 
-// NewEditorApp initializes the OSMU Graphical Editor with discovered or built-in projects.
+// NewEditorApp initializes the OSMU Graphical Editor.
+// If scenes are provided, it activates the first scene; otherwise it discovers projects on disk
+// and prompts the user to select or open a project.
 func NewEditorApp(scenes []*runtime.Scene) *EditorApp {
 	projs := runtime.DiscoverProjects("projects")
 	if len(projs) == 0 {
-		projs = runtime.BuiltinProjects()
+		projs = runtime.DiscoverProjects(".")
 	}
 	app := &EditorApp{
 		Projects:          projs,
-		CurrentProjectIdx: 0,
+		CurrentProjectIdx: -1,
 		CamYaw:            36.0,
 		CamPitch:          28.0,
 		CamDist:           17.5,
@@ -92,13 +96,14 @@ func NewEditorApp(scenes []*runtime.Scene) *EditorApp {
 		Cam2DZoom:         25.0,
 		QueryText:         "Tag == \"Enemy\" && Health > 0 orderby Distance asc",
 		QueryMatches:      make(map[string]bool),
-		ProjectPathInput:  "projects/02_fortress_siege_3d",
+		ProjectPathInput:  "projects",
+		ShowProjectModal:  len(scenes) == 0,
+		PathInputFocused:  true,
 	}
-	if len(projs) > 0 {
-		app.ActivateProject(0)
-	} else if len(scenes) > 0 {
+	if len(scenes) > 0 {
 		app.Scenes = scenes
 		app.Scene = scenes[0]
+		app.ShowProjectModal = false
 		app.selectDefaultEntity()
 		app.runLiveQuery()
 	}
@@ -277,6 +282,46 @@ func (app *EditorApp) runLiveQuery() {
 
 // UpdateAndBuildDrawList processes input, steps the simulation if playing, and generates OpenGL DrawCmds.
 func (app *EditorApp) UpdateAndBuildDrawList(in *platform.InputState, dt float64) []platform.DrawCmd {
+	if app.StandalonePlay {
+		if in.KeysPressed["Escape"] {
+			in.ShouldClose = true
+		}
+		if app.Scene != nil {
+			if !app.Scene.Playing {
+				app.Scene.StartPlay()
+			}
+			app.Scene.SetInputKeys(in.KeysDown)
+			if !app.Scene.Paused {
+				app.Scene.Step(dt)
+				app.runLiveQuery()
+			}
+		}
+
+		w := float64(in.Width)
+		h := float64(in.Height)
+		if w < 640 {
+			w = 640
+		}
+		if h < 480 {
+			h = 480
+		}
+
+		app.cmds = app.cmds[:0]
+		app.emitClear(0.06, 0.08, 0.11, 1.0)
+
+		viewRect := Rect{0, 0, w, h}
+		if app.Scene != nil {
+			if app.Scene.Mode == runtime.Mode2D {
+				app.drawViewport2D(viewRect, in)
+			} else {
+				app.drawViewport3D(viewRect, in)
+			}
+		}
+
+		app.drawStandaloneHUD(w, h, in)
+		return app.cmds
+	}
+
 	if app.Scene != nil {
 		app.Scene.SetInputKeys(in.KeysDown)
 		if app.Scene.Playing && !app.Scene.Paused {
@@ -377,6 +422,45 @@ func (app *EditorApp) UpdateAndBuildDrawList(in *platform.InputState, dt float64
 	}
 
 	return app.cmds
+}
+
+func (app *EditorApp) drawStandaloneHUD(w, h float64, in *platform.InputState) {
+	// Top Header Bar
+	app.emitRect(0, 0, w, 32, 0.09, 0.11, 0.16, 0.88)
+	app.emitLine(0, 32, w, 32, 1.2, 0.20, 0.26, 0.36, 0.9)
+
+	title := "OSMU GAME"
+	if app.CurrentProject != nil {
+		title = strings.ToUpper(app.CurrentProject.Manifest.Name)
+	} else if app.Scene != nil {
+		title = strings.ToUpper(app.Scene.Name)
+	}
+	app.emitText(14, 11, title, 1.45, 0.30, 0.88, 1.0, 1.0)
+
+	// Mode badge
+	modeStr := "2D"
+	if app.Scene != nil && app.Scene.Mode == runtime.Mode3D {
+		modeStr = "3D"
+	}
+	app.emitRect(w-180, 5, 42, 22, 0.18, 0.22, 0.30, 1.0)
+	app.emitText(w-170, 10, modeStr, 1.2, 0.85, 0.90, 0.98, 1.0)
+
+	// Exit button
+	exitRect := Rect{w - 120, 4, 106, 24}
+	if app.drawButtonColor(exitRect, "[ESC] QUIT", false, 0.65, 0.22, 0.25, in) {
+		in.ShouldClose = true
+	}
+
+	// Bottom Controls Bar
+	barH := 24.0
+	app.emitRect(0, h-barH, w, barH, 0.08, 0.10, 0.14, 0.88)
+	app.emitLine(0, h-barH, w, h-barH, 1.0, 0.18, 0.22, 0.30, 0.8)
+
+	controls := "LMB: Reveal  |  RMB: Flag  |  WASD: Move Cursor  |  E: Reveal  |  F: Flag  |  H: Hint  |  R: Reset"
+	if app.Scene != nil && app.Scene.Mode == runtime.Mode3D {
+		controls = "WASD: Move  |  RMB: Orbit Camera  |  Scroll: Zoom  |  LMB: Select / Interact  |  ESC: Quit"
+	}
+	app.emitText(14, h-barH+6, controls, 1.15, 0.70, 0.82, 0.94, 1.0)
 }
 
 // --- Top Toolbar (with Project Loader, Scene Controls, and Compiler Status) ---
@@ -599,14 +683,18 @@ func (app *EditorApp) drawLeftHierarchy(r Rect, in *platform.InputState) {
 
 	// Project Header Banner
 	app.emitRect(r.X, r.Y, r.W, 40, 0.13, 0.17, 0.24, 1.0)
-	projName := "Standalone Scene"
-	projDir := "."
+	projName := "No Project Loaded"
+	projDir := ""
 	if app.CurrentProject != nil {
 		projName = app.CurrentProject.Manifest.Name
 		projDir = app.CurrentProject.RootDir
 	}
 	app.emitText(r.X+8, r.Y+6, "PROJECT: "+truncateStr(projName, 21), 1.25, 0.98, 0.90, 0.55, 1.0)
-	app.emitText(r.X+8, r.Y+23, truncateStr(projDir+"/project.osmu.json", 32), 1.05, 0.62, 0.78, 0.95, 1.0)
+	if projDir != "" {
+		app.emitText(r.X+8, r.Y+23, truncateStr(projDir+"/project.osmu.json", 32), 1.05, 0.62, 0.78, 0.95, 1.0)
+	} else {
+		app.emitText(r.X+8, r.Y+23, "Please load a project", 1.05, 0.52, 0.62, 0.76, 1.0)
+	}
 
 	// Scene Hierarchy Section
 	hy := r.Y + 42
@@ -710,6 +798,8 @@ func (app *EditorApp) drawCenterViewport(r Rect, in *platform.InputState) {
 	app.emitRectOutline(r.X, r.Y, r.W, r.H, 1.0, 0.22, 0.26, 0.34, 1.0)
 
 	if app.Scene == nil {
+		app.emitText(r.X+r.W*0.5-95, r.Y+r.H*0.5-16, "NO PROJECT LOADED", 1.5, 0.65, 0.78, 0.95, 1.0)
+		app.emitText(r.X+r.W*0.5-185, r.Y+r.H*0.5+12, "Click [OPEN PROJECT] above to choose or load a project", 1.15, 0.45, 0.55, 0.68, 1.0)
 		return
 	}
 
@@ -867,13 +957,13 @@ func (app *EditorApp) drawViewport3D(r Rect, in *platform.InputState) {
 
 		if ent.Render.Label != "" && r.Contains(center2D.X, center2D.Y) {
 			app.emitText(center2D.X-float64(len(ent.Render.Label))*4.2, center2D.Y-4, ent.Render.Label, 1.45, 1.0, 1.0, 1.0, 1.0)
-		} else if ent.Tag != "Projectile" && ent.Tag != "Tile" && r.Contains(center2D.X, center2D.Y+16) {
+		} else if !app.StandalonePlay && ent.Tag != "Projectile" && ent.Tag != "Tile" && r.Contains(center2D.X, center2D.Y+16) {
 			app.emitText(center2D.X-float64(len(ent.Name))*3.2, center2D.Y+14, ent.Name, 1.1, 0.86, 0.90, 0.98, 0.95)
 		}
 	}
 
 	// Draw 3D Transform Gizmo on selected entity
-	if selEnt != nil && selEnt.Active {
+	if !app.StandalonePlay && selEnt != nil && selEnt.Active {
 		orig2D, ok := app.project3D(selEnt.Transform.Position, vp, r)
 		if ok && r.Contains(orig2D.X, orig2D.Y) {
 			gizmoLen := 1.5
@@ -1099,12 +1189,12 @@ func (app *EditorApp) drawViewport2D(r Rect, in *platform.InputState) {
 			app.emitRect(sp.X-bw*0.5, sp.Y-rad-8, bw, 3.5, 0.15, 0.15, 0.18, 0.9)
 			app.emitRect(sp.X-bw*0.5, sp.Y-rad-8, bw*ratio, 3.5, 0.98, 0.35, 0.42, 0.95)
 		}
-		if ent.ID == app.SelectedEntityID {
+		if !app.StandalonePlay && ent.ID == app.SelectedEntityID {
 			app.emitRectOutline(sp.X-rad-4, sp.Y-rad-4, (rad+4)*2, (rad+4)*2, 2.0, 1.0, 0.92, 0.35, 1.0)
 		}
 		if ent.Render.Label != "" {
 			app.emitText(sp.X-float64(len(ent.Render.Label))*4.8, sp.Y-5.5, ent.Render.Label, 1.6, 1.0, 1.0, 1.0, 1.0)
-		} else if ent.Tag != "Projectile" && ent.Tag != "Tile" {
+		} else if !app.StandalonePlay && ent.Tag != "Projectile" && ent.Tag != "Tile" {
 			app.emitText(sp.X-float64(len(ent.Name))*3.2, sp.Y+rad+5, ent.Name, 1.1, 0.85, 0.90, 0.98, 1.0)
 		}
 
@@ -1446,6 +1536,8 @@ func (app *EditorApp) drawRightInspector(r Rect, in *platform.InputState) {
 			app.emitText(r.X+14, y+22, truncateStr(sc.ScriptPath, 34), 1.1, 0.68, 0.76, 0.88, 1.0)
 			y += 48
 		}
+	} else {
+		app.emitText(r.X+12, y+10, "No Entity Selected", 1.2, 0.50, 0.56, 0.68, 1.0)
 	}
 
 	logTop := r.Y + r.H - 185
