@@ -1,6 +1,7 @@
 package runtime
 
 import (
+	"fmt"
 	"os"
 	"path/filepath"
 
@@ -295,12 +296,396 @@ component VaultGate3D : Entity {
 }
 `
 
-// BuiltinProjects builds and returns the 3 standalone OSMU Game Projects.
+// --- PROJECT 4: MINESWEEPER 2D (.osmu scripts) ---
+
+const MinesweeperBoardScript = `namespace Minesweeper;
+
+component MinesweeperBoard : Entity {
+    [Export] public float StepSize = 1.6f;
+    [Export] public float BoardLimit = 4.0f;
+    [Export] public float AutoHintInterval = 0.55f;
+
+    private float moveCooldown = 0.0f;
+    private float autoTimer = 0.0f;
+    private bool eWasDown = false;
+    private bool fWasDown = false;
+    private bool hWasDown = false;
+    private bool rWasDown = false;
+    private bool manualControl = false;
+    private bool gameOver = false;
+    private bool gameWon = false;
+
+    signal TileRevealed(Entity tile, int adjMines);
+    signal FlagToggled(Entity tile, int totalFlags);
+    signal MineDetonated(Entity mineTile);
+    signal BoardCleared(int safeCount);
+    signal EntityClicked(Entity target);
+    signal EntityRightClicked(Entity target);
+
+    public void OnReady() {
+        Log("Minesweeper ready! LMB/E: Reveal | RMB/F: Flag | WASD: Move | H: AI Hint | R: Reset");
+        this.ResetBoard();
+    }
+
+    public void ResetBoard() {
+        this.gameOver = false;
+        this.gameWon = false;
+        this.autoTimer = 0.0f;
+        this.Color = Color(0.25f, 0.95f, 1.0f, 1.0f);
+
+        List<Entity> allTiles = query Entities where Tag == "Tile";
+        foreach (Entity t in allTiles) {
+            t.Health = 100.0f;
+            t.MaxHealth = 100.0f;
+            t.Damage = 0.0f;
+            t.Label = ".";
+            t.Color = Color(0.32f, 0.39f, 0.52f, 1.0f);
+        }
+
+        // Start at top-left safe corner (-4.0, 4.0) and open initial safe cascade
+        this.Position = Vec3(-4.0f, 4.0f, 0.0f);
+        this.RevealAtPos(this.Position);
+    }
+
+    public void OnUpdate(float dt) {
+        bool rDown = IsKeyDown("R");
+        if (rDown && !this.rWasDown) {
+            this.manualControl = true;
+            this.ResetBoard();
+        }
+        this.rWasDown = rDown;
+
+        if (this.gameOver || this.gameWon) {
+            return;
+        }
+
+        this.moveCooldown = this.moveCooldown - dt;
+        float ix = InputAxisX();
+        float iy = InputAxisY();
+        if (ix != 0.0f || iy != 0.0f) {
+            this.manualControl = true;
+            if (this.moveCooldown <= 0.0f) {
+                float nx = this.Position.X;
+                float ny = this.Position.Y;
+                if (ix > 0.1f) {
+                    nx = nx + this.StepSize;
+                }
+                if (ix < -0.1f) {
+                    nx = nx - this.StepSize;
+                }
+                if (iy > 0.1f) {
+                    ny = ny + this.StepSize;
+                }
+                if (iy < -0.1f) {
+                    ny = ny - this.StepSize;
+                }
+                nx = Clamp(nx, -this.BoardLimit, this.BoardLimit);
+                ny = Clamp(ny, -this.BoardLimit, this.BoardLimit);
+                this.Position = Vec3(nx, ny, 0.0f);
+                this.moveCooldown = 0.16f;
+            }
+        } else {
+            this.moveCooldown = 0.0f;
+        }
+
+        bool eDown = IsKeyDown("E") || IsKeyDown("ENTER");
+        if (eDown && !this.eWasDown) {
+            this.manualControl = true;
+            this.RevealAtPos(this.Position);
+        }
+        this.eWasDown = eDown;
+
+        bool fDown = IsKeyDown("F");
+        if (fDown && !this.fWasDown) {
+            this.manualControl = true;
+            this.ToggleFlagAtPos(this.Position);
+        }
+        this.fWasDown = fDown;
+
+        bool hDown = IsKeyDown("H");
+        if (hDown && !this.hWasDown) {
+            this.PerformAIHintStep();
+        }
+        this.hWasDown = hDown;
+
+        // If no manual input yet, demonstrate logical Minesweeper solving step-by-step
+        if (!this.manualControl) {
+            this.autoTimer = this.autoTimer + dt;
+            if (this.autoTimer >= this.AutoHintInterval) {
+                this.autoTimer = 0.0f;
+                this.PerformAIHintStep();
+            }
+        }
+    }
+
+    public void RevealAtPos(Vec3 pos) {
+        List<Entity> found = query Entities
+            where Tag == "Tile" && DistanceTo(pos) <= 0.6f
+            orderby DistanceTo(pos) asc;
+        if (found.Count > 0) {
+            this.RevealTileAndCascade(found[0]);
+        }
+    }
+
+    public void ToggleFlagAtPos(Vec3 pos) {
+        List<Entity> found = query Entities
+            where Tag == "Tile" && DistanceTo(pos) <= 0.6f
+            orderby DistanceTo(pos) asc;
+        if (found.Count > 0) {
+            this.ToggleFlagTile(found[0]);
+        }
+    }
+
+    public void ToggleFlagTile(Entity tile) {
+        if (tile.Health < 10.0f) {
+            return;
+        }
+        if (tile.Health > 60.0f) {
+            tile.Health = 50.0f;
+            tile.Label = "F";
+            tile.Color = Color(0.88f, 0.54f, 0.14f, 1.0f);
+        } else {
+            tile.Health = 100.0f;
+            tile.Label = ".";
+            tile.Color = Color(0.32f, 0.39f, 0.52f, 1.0f);
+        }
+        List<Entity> flags = query Entities
+            where Tag == "Tile" && Health > 40.0f && Health < 60.0f;
+        Log("Flag toggled on " + tile.Name + " (Total Flags: " + flags.Count + ")");
+        emit FlagToggled(tile, flags.Count);
+    }
+
+    public void RevealSingleTile(Entity tile) {
+        if (tile.Health < 60.0f) {
+            return;
+        }
+        if (tile.Speed > 0.5f) {
+            tile.Health = 0.0f;
+            tile.Label = "*";
+            tile.Color = Color(0.95f, 0.18f, 0.22f, 1.0f);
+            this.gameOver = true;
+            this.Color = Color(1.0f, 0.22f, 0.25f, 1.0f);
+
+            List<Entity> allMines = query Entities
+                where Tag == "Tile" && Speed > 0.5f;
+            foreach (Entity m in allMines) {
+                m.Health = 0.0f;
+                m.Label = "*";
+                m.Color = Color(0.95f, 0.18f, 0.22f, 1.0f);
+            }
+            Log("MINE DETONATED at " + tile.Name + "! Press R to reset.");
+            emit MineDetonated(tile);
+            return;
+        }
+
+        Vec3 tPos = tile.Position;
+        List<Entity> adjMines = query Entities
+            where Tag == "Tile" && Speed > 0.5f && DistanceTo(tPos) > 0.1f && DistanceTo(tPos) <= 2.5f;
+        int adj = adjMines.Count;
+
+        tile.Health = 0.0f;
+        tile.Damage = adj;
+
+        if (adj == 0) {
+            tile.MaxHealth = 1.0f;
+            tile.Label = "";
+            tile.Color = Color(0.09f, 0.11f, 0.15f, 1.0f);
+        }
+        if (adj == 1) {
+            tile.Label = "1";
+            tile.Color = Color(0.16f, 0.38f, 0.72f, 1.0f);
+        }
+        if (adj == 2) {
+            tile.Label = "2";
+            tile.Color = Color(0.16f, 0.54f, 0.32f, 1.0f);
+        }
+        if (adj == 3) {
+            tile.Label = "3";
+            tile.Color = Color(0.72f, 0.24f, 0.28f, 1.0f);
+        }
+        if (adj >= 4) {
+            tile.Label = "" + adj;
+            tile.Color = Color(0.52f, 0.24f, 0.72f, 1.0f);
+        }
+
+        emit TileRevealed(tile, adj);
+    }
+
+    public void RevealTileAndCascade(Entity startTile) {
+        if (startTile.Health < 60.0f) {
+            return;
+        }
+        this.RevealSingleTile(startTile);
+        if (this.gameOver) {
+            return;
+        }
+
+        // Flood-fill cascade for connected 0-mine tiles using .osmu spatial queries
+        bool expanding = true;
+        while (expanding) {
+            List<Entity> zeroFront = query Entities
+                where Tag == "Tile" && Health == 0.0f && MaxHealth == 1.0f;
+            if (zeroFront.Count == 0) {
+                expanding = false;
+            } else {
+                foreach (Entity zt in zeroFront) {
+                    zt.MaxHealth = 0.0f;
+                    Vec3 zPos = zt.Position;
+                    List<Entity> neighbors = query Entities
+                        where Tag == "Tile" && Health > 60.0f && DistanceTo(zPos) > 0.1f && DistanceTo(zPos) <= 2.5f;
+                    foreach (Entity nb in neighbors) {
+                        this.RevealSingleTile(nb);
+                    }
+                }
+            }
+        }
+
+        this.CheckWinCondition();
+    }
+
+    public void CheckWinCondition() {
+        List<Entity> hiddenSafe = query Entities
+            where Tag == "Tile" && Speed < 0.5f && Health > 10.0f;
+        if (hiddenSafe.Count == 0 && !this.gameWon && !this.gameOver) {
+            this.gameWon = true;
+            this.Color = Color(0.25f, 1.0f, 0.55f, 1.0f);
+            List<Entity> unflaggedMines = query Entities
+                where Tag == "Tile" && Speed > 0.5f && Health > 60.0f;
+            foreach (Entity m in unflaggedMines) {
+                m.Health = 50.0f;
+                m.Label = "F";
+                m.Color = Color(0.22f, 0.78f, 0.42f, 1.0f);
+            }
+            List<Entity> safeTiles = query Entities where Tag == "Tile" && Speed < 0.5f;
+            Log("BOARD CLEARED! All " + safeTiles.Count + " safe tiles swept!");
+            emit BoardCleared(safeTiles.Count);
+        }
+    }
+
+    public void PerformAIHintStep() {
+        if (this.gameOver || this.gameWon) {
+            return;
+        }
+
+        // Rule 1 & Rule 2 constraint-satisfaction over revealed numbered tiles
+        List<Entity> numbered = query Entities
+            where Tag == "Tile" && Health == 0.0f && Damage > 0.0f
+            orderby Name asc;
+
+        foreach (Entity rt in numbered) {
+            Vec3 rPos = rt.Position;
+            List<Entity> hiddenNbs = query Entities
+                where Tag == "Tile" && Health > 60.0f && DistanceTo(rPos) > 0.1f && DistanceTo(rPos) <= 2.5f;
+            List<Entity> flagNbs = query Entities
+                where Tag == "Tile" && Health > 40.0f && Health < 60.0f && DistanceTo(rPos) > 0.1f && DistanceTo(rPos) <= 2.5f;
+
+            if (hiddenNbs.Count > 0) {
+                // Rule 1: If hiddenNbs + flagNbs == number on tile, all hiddenNbs are guaranteed mines
+                if (hiddenNbs.Count + flagNbs.Count == rt.Damage) {
+                    Entity mineTarget = hiddenNbs[0];
+                    this.Position = mineTarget.Position;
+                    this.ToggleFlagTile(mineTarget);
+                    return;
+                }
+                // Rule 2: If flagNbs == number on tile, all remaining hiddenNbs are guaranteed safe
+                if (flagNbs.Count == rt.Damage) {
+                    Entity safeTarget = hiddenNbs[0];
+                    this.Position = safeTarget.Position;
+                    Log("AI Solver: Deduced " + safeTarget.Name + " is safe from " + rt.Name);
+                    this.RevealTileAndCascade(safeTarget);
+                    return;
+                }
+            }
+        }
+
+        // Fallback: pick nearest unrevealed safe tile
+        List<Entity> fallbackSafe = query Entities
+            where Tag == "Tile" && Speed < 0.5f && Health > 60.0f
+            orderby DistanceTo(this.Position) asc;
+        if (fallbackSafe.Count > 0) {
+            Entity nextSafe = fallbackSafe[0];
+            this.Position = nextSafe.Position;
+            this.RevealTileAndCascade(nextSafe);
+        }
+    }
+
+    on EntityClicked(Entity target) {
+        if (target.HasTag("Tile") && !this.gameOver && !this.gameWon) {
+            this.manualControl = true;
+            this.Position = target.Position;
+            this.RevealTileAndCascade(target);
+        }
+    }
+
+    on EntityRightClicked(Entity target) {
+        if (target.HasTag("Tile") && !this.gameOver && !this.gameWon) {
+            this.manualControl = true;
+            this.Position = target.Position;
+            this.ToggleFlagTile(target);
+        }
+    }
+}
+`
+
+const MineScannerHUDScript = `namespace Minesweeper;
+
+component MineScannerHUD : Entity {
+    [Export] public int TotalMines = 6;
+    private int revealedCount = 0;
+    private int flagCount = 0;
+
+    signal TileRevealed(Entity tile, int adjMines);
+    signal FlagToggled(Entity tile, int totalFlags);
+    signal MineDetonated(Entity mineTile);
+    signal BoardCleared(int safeCount);
+
+    public void OnReady() {
+        this.revealedCount = 0;
+        this.flagCount = 0;
+        this.Label = "MINES: " + this.TotalMines;
+        this.Color = Color(0.20f, 0.65f, 0.95f, 1.0f);
+    }
+
+    public void OnUpdate(float dt) {
+        List<Entity> cleared = query Entities
+            where Tag == "Tile" && Health == 0.0f && Speed < 0.5f;
+        this.revealedCount = cleared.Count;
+        this.Score = this.revealedCount;
+    }
+
+    on TileRevealed(Entity tile, int adjMines) {
+        List<Entity> flags = query Entities
+            where Tag == "Tile" && Health > 40.0f && Health < 60.0f;
+        int rem = this.TotalMines - flags.Count;
+        this.Label = "M:" + rem;
+    }
+
+    on FlagToggled(Entity tile, int totalFlags) {
+        this.flagCount = totalFlags;
+        int rem = this.TotalMines - totalFlags;
+        this.Label = "M:" + rem;
+        this.Color = Color(0.95f, 0.68f, 0.18f, 1.0f);
+    }
+
+    on MineDetonated(Entity mineTile) {
+        this.Label = "BOOM";
+        this.Color = Color(0.98f, 0.20f, 0.24f, 1.0f);
+    }
+
+    on BoardCleared(int safeCount) {
+        this.Label = "WIN!";
+        this.Color = Color(0.22f, 0.95f, 0.48f, 1.0f);
+    }
+}
+`
+
+// BuiltinProjects builds and returns the 4 standalone OSMU Game Projects.
 func BuiltinProjects() []*Project {
 	return []*Project{
 		buildCyberSurvivorsProject(),
 		buildFortressSiegeProject(),
 		buildDungeonQuestProject(),
+		buildMinesweeperProject(),
 	}
 }
 
@@ -754,7 +1139,131 @@ func buildDungeonQuestProject() *Project {
 	}
 }
 
-// MaterializeExamples writes the 3 standalone example projects to `projects/` (and cleans up legacy `examples/`).
+func buildMinesweeperProject() *Project {
+	sc := NewScene("Minesweeper 2D - Tactical Grid", Mode2D)
+	sc.Description = "Playable 2D/3D Minesweeper with Spatial Entity Queries, Flood-Fill Cascade, Mouse/WASD Controls & AI Deduction Solver"
+
+	mineCoords := map[[2]int]bool{
+		{0, 3}: true,
+		{1, 5}: true,
+		{2, 2}: true,
+		{3, 4}: true,
+		{4, 1}: true,
+		{5, 5}: true,
+	}
+
+	for r := 0; r < 6; r++ {
+		for c := 0; c < 6; c++ {
+			id := fmt.Sprintf("tile_%d_%d", r, c)
+			name := fmt.Sprintf("Tile_%d_%d", r, c)
+			px := -4.0 + float64(c)*1.6
+			py := 4.0 - float64(r)*1.6
+			tile := engine.NewEntity(id, name, "Tile", engine.MeshSprite2D, engine.V3(px, py, 0), engine.RGB(0.32, 0.39, 0.52))
+			tile.Transform.Scale = engine.V3(1.65, 1.65, 0.45)
+			tile.Render.Label = "."
+			tile.Physics.Enabled = false
+			tile.Physics.IsStatic = true
+			tile.Health = 100.0
+			tile.MaxHealth = 100.0
+			if mineCoords[[2]int{r, c}] {
+				tile.Speed = 1.0
+			} else {
+				tile.Speed = 0.0
+			}
+			tile.Properties["Damage"] = 0.0
+			sc.AddEntity(tile)
+		}
+	}
+
+	scanner := engine.NewEntity("scanner_hud", "MineScannerHUD", "HUD", engine.MeshSprite2D, engine.V3(-6.8, 3.2, 0), engine.RGB(0.20, 0.65, 0.95))
+	scanner.Transform.Scale = engine.V3(2.1, 1.65, 0.5)
+	scanner.Physics.Enabled = false
+	scanner.Physics.IsStatic = true
+	scanner.Render.Label = "M:6"
+	scanner.Properties["Score"] = 0.0
+	scanner.Scripts = []engine.ScriptAttachment{
+		{ScriptPath: "scripts/MineScannerHUD.osmu", ComponentName: "MineScannerHUD", Properties: map[string]interface{}{"TotalMines": 6}},
+	}
+	sc.AddEntity(scanner)
+
+	cursor := engine.NewEntity("board_cursor", "BoardCursor", "Player", engine.MeshSprite2D, engine.V3(-4.0, 4.0, 0.2), engine.RGB(0.25, 0.95, 1.0))
+	cursor.Transform.Scale = engine.V3(1.78, 1.78, 0.55)
+	cursor.Render.Wireframe = true
+	cursor.Physics.Enabled = false
+	cursor.Physics.IsStatic = true
+	cursor.Properties["Score"] = 0.0
+	cursor.Scripts = []engine.ScriptAttachment{
+		{
+			ScriptPath:    "scripts/MinesweeperBoard.osmu",
+			ComponentName: "MinesweeperBoard",
+			Properties: map[string]interface{}{
+				"StepSize":         1.6,
+				"BoardLimit":       4.0,
+				"AutoHintInterval": 0.55,
+			},
+		},
+	}
+	sc.AddEntity(cursor)
+
+	g := sc.NodeGraph
+	nSigRev := nodegraph.CreateNodeFromTemplate("ms_sig_rev", "OnSignal", 16, 18)
+	nSigRev.Params["Signal"] = "TileRevealed"
+	nSigFlg := nodegraph.CreateNodeFromTemplate("ms_sig_flg", "OnSignal", 16, 148)
+	nSigFlg.Params["Signal"] = "FlagToggled"
+
+	nQrySafe := nodegraph.CreateNodeFromTemplate("ms_qry_safe", "QueryEntities", 260, 18)
+	nQrySafe.Params["Query"] = "Tag == \"Tile\" && Health == 0"
+
+	nQryMine := nodegraph.CreateNodeFromTemplate("ms_qry_flg", "QueryEntities", 260, 148)
+	nQryMine.Params["Query"] = "Tag == \"Tile\" && Health == 50"
+
+	nScore := nodegraph.CreateNodeFromTemplate("ms_add_scr", "ModifyProperty", 508, 18)
+	nScore.Params["TargetTag"] = "Player"
+	nScore.Params["Property"] = "Score"
+	nScore.Params["Mode"] = "Add"
+	nScore.Params["Value"] = "10"
+
+	nEmit := nodegraph.CreateNodeFromTemplate("ms_emit_scan", "EmitSignal", 508, 148)
+	nEmit.Params["Signal"] = "SectorScanned"
+	nEmit.Params["Arg"] = "OK"
+
+	g.Nodes = []*nodegraph.Node{nSigRev, nSigFlg, nQrySafe, nQryMine, nScore, nEmit}
+	g.AddLink("ms_sig_rev", "Trigger", "ms_qry_safe", "In", nodegraph.SocketFlow)
+	g.AddLink("ms_sig_flg", "Trigger", "ms_qry_safe", "In", nodegraph.SocketFlow)
+	g.AddLink("ms_sig_flg", "Trigger", "ms_qry_flg", "In", nodegraph.SocketFlow)
+	g.AddLink("ms_qry_safe", "Found", "ms_add_scr", "In", nodegraph.SocketFlow)
+	g.AddLink("ms_qry_safe", "Entities", "ms_add_scr", "Targets", nodegraph.SocketEntityList)
+	g.AddLink("ms_qry_safe", "Found", "ms_emit_scan", "In", nodegraph.SocketFlow)
+	g.AddLink("ms_qry_flg", "Found", "ms_emit_scan", "In", nodegraph.SocketFlow)
+	g.AddLink("ms_qry_flg", "Nearest", "ms_emit_scan", "Target", nodegraph.SocketEntity)
+
+	sc.ScriptFiles = []*ScriptFile{
+		{Path: "scripts/MinesweeperBoard.osmu", Source: MinesweeperBoardScript},
+		{Path: "scripts/MineScannerHUD.osmu", Source: MineScannerHUDScript},
+	}
+	sc.CompileScripts()
+
+	rootDir := filepath.Join("projects", "04_minesweeper_2d")
+	sc.FilePath = filepath.Join(rootDir, "scenes", "main.osmu.json")
+	return &Project{
+		RootDir:      rootDir,
+		ManifestPath: filepath.Join(rootDir, "project.osmu.json"),
+		Manifest: ProjectManifest{
+			Name:         "Minesweeper 2D",
+			Version:      "1.0.0",
+			Description:  sc.Description,
+			Genre:        "2D Puzzle / Strategy",
+			DefaultMode:  "2D",
+			DefaultScene: "scenes/main.osmu.json",
+			Scenes:       []string{"scenes/main.osmu.json"},
+			Scripts:      []string{"scripts/MinesweeperBoard.osmu", "scripts/MineScannerHUD.osmu"},
+		},
+		LoadedScenes: []*Scene{sc},
+		ActiveScene:  sc,
+	}
+}
+
+// MaterializeExamples writes the 4 standalone example projects to `projects/` (and cleans up legacy `examples/`).
 func MaterializeExamples(baseDir string) error {
 	_ = os.RemoveAll(filepath.Join(baseDir, "examples"))
 	for _, proj := range BuiltinProjects() {

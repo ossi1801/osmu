@@ -1,0 +1,94 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 420" width="1000" height="420" style="background:#0d1117; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;">
+  <defs>
+    <linearGradient id="gradHeader" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38bdf8" />
+      <stop offset="100%" stop-color="#818cf8" />
+    </linearGradient>
+    <linearGradient id="cardGrad1" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#1e293b" />
+      <stop offset="100%" stop-color="#0f172a" />
+    </linearGradient>
+    <filter id="shadow" x="-5%" y="-5%" width="110%" height="110%">
+      <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#000" flood-opacity="0.4"/>
+    </filter>
+  </defs>
+
+  <!-- Title Section -->
+  <text x="50" y="45" fill="#f8fafc" font-size="22" font-weight="700" letter-spacing="0.5">OSMU ARCHITECTURAL RUNTIME PIPELINE</text>
+  <text x="50" y="70" fill="#94a3b8" font-size="13">Deterministic Go-Powered Native Game Engine, Static Compiler, and Spatial Logic Subsystem</text>
+
+  <!-- Layer 1: Developer Experience & Presentation -->
+  <g transform="translate(50, 95)" filter="url(#shadow)">
+    <rect width="270" height="280" rx="8" fill="url(#cardGrad1)" stroke="#334155" stroke-width="1.5" />
+    <rect width="270" height="34" rx="8" fill="#1e293b" />
+    <text x="16" y="23" fill="#38bdf8" font-size="13" font-weight="700">PRESENTATION &amp; STUDIO</text>
+    
+    <rect x="15" y="48" width="240" height="42" rx="4" fill="#0f172a" stroke="#475569" stroke-width="1"/>
+    <text x="25" y="66" fill="#f1f5f9" font-size="12" font-weight="600">Dual Native / Web Studio</text>
+    <text x="25" y="82" fill="#94a3b8" font-size="10">X11 / Win32 / macOS / WebSockets</text>
+
+    <rect x="15" y="100" width="240" height="42" rx="4" fill="#0f172a" stroke="#475569" stroke-width="1"/>
+    <text x="25" y="118" fill="#f1f5f9" font-size="12" font-weight="600">Spatial Viewport &amp; Gizmos</text>
+    <text x="25" y="134" fill="#94a3b8" font-size="10">2D Pixel Pan &amp; 3D Matrix Camera</text>
+
+    <rect x="15" y="152" width="240" height="42" rx="4" fill="#0f172a" stroke="#475569" stroke-width="1"/>
+    <text x="25" y="170" fill="#f1f5f9" font-size="12" font-weight="600">Trunk-Routed Node Graph</text>
+    <text x="25" y="186" fill="#94a3b8" font-size="10">Anti-Spaghetti Bus Cable Routing</text>
+
+    <rect x="15" y="204" width="240" height="42" rx="4" fill="#0f172a" stroke="#475569" stroke-width="1"/>
+    <text x="25" y="222" fill="#f1f5f9" font-size="12" font-weight="600">Headless Software Rasterizer</text>
+    <text x="25" y="238" fill="#94a3b8" font-size="10">CI/CD Instant Frame Capturing</text>
+  </g>
+
+  <!-- Arrow 1 -> 2 -->
+  <path d="M 330 235 L 360 235" stroke="#38bdf8" stroke-width="2.5" stroke-dasharray="4 4" marker-end="url(#arrow)" />
+
+  <!-- Layer 2: OSMU Language & Compilation -->
+  <g transform="translate(365, 95)" filter="url(#shadow)">
+    <rect width="270" height="280" rx="8" fill="url(#cardGrad1)" stroke="#334155" stroke-width="1.5" />
+    <rect width="270" height="34" rx="8" fill="#1e293b" />
+    <text x="16" y="23" fill="#818cf8" font-size="13" font-weight="700">OSMU LANGUAGE &amp; TOOLING</text>
+    
+    <rect x="15" y="48" width="240" height="42" rx="4" fill="#0f172a" stroke="#475569" stroke-width="1"/>
+    <text x="25" y="66" fill="#f1f5f9" font-size="12" font-weight="600">Position-Accurate Lexer</text>
+    <text x="25" y="82" fill="#94a3b8" font-size="10">Zero-Allocation Scanning &amp; Source Spans</text>
+
+    <rect x="15" y="100" width="240" height="42" rx="4" fill="#0f172a" stroke="#475569" stroke-width="1"/>
+    <text x="25" y="118" fill="#f1f5f9" font-size="12" font-weight="600">AST Recursive Parser</text>
+    <text x="25" y="134" fill="#94a3b8" font-size="10">C#-Style Components, Properties &amp; Signals</text>
+
+    <rect x="15" y="152" width="240" height="42" rx="4" fill="#0f172a" stroke="#475569" stroke-width="1"/>
+    <text x="25" y="170" fill="#f1f5f9" font-size="12" font-weight="600">Static Type Checker (osmuc)</text>
+    <text x="25" y="186" fill="#94a3b8" font-size="10">Full Semantic Validation &amp; Diagnostic Engine</text>
+
+    <rect x="15" y="204" width="240" height="42" rx="4" fill="#0f172a" stroke="#475569" stroke-width="1"/>
+    <text x="25" y="222" fill="#f1f5f9" font-size="12" font-weight="600">Language Server Protocol (LSP)</text>
+    <text x="25" y="238" fill="#94a3b8" font-size="10">VS Code / Neovim Stdio Integration</text>
+  </g>
+
+  <!-- Arrow 2 -> 3 -->
+  <path d="M 645 235 L 675 235" stroke="#818cf8" stroke-width="2.5" stroke-dasharray="4 4" />
+
+  <!-- Layer 3: Runtime Core & ECS Subsystem -->
+  <g transform="translate(680, 95)" filter="url(#shadow)">
+    <rect width="270" height="280" rx="8" fill="url(#cardGrad1)" stroke="#334155" stroke-width="1.5" />
+    <rect width="270" height="34" rx="8" fill="#1e293b" />
+    <text x="16" y="23" fill="#34d399" font-size="13" font-weight="700">KERNEL &amp; QUERY RUNTIME</text>
+    
+    <rect x="15" y="48" width="240" height="42" rx="4" fill="#0f172a" stroke="#475569" stroke-width="1"/>
+    <text x="25" y="66" fill="#f1f5f9" font-size="12" font-weight="600">Declarative Spatial Querying</text>
+    <text x="25" y="82" fill="#94a3b8" font-size="10">SQL/LINQ-Like Entity Filtration &amp; Sort</text>
+
+    <rect x="15" y="100" width="240" height="42" rx="4" fill="#0f172a" stroke="#475569" stroke-width="1"/>
+    <text x="25" y="118" fill="#f1f5f9" font-size="12" font-weight="600">High-Throughput Signal Bus</text>
+    <text x="25" y="134" fill="#94a3b8" font-size="10">Decoupled Reactive Event Routing</text>
+
+    <rect x="15" y="152" width="240" height="42" rx="4" fill="#0f172a" stroke="#475569" stroke-width="1"/>
+    <text x="25" y="170" fill="#f1f5f9" font-size="12" font-weight="600">Deterministic Bytecode VM</text>
+    <text x="25" y="186" fill="#94a3b8" font-size="10">Fast Sandboxed Script Execution</text>
+
+    <rect x="15" y="204" width="240" height="42" rx="4" fill="#0f172a" stroke="#475569" stroke-width="1"/>
+    <text x="25" y="222" fill="#f1f5f9" font-size="12" font-weight="600">Zero-Dependency Binary</text>
+    <text x="25" y="238" fill="#94a3b8" font-size="10">Single Static Executable Across OS Targets</text>
+  </g>
+</svg>

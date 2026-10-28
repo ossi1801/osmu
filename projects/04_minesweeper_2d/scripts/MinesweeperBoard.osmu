@@ -38,8 +38,8 @@ component MinesweeperBoard : Entity {
             t.Health = 100.0f;
             t.MaxHealth = 100.0f;
             t.Damage = 0.0f;
-            t.Label = "";
-            t.Color = Color(0.24f, 0.30f, 0.42f, 1.0f);
+            t.Label = ".";
+            t.Color = Color(0.32f, 0.39f, 0.52f, 1.0f);
         }
 
         // Start at top-left safe corner (-4.0, 4.0) and open initial safe cascade
@@ -146,8 +146,8 @@ component MinesweeperBoard : Entity {
             tile.Color = Color(0.88f, 0.54f, 0.14f, 1.0f);
         } else {
             tile.Health = 100.0f;
-            tile.Label = "";
-            tile.Color = Color(0.24f, 0.30f, 0.42f, 1.0f);
+            tile.Label = ".";
+            tile.Color = Color(0.32f, 0.39f, 0.52f, 1.0f);
         }
         List<Entity> flags = query Entities
             where Tag == "Tile" && Health > 40.0f && Health < 60.0f;
@@ -189,7 +189,7 @@ component MinesweeperBoard : Entity {
         if (adj == 0) {
             tile.MaxHealth = 1.0f;
             tile.Label = "";
-            tile.Color = Color(0.11f, 0.14f, 0.19f, 1.0f);
+            tile.Color = Color(0.09f, 0.11f, 0.15f, 1.0f);
         }
         if (adj == 1) {
             tile.Label = "1";

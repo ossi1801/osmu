@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 320" width="1200" height="320" style="background:#090d16; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
+  <defs>
+    <radialGradient id="glow" cx="50%" cy="30%" r="60%">
+      <stop offset="0%" stop-color="#38bdf8" stop-opacity="0.25"/>
+      <stop offset="100%" stop-color="#090d16" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="textGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#38bdf8"/>
+      <stop offset="50%" stop-color="#818cf8"/>
+      <stop offset="100%" stop-color="#c084fc"/>
+    </linearGradient>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#1e293b" stroke-width="0.75" stroke-opacity="0.6"/>
+    </pattern>
+  </defs>
+
+  <rect width="100%" height="100%" fill="#090d16"/>
+  <rect width="100%" height="100%" fill="url(#grid)"/>
+  <rect width="100%" height="100%" fill="url(#glow)"/>
+
+  <!-- Logo Mark -->
+  <g transform="translate(100, 75)">
+    <polygon points="45,0 90,26 90,78 45,104 0,78 0,26" fill="#0f172a" stroke="#38bdf8" stroke-width="3"/>
+    <polygon points="45,18 72,34 72,66 45,82 18,66 18,34" fill="#1e293b" stroke="#818cf8" stroke-width="2"/>
+    <circle cx="45" cy="50" r="10" fill="#38bdf8"/>
+  </g>
+
+  <!-- Typography -->
+  <text x="220" y="125" fill="url(#textGrad)" font-size="52" font-weight="900" letter-spacing="3">OSMU</text>
+  <text x="390" y="123" fill="#64748b" font-size="20" font-weight="400">|</text>
+  <text x="415" y="123" fill="#cbd5e1" font-size="20" font-weight="600" letter-spacing="1">NEXT-GENERATION SPATIAL ENGINE &amp; LOGIC RUNTIME</text>
+
+  <text x="220" y="165" fill="#94a3b8" font-size="16" font-weight="400">
+    Overengineered System Manipulation Userinterface — Deterministic Go Runtime, Native Studio &amp; Declarative Spatial Computing
+  </text>
+
+  <!-- Metrics / Enterprise Badges -->
+  <g transform="translate(220, 205)">
+    <rect x="0" y="0" width="170" height="40" rx="6" fill="#1e293b" stroke="#334155" stroke-width="1"/>
+    <text x="15" y="18" fill="#94a3b8" font-size="10" font-weight="600">ARCHITECTURE</text>
+    <text x="15" y="32" fill="#38bdf8" font-size="12" font-weight="700">Deterministic Pure Go</text>
+
+    <rect x="185" y="0" width="170" height="40" rx="6" fill="#1e293b" stroke="#334155" stroke-width="1"/>
+    <text x="200" y="18" fill="#94a3b8" font-size="10" font-weight="600">QUERY ENGINE</text>
+    <text x="200" y="32" fill="#34d399" font-size="12" font-weight="700">Sub-Millisecond LINQ</text>
+
+    <rect x="370" y="0" width="170" height="40" rx="6" fill="#1e293b" stroke="#334155" stroke-width="1"/>
+    <text x="385" y="18" fill="#94a3b8" font-size="10" font-weight="600">NODE ROUTING</text>
+    <text x="385" y="32" fill="#c084fc" font-size="12" font-weight="700">Auto Trunk Bundling</text>
+
+    <rect x="555" y="0" width="170" height="40" rx="6" fill="#1e293b" stroke="#334155" stroke-width="1"/>
+    <text x="570" y="18" fill="#94a3b8" font-size="10" font-weight="600">STATIC FOOTPRINT</text>
+    <text x="570" y="32" fill="#f59e0b" font-size="12" font-weight="700">Zero Dependencies</text>
+  </g>
+</svg>

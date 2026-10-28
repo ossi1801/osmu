@@ -1,7 +1,7 @@
 {
   "name": "Minesweeper 2D",
   "version": "1.0.0",
-  "description": "Playable 2D/3D Minesweeper with Spatial Entity Queries, Flood-Fill Cascade, Mouse/WASD Controls & AI Deduction Solver",
+  "description": "Playable 2D/3D Minesweeper with Spatial Entity Queries, Flood-Fill Cascade, Mouse/WASD Controls \u0026 AI Deduction Solver",
   "genre": "2D Puzzle / Strategy",
   "default_mode": "2D",
   "default_scene": "scenes/main.osmu.json",

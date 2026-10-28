@@ -1,0 +1,2718 @@
+{
+  "name": "Minesweeper 2D - Tactical Grid",
+  "description": "Playable 2D/3D Minesweeper with Spatial Entity Queries, Flood-Fill Cascade, Mouse/WASD Controls \u0026 AI Deduction Solver",
+  "mode": "2D",
+  "entities": [
+    {
+      "id": "tile_0_0",
+      "name": "Tile_0_0",
+      "tag": "Tile",
+      "tags": [
+        "Tile"
+      ],
+      "active": true,
+      "layer": 0,
+      "health": 100,
+      "max_health": 100,
+      "speed": 0,
+      "transform": {
+        "position": {
+          "x": -4,
+          "y": 4,
+          "z": 0
+        },
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "scale": {
+          "x": 1.65,
+          "y": 1.65,
+          "z": 0.45
+        }
+      },
+      "render": {
+        "visible": true,
+        "mesh": "Sprite2D",
+        "color": {
+          "r": 0.32,
+          "g": 0.39,
+          "b": 0.52,
+          "a": 1
+        },
+        "emissive": 0,
+        "wireframe": false,
+        "label": "."
+      },
+      "physics": {
+        "enabled": false,
+        "is_static": true,
+        "is_trigger": false,
+        "velocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "angular_vel": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "radius": 0.6,
+        "mass": 1,
+        "use_gravity": false
+      },
+      "properties": {
+        "Damage": 0
+      }
+    },
+    {
+      "id": "tile_0_1",
+      "name": "Tile_0_1",
+      "tag": "Tile",
+      "tags": [
+        "Tile"
+      ],
+      "active": true,
+      "layer": 0,
+      "health": 100,
+      "max_health": 100,
+      "speed": 0,
+      "transform": {
+        "position": {
+          "x": -2.4,
+          "y": 4,
+          "z": 0
+        },
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "scale": {
+          "x": 1.65,
+          "y": 1.65,
+          "z": 0.45
+        }
+      },
+      "render": {
+        "visible": true,
+        "mesh": "Sprite2D",
+        "color": {
+          "r": 0.32,
+          "g": 0.39,
+          "b": 0.52,
+          "a": 1
+        },
+        "emissive": 0,
+        "wireframe": false,
+        "label": "."
+      },
+      "physics": {
+        "enabled": false,
+        "is_static": true,
+        "is_trigger": false,
+        "velocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "angular_vel": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "radius": 0.6,
+        "mass": 1,
+        "use_gravity": false
+      },
+      "properties": {
+        "Damage": 0
+      }
+    },
+    {
+      "id": "tile_0_2",
+      "name": "Tile_0_2",
+      "tag": "Tile",
+      "tags": [
+        "Tile"
+      ],
+      "active": true,
+      "layer": 0,
+      "health": 100,
+      "max_health": 100,
+      "speed": 0,
+      "transform": {
+        "position": {
+          "x": -0.7999999999999998,
+          "y": 4,
+          "z": 0
+        },
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "scale": {
+          "x": 1.65,
+          "y": 1.65,
+          "z": 0.45
+        }
+      },
+      "render": {
+        "visible": true,
+        "mesh": "Sprite2D",
+        "color": {
+          "r": 0.32,
+          "g": 0.39,
+          "b": 0.52,
+          "a": 1
+        },
+        "emissive": 0,
+        "wireframe": false,
+        "label": "."
+      },
+      "physics": {
+        "enabled": false,
+        "is_static": true,
+        "is_trigger": false,
+        "velocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "angular_vel": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "radius": 0.6,
+        "mass": 1,
+        "use_gravity": false
+      },
+      "properties": {
+        "Damage": 0
+      }
+    },
+    {
+      "id": "tile_0_3",
+      "name": "Tile_0_3",
+      "tag": "Tile",
+      "tags": [
+        "Tile"
+      ],
+      "active": true,
+      "layer": 0,
+      "health": 100,
+      "max_health": 100,
+      "speed": 1,
+      "transform": {
+        "position": {
+          "x": 0.8000000000000007,
+          "y": 4,
+          "z": 0
+        },
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "scale": {
+          "x": 1.65,
+          "y": 1.65,
+          "z": 0.45
+        }
+      },
+      "render": {
+        "visible": true,
+        "mesh": "Sprite2D",
+        "color": {
+          "r": 0.32,
+          "g": 0.39,
+          "b": 0.52,
+          "a": 1
+        },
+        "emissive": 0,
+        "wireframe": false,
+        "label": "."
+      },
+      "physics": {
+        "enabled": false,
+        "is_static": true,
+        "is_trigger": false,
+        "velocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "angular_vel": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "radius": 0.6,
+        "mass": 1,
+        "use_gravity": false
+      },
+      "properties": {
+        "Damage": 0
+      }
+    },
+    {
+      "id": "tile_0_4",
+      "name": "Tile_0_4",
+      "tag": "Tile",
+      "tags": [
+        "Tile"
+      ],
+      "active": true,
+      "layer": 0,
+      "health": 100,
+      "max_health": 100,
+      "speed": 0,
+      "transform": {
+        "position": {
+          "x": 2.4000000000000004,
+          "y": 4,
+          "z": 0
+        },
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "scale": {
+          "x": 1.65,
+          "y": 1.65,
+          "z": 0.45
+        }
+      },
+      "render": {
+        "visible": true,
+        "mesh": "Sprite2D",
+        "color": {
+          "r": 0.32,
+          "g": 0.39,
+          "b": 0.52,
+          "a": 1
+        },
+        "emissive": 0,
+        "wireframe": false,
+        "label": "."
+      },
+      "physics": {
+        "enabled": false,
+        "is_static": true,
+        "is_trigger": false,
+        "velocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "angular_vel": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "radius": 0.6,
+        "mass": 1,
+        "use_gravity": false
+      },
+      "properties": {
+        "Damage": 0
+      }
+    },
+    {
+      "id": "tile_0_5",
+      "name": "Tile_0_5",
+      "tag": "Tile",
+      "tags": [
+        "Tile"
+      ],
+      "active": true,
+      "layer": 0,
+      "health": 100,
+      "max_health": 100,
+      "speed": 0,
+      "transform": {
+        "position": {
+          "x": 4,
+          "y": 4,
+          "z": 0
+        },
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "scale": {
+          "x": 1.65,
+          "y": 1.65,
+          "z": 0.45
+        }
+      },
+      "render": {
+        "visible": true,
+        "mesh": "Sprite2D",
+        "color": {
+          "r": 0.32,
+          "g": 0.39,
+          "b": 0.52,
+          "a": 1
+        },
+        "emissive": 0,
+        "wireframe": false,
+        "label": "."
+      },
+      "physics": {
+        "enabled": false,
+        "is_static": true,
+        "is_trigger": false,
+        "velocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "angular_vel": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "radius": 0.6,
+        "mass": 1,
+        "use_gravity": false
+      },
+      "properties": {
+        "Damage": 0
+      }
+    },
+    {
+      "id": "tile_1_0",
+      "name": "Tile_1_0",
+      "tag": "Tile",
+      "tags": [
+        "Tile"
+      ],
+      "active": true,
+      "layer": 0,
+      "health": 100,
+      "max_health": 100,
+      "speed": 0,
+      "transform": {
+        "position": {
+          "x": -4,
+          "y": 2.4,
+          "z": 0
+        },
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "scale": {
+          "x": 1.65,
+          "y": 1.65,
+          "z": 0.45
+        }
+      },
+      "render": {
+        "visible": true,
+        "mesh": "Sprite2D",
+        "color": {
+          "r": 0.32,
+          "g": 0.39,
+          "b": 0.52,
+          "a": 1
+        },
+        "emissive": 0,
+        "wireframe": false,
+        "label": "."
+      },
+      "physics": {
+        "enabled": false,
+        "is_static": true,
+        "is_trigger": false,
+        "velocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "angular_vel": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "radius": 0.6,
+        "mass": 1,
+        "use_gravity": false
+      },
+      "properties": {
+        "Damage": 0
+      }
+    },
+    {
+      "id": "tile_1_1",
+      "name": "Tile_1_1",
+      "tag": "Tile",
+      "tags": [
+        "Tile"
+      ],
+      "active": true,
+      "layer": 0,
+      "health": 100,
+      "max_health": 100,
+      "speed": 0,
+      "transform": {
+        "position": {
+          "x": -2.4,
+          "y": 2.4,
+          "z": 0
+        },
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "scale": {
+          "x": 1.65,
+          "y": 1.65,
+          "z": 0.45
+        }
+      },
+      "render": {
+        "visible": true,
+        "mesh": "Sprite2D",
+        "color": {
+          "r": 0.32,
+          "g": 0.39,
+          "b": 0.52,
+          "a": 1
+        },
+        "emissive": 0,
+        "wireframe": false,
+        "label": "."
+      },
+      "physics": {
+        "enabled": false,
+        "is_static": true,
+        "is_trigger": false,
+        "velocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "angular_vel": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "radius": 0.6,
+        "mass": 1,
+        "use_gravity": false
+      },
+      "properties": {
+        "Damage": 0
+      }
+    },
+    {
+      "id": "tile_1_2",
+      "name": "Tile_1_2",
+      "tag": "Tile",
+      "tags": [
+        "Tile"
+      ],
+      "active": true,
+      "layer": 0,
+      "health": 100,
+      "max_health": 100,
+      "speed": 0,
+      "transform": {
+        "position": {
+          "x": -0.7999999999999998,
+          "y": 2.4,
+          "z": 0
+        },
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "scale": {
+          "x": 1.65,
+          "y": 1.65,
+          "z": 0.45
+        }
+      },
+      "render": {
+        "visible": true,
+        "mesh": "Sprite2D",
+        "color": {
+          "r": 0.32,
+          "g": 0.39,
+          "b": 0.52,
+          "a": 1
+        },
+        "emissive": 0,
+        "wireframe": false,
+        "label": "."
+      },
+      "physics": {
+        "enabled": false,
+        "is_static": true,
+        "is_trigger": false,
+        "velocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "angular_vel": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "radius": 0.6,
+        "mass": 1,
+        "use_gravity": false
+      },
+      "properties": {
+        "Damage": 0
+      }
+    },
+    {
+      "id": "tile_1_3",
+      "name": "Tile_1_3",
+      "tag": "Tile",
+      "tags": [
+        "Tile"
+      ],
+      "active": true,
+      "layer": 0,
+      "health": 100,
+      "max_health": 100,
+      "speed": 0,
+      "transform": {
+        "position": {
+          "x": 0.8000000000000007,
+          "y": 2.4,
+          "z": 0
+        },
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "scale": {
+          "x": 1.65,
+          "y": 1.65,
+          "z": 0.45
+        }
+      },
+      "render": {
+        "visible": true,
+        "mesh": "Sprite2D",
+        "color": {
+          "r": 0.32,
+          "g": 0.39,
+          "b": 0.52,
+          "a": 1
+        },
+        "emissive": 0,
+        "wireframe": false,
+        "label": "."
+      },
+      "physics": {
+        "enabled": false,
+        "is_static": true,
+        "is_trigger": false,
+        "velocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "angular_vel": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "radius": 0.6,
+        "mass": 1,
+        "use_gravity": false
+      },
+      "properties": {
+        "Damage": 0
+      }
+    },
+    {
+      "id": "tile_1_4",
+      "name": "Tile_1_4",
+      "tag": "Tile",
+      "tags": [
+        "Tile"
+      ],
+      "active": true,
+      "layer": 0,
+      "health": 100,
+      "max_health": 100,
+      "speed": 0,
+      "transform": {
+        "position": {
+          "x": 2.4000000000000004,
+          "y": 2.4,
+          "z": 0
+        },
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "scale": {
+          "x": 1.65,
+          "y": 1.65,
+          "z": 0.45
+        }
+      },
+      "render": {
+        "visible": true,
+        "mesh": "Sprite2D",
+        "color": {
+          "r": 0.32,
+          "g": 0.39,
+          "b": 0.52,
+          "a": 1
+        },
+        "emissive": 0,
+        "wireframe": false,
+        "label": "."
+      },
+      "physics": {
+        "enabled": false,
+        "is_static": true,
+        "is_trigger": false,
+        "velocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "angular_vel": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "radius": 0.6,
+        "mass": 1,
+        "use_gravity": false
+      },
+      "properties": {
+        "Damage": 0
+      }
+    },
+    {
+      "id": "tile_1_5",
+      "name": "Tile_1_5",
+      "tag": "Tile",
+      "tags": [
+        "Tile"
+      ],
+      "active": true,
+      "layer": 0,
+      "health": 100,
+      "max_health": 100,
+      "speed": 1,
+      "transform": {
+        "position": {
+          "x": 4,
+          "y": 2.4,
+          "z": 0
+        },
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "scale": {
+          "x": 1.65,
+          "y": 1.65,
+          "z": 0.45
+        }
+      },
+      "render": {
+        "visible": true,
+        "mesh": "Sprite2D",
+        "color": {
+          "r": 0.32,
+          "g": 0.39,
+          "b": 0.52,
+          "a": 1
+        },
+        "emissive": 0,
+        "wireframe": false,
+        "label": "."
+      },
+      "physics": {
+        "enabled": false,
+        "is_static": true,
+        "is_trigger": false,
+        "velocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "angular_vel": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "radius": 0.6,
+        "mass": 1,
+        "use_gravity": false
+      },
+      "properties": {
+        "Damage": 0
+      }
+    },
+    {
+      "id": "tile_2_0",
+      "name": "Tile_2_0",
+      "tag": "Tile",
+      "tags": [
+        "Tile"
+      ],
+      "active": true,
+      "layer": 0,
+      "health": 100,
+      "max_health": 100,
+      "speed": 0,
+      "transform": {
+        "position": {
+          "x": -4,
+          "y": 0.7999999999999998,
+          "z": 0
+        },
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "scale": {
+          "x": 1.65,
+          "y": 1.65,
+          "z": 0.45
+        }
+      },
+      "render": {
+        "visible": true,
+        "mesh": "Sprite2D",
+        "color": {
+          "r": 0.32,
+          "g": 0.39,
+          "b": 0.52,
+          "a": 1
+        },
+        "emissive": 0,
+        "wireframe": false,
+        "label": "."
+      },
+      "physics": {
+        "enabled": false,
+        "is_static": true,
+        "is_trigger": false,
+        "velocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "angular_vel": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "radius": 0.6,
+        "mass": 1,
+        "use_gravity": false
+      },
+      "properties": {
+        "Damage": 0
+      }
+    },
+    {
+      "id": "tile_2_1",
+      "name": "Tile_2_1",
+      "tag": "Tile",
+      "tags": [
+        "Tile"
+      ],
+      "active": true,
+      "layer": 0,
+      "health": 100,
+      "max_health": 100,
+      "speed": 0,
+      "transform": {
+        "position": {
+          "x": -2.4,
+          "y": 0.7999999999999998,
+          "z": 0
+        },
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "scale": {
+          "x": 1.65,
+          "y": 1.65,
+          "z": 0.45
+        }
+      },
+      "render": {
+        "visible": true,
+        "mesh": "Sprite2D",
+        "color": {
+          "r": 0.32,
+          "g": 0.39,
+          "b": 0.52,
+          "a": 1
+        },
+        "emissive": 0,
+        "wireframe": false,
+        "label": "."
+      },
+      "physics": {
+        "enabled": false,
+        "is_static": true,
+        "is_trigger": false,
+        "velocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "angular_vel": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "radius": 0.6,
+        "mass": 1,
+        "use_gravity": false
+      },
+      "properties": {
+        "Damage": 0
+      }
+    },
+    {
+      "id": "tile_2_2",
+      "name": "Tile_2_2",
+      "tag": "Tile",
+      "tags": [
+        "Tile"
+      ],
+      "active": true,
+      "layer": 0,
+      "health": 100,
+      "max_health": 100,
+      "speed": 1,
+      "transform": {
+        "position": {
+          "x": -0.7999999999999998,
+          "y": 0.7999999999999998,
+          "z": 0
+        },
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "scale": {
+          "x": 1.65,
+          "y": 1.65,
+          "z": 0.45
+        }
+      },
+      "render": {
+        "visible": true,
+        "mesh": "Sprite2D",
+        "color": {
+          "r": 0.32,
+          "g": 0.39,
+          "b": 0.52,
+          "a": 1
+        },
+        "emissive": 0,
+        "wireframe": false,
+        "label": "."
+      },
+      "physics": {
+        "enabled": false,
+        "is_static": true,
+        "is_trigger": false,
+        "velocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "angular_vel": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "radius": 0.6,
+        "mass": 1,
+        "use_gravity": false
+      },
+      "properties": {
+        "Damage": 0
+      }
+    },
+    {
+      "id": "tile_2_3",
+      "name": "Tile_2_3",
+      "tag": "Tile",
+      "tags": [
+        "Tile"
+      ],
+      "active": true,
+      "layer": 0,
+      "health": 100,
+      "max_health": 100,
+      "speed": 0,
+      "transform": {
+        "position": {
+          "x": 0.8000000000000007,
+          "y": 0.7999999999999998,
+          "z": 0
+        },
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "scale": {
+          "x": 1.65,
+          "y": 1.65,
+          "z": 0.45
+        }
+      },
+      "render": {
+        "visible": true,
+        "mesh": "Sprite2D",
+        "color": {
+          "r": 0.32,
+          "g": 0.39,
+          "b": 0.52,
+          "a": 1
+        },
+        "emissive": 0,
+        "wireframe": false,
+        "label": "."
+      },
+      "physics": {
+        "enabled": false,
+        "is_static": true,
+        "is_trigger": false,
+        "velocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "angular_vel": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "radius": 0.6,
+        "mass": 1,
+        "use_gravity": false
+      },
+      "properties": {
+        "Damage": 0
+      }
+    },
+    {
+      "id": "tile_2_4",
+      "name": "Tile_2_4",
+      "tag": "Tile",
+      "tags": [
+        "Tile"
+      ],
+      "active": true,
+      "layer": 0,
+      "health": 100,
+      "max_health": 100,
+      "speed": 0,
+      "transform": {
+        "position": {
+          "x": 2.4000000000000004,
+          "y": 0.7999999999999998,
+          "z": 0
+        },
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "scale": {
+          "x": 1.65,
+          "y": 1.65,
+          "z": 0.45
+        }
+      },
+      "render": {
+        "visible": true,
+        "mesh": "Sprite2D",
+        "color": {
+          "r": 0.32,
+          "g": 0.39,
+          "b": 0.52,
+          "a": 1
+        },
+        "emissive": 0,
+        "wireframe": false,
+        "label": "."
+      },
+      "physics": {
+        "enabled": false,
+        "is_static": true,
+        "is_trigger": false,
+        "velocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "angular_vel": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "radius": 0.6,
+        "mass": 1,
+        "use_gravity": false
+      },
+      "properties": {
+        "Damage": 0
+      }
+    },
+    {
+      "id": "tile_2_5",
+      "name": "Tile_2_5",
+      "tag": "Tile",
+      "tags": [
+        "Tile"
+      ],
+      "active": true,
+      "layer": 0,
+      "health": 100,
+      "max_health": 100,
+      "speed": 0,
+      "transform": {
+        "position": {
+          "x": 4,
+          "y": 0.7999999999999998,
+          "z": 0
+        },
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "scale": {
+          "x": 1.65,
+          "y": 1.65,
+          "z": 0.45
+        }
+      },
+      "render": {
+        "visible": true,
+        "mesh": "Sprite2D",
+        "color": {
+          "r": 0.32,
+          "g": 0.39,
+          "b": 0.52,
+          "a": 1
+        },
+        "emissive": 0,
+        "wireframe": false,
+        "label": "."
+      },
+      "physics": {
+        "enabled": false,
+        "is_static": true,
+        "is_trigger": false,
+        "velocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "angular_vel": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "radius": 0.6,
+        "mass": 1,
+        "use_gravity": false
+      },
+      "properties": {
+        "Damage": 0
+      }
+    },
+    {
+      "id": "tile_3_0",
+      "name": "Tile_3_0",
+      "tag": "Tile",
+      "tags": [
+        "Tile"
+      ],
+      "active": true,
+      "layer": 0,
+      "health": 100,
+      "max_health": 100,
+      "speed": 0,
+      "transform": {
+        "position": {
+          "x": -4,
+          "y": -0.8000000000000007,
+          "z": 0
+        },
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "scale": {
+          "x": 1.65,
+          "y": 1.65,
+          "z": 0.45
+        }
+      },
+      "render": {
+        "visible": true,
+        "mesh": "Sprite2D",
+        "color": {
+          "r": 0.32,
+          "g": 0.39,
+          "b": 0.52,
+          "a": 1
+        },
+        "emissive": 0,
+        "wireframe": false,
+        "label": "."
+      },
+      "physics": {
+        "enabled": false,
+        "is_static": true,
+        "is_trigger": false,
+        "velocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "angular_vel": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "radius": 0.6,
+        "mass": 1,
+        "use_gravity": false
+      },
+      "properties": {
+        "Damage": 0
+      }
+    },
+    {
+      "id": "tile_3_1",
+      "name": "Tile_3_1",
+      "tag": "Tile",
+      "tags": [
+        "Tile"
+      ],
+      "active": true,
+      "layer": 0,
+      "health": 100,
+      "max_health": 100,
+      "speed": 0,
+      "transform": {
+        "position": {
+          "x": -2.4,
+          "y": -0.8000000000000007,
+          "z": 0
+        },
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "scale": {
+          "x": 1.65,
+          "y": 1.65,
+          "z": 0.45
+        }
+      },
+      "render": {
+        "visible": true,
+        "mesh": "Sprite2D",
+        "color": {
+          "r": 0.32,
+          "g": 0.39,
+          "b": 0.52,
+          "a": 1
+        },
+        "emissive": 0,
+        "wireframe": false,
+        "label": "."
+      },
+      "physics": {
+        "enabled": false,
+        "is_static": true,
+        "is_trigger": false,
+        "velocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "angular_vel": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "radius": 0.6,
+        "mass": 1,
+        "use_gravity": false
+      },
+      "properties": {
+        "Damage": 0
+      }
+    },
+    {
+      "id": "tile_3_2",
+      "name": "Tile_3_2",
+      "tag": "Tile",
+      "tags": [
+        "Tile"
+      ],
+      "active": true,
+      "layer": 0,
+      "health": 100,
+      "max_health": 100,
+      "speed": 0,
+      "transform": {
+        "position": {
+          "x": -0.7999999999999998,
+          "y": -0.8000000000000007,
+          "z": 0
+        },
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "scale": {
+          "x": 1.65,
+          "y": 1.65,
+          "z": 0.45
+        }
+      },
+      "render": {
+        "visible": true,
+        "mesh": "Sprite2D",
+        "color": {
+          "r": 0.32,
+          "g": 0.39,
+          "b": 0.52,
+          "a": 1
+        },
+        "emissive": 0,
+        "wireframe": false,
+        "label": "."
+      },
+      "physics": {
+        "enabled": false,
+        "is_static": true,
+        "is_trigger": false,
+        "velocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "angular_vel": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "radius": 0.6,
+        "mass": 1,
+        "use_gravity": false
+      },
+      "properties": {
+        "Damage": 0
+      }
+    },
+    {
+      "id": "tile_3_3",
+      "name": "Tile_3_3",
+      "tag": "Tile",
+      "tags": [
+        "Tile"
+      ],
+      "active": true,
+      "layer": 0,
+      "health": 100,
+      "max_health": 100,
+      "speed": 0,
+      "transform": {
+        "position": {
+          "x": 0.8000000000000007,
+          "y": -0.8000000000000007,
+          "z": 0
+        },
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "scale": {
+          "x": 1.65,
+          "y": 1.65,
+          "z": 0.45
+        }
+      },
+      "render": {
+        "visible": true,
+        "mesh": "Sprite2D",
+        "color": {
+          "r": 0.32,
+          "g": 0.39,
+          "b": 0.52,
+          "a": 1
+        },
+        "emissive": 0,
+        "wireframe": false,
+        "label": "."
+      },
+      "physics": {
+        "enabled": false,
+        "is_static": true,
+        "is_trigger": false,
+        "velocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "angular_vel": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "radius": 0.6,
+        "mass": 1,
+        "use_gravity": false
+      },
+      "properties": {
+        "Damage": 0
+      }
+    },
+    {
+      "id": "tile_3_4",
+      "name": "Tile_3_4",
+      "tag": "Tile",
+      "tags": [
+        "Tile"
+      ],
+      "active": true,
+      "layer": 0,
+      "health": 100,
+      "max_health": 100,
+      "speed": 1,
+      "transform": {
+        "position": {
+          "x": 2.4000000000000004,
+          "y": -0.8000000000000007,
+          "z": 0
+        },
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "scale": {
+          "x": 1.65,
+          "y": 1.65,
+          "z": 0.45
+        }
+      },
+      "render": {
+        "visible": true,
+        "mesh": "Sprite2D",
+        "color": {
+          "r": 0.32,
+          "g": 0.39,
+          "b": 0.52,
+          "a": 1
+        },
+        "emissive": 0,
+        "wireframe": false,
+        "label": "."
+      },
+      "physics": {
+        "enabled": false,
+        "is_static": true,
+        "is_trigger": false,
+        "velocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "angular_vel": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "radius": 0.6,
+        "mass": 1,
+        "use_gravity": false
+      },
+      "properties": {
+        "Damage": 0
+      }
+    },
+    {
+      "id": "tile_3_5",
+      "name": "Tile_3_5",
+      "tag": "Tile",
+      "tags": [
+        "Tile"
+      ],
+      "active": true,
+      "layer": 0,
+      "health": 100,
+      "max_health": 100,
+      "speed": 0,
+      "transform": {
+        "position": {
+          "x": 4,
+          "y": -0.8000000000000007,
+          "z": 0
+        },
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "scale": {
+          "x": 1.65,
+          "y": 1.65,
+          "z": 0.45
+        }
+      },
+      "render": {
+        "visible": true,
+        "mesh": "Sprite2D",
+        "color": {
+          "r": 0.32,
+          "g": 0.39,
+          "b": 0.52,
+          "a": 1
+        },
+        "emissive": 0,
+        "wireframe": false,
+        "label": "."
+      },
+      "physics": {
+        "enabled": false,
+        "is_static": true,
+        "is_trigger": false,
+        "velocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "angular_vel": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "radius": 0.6,
+        "mass": 1,
+        "use_gravity": false
+      },
+      "properties": {
+        "Damage": 0
+      }
+    },
+    {
+      "id": "tile_4_0",
+      "name": "Tile_4_0",
+      "tag": "Tile",
+      "tags": [
+        "Tile"
+      ],
+      "active": true,
+      "layer": 0,
+      "health": 100,
+      "max_health": 100,
+      "speed": 0,
+      "transform": {
+        "position": {
+          "x": -4,
+          "y": -2.4000000000000004,
+          "z": 0
+        },
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "scale": {
+          "x": 1.65,
+          "y": 1.65,
+          "z": 0.45
+        }
+      },
+      "render": {
+        "visible": true,
+        "mesh": "Sprite2D",
+        "color": {
+          "r": 0.32,
+          "g": 0.39,
+          "b": 0.52,
+          "a": 1
+        },
+        "emissive": 0,
+        "wireframe": false,
+        "label": "."
+      },
+      "physics": {
+        "enabled": false,
+        "is_static": true,
+        "is_trigger": false,
+        "velocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "angular_vel": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "radius": 0.6,
+        "mass": 1,
+        "use_gravity": false
+      },
+      "properties": {
+        "Damage": 0
+      }
+    },
+    {
+      "id": "tile_4_1",
+      "name": "Tile_4_1",
+      "tag": "Tile",
+      "tags": [
+        "Tile"
+      ],
+      "active": true,
+      "layer": 0,
+      "health": 100,
+      "max_health": 100,
+      "speed": 1,
+      "transform": {
+        "position": {
+          "x": -2.4,
+          "y": -2.4000000000000004,
+          "z": 0
+        },
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "scale": {
+          "x": 1.65,
+          "y": 1.65,
+          "z": 0.45
+        }
+      },
+      "render": {
+        "visible": true,
+        "mesh": "Sprite2D",
+        "color": {
+          "r": 0.32,
+          "g": 0.39,
+          "b": 0.52,
+          "a": 1
+        },
+        "emissive": 0,
+        "wireframe": false,
+        "label": "."
+      },
+      "physics": {
+        "enabled": false,
+        "is_static": true,
+        "is_trigger": false,
+        "velocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "angular_vel": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "radius": 0.6,
+        "mass": 1,
+        "use_gravity": false
+      },
+      "properties": {
+        "Damage": 0
+      }
+    },
+    {
+      "id": "tile_4_2",
+      "name": "Tile_4_2",
+      "tag": "Tile",
+      "tags": [
+        "Tile"
+      ],
+      "active": true,
+      "layer": 0,
+      "health": 100,
+      "max_health": 100,
+      "speed": 0,
+      "transform": {
+        "position": {
+          "x": -0.7999999999999998,
+          "y": -2.4000000000000004,
+          "z": 0
+        },
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "scale": {
+          "x": 1.65,
+          "y": 1.65,
+          "z": 0.45
+        }
+      },
+      "render": {
+        "visible": true,
+        "mesh": "Sprite2D",
+        "color": {
+          "r": 0.32,
+          "g": 0.39,
+          "b": 0.52,
+          "a": 1
+        },
+        "emissive": 0,
+        "wireframe": false,
+        "label": "."
+      },
+      "physics": {
+        "enabled": false,
+        "is_static": true,
+        "is_trigger": false,
+        "velocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "angular_vel": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "radius": 0.6,
+        "mass": 1,
+        "use_gravity": false
+      },
+      "properties": {
+        "Damage": 0
+      }
+    },
+    {
+      "id": "tile_4_3",
+      "name": "Tile_4_3",
+      "tag": "Tile",
+      "tags": [
+        "Tile"
+      ],
+      "active": true,
+      "layer": 0,
+      "health": 100,
+      "max_health": 100,
+      "speed": 0,
+      "transform": {
+        "position": {
+          "x": 0.8000000000000007,
+          "y": -2.4000000000000004,
+          "z": 0
+        },
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "scale": {
+          "x": 1.65,
+          "y": 1.65,
+          "z": 0.45
+        }
+      },
+      "render": {
+        "visible": true,
+        "mesh": "Sprite2D",
+        "color": {
+          "r": 0.32,
+          "g": 0.39,
+          "b": 0.52,
+          "a": 1
+        },
+        "emissive": 0,
+        "wireframe": false,
+        "label": "."
+      },
+      "physics": {
+        "enabled": false,
+        "is_static": true,
+        "is_trigger": false,
+        "velocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "angular_vel": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "radius": 0.6,
+        "mass": 1,
+        "use_gravity": false
+      },
+      "properties": {
+        "Damage": 0
+      }
+    },
+    {
+      "id": "tile_4_4",
+      "name": "Tile_4_4",
+      "tag": "Tile",
+      "tags": [
+        "Tile"
+      ],
+      "active": true,
+      "layer": 0,
+      "health": 100,
+      "max_health": 100,
+      "speed": 0,
+      "transform": {
+        "position": {
+          "x": 2.4000000000000004,
+          "y": -2.4000000000000004,
+          "z": 0
+        },
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "scale": {
+          "x": 1.65,
+          "y": 1.65,
+          "z": 0.45
+        }
+      },
+      "render": {
+        "visible": true,
+        "mesh": "Sprite2D",
+        "color": {
+          "r": 0.32,
+          "g": 0.39,
+          "b": 0.52,
+          "a": 1
+        },
+        "emissive": 0,
+        "wireframe": false,
+        "label": "."
+      },
+      "physics": {
+        "enabled": false,
+        "is_static": true,
+        "is_trigger": false,
+        "velocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "angular_vel": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "radius": 0.6,
+        "mass": 1,
+        "use_gravity": false
+      },
+      "properties": {
+        "Damage": 0
+      }
+    },
+    {
+      "id": "tile_4_5",
+      "name": "Tile_4_5",
+      "tag": "Tile",
+      "tags": [
+        "Tile"
+      ],
+      "active": true,
+      "layer": 0,
+      "health": 100,
+      "max_health": 100,
+      "speed": 0,
+      "transform": {
+        "position": {
+          "x": 4,
+          "y": -2.4000000000000004,
+          "z": 0
+        },
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "scale": {
+          "x": 1.65,
+          "y": 1.65,
+          "z": 0.45
+        }
+      },
+      "render": {
+        "visible": true,
+        "mesh": "Sprite2D",
+        "color": {
+          "r": 0.32,
+          "g": 0.39,
+          "b": 0.52,
+          "a": 1
+        },
+        "emissive": 0,
+        "wireframe": false,
+        "label": "."
+      },
+      "physics": {
+        "enabled": false,
+        "is_static": true,
+        "is_trigger": false,
+        "velocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "angular_vel": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "radius": 0.6,
+        "mass": 1,
+        "use_gravity": false
+      },
+      "properties": {
+        "Damage": 0
+      }
+    },
+    {
+      "id": "tile_5_0",
+      "name": "Tile_5_0",
+      "tag": "Tile",
+      "tags": [
+        "Tile"
+      ],
+      "active": true,
+      "layer": 0,
+      "health": 100,
+      "max_health": 100,
+      "speed": 0,
+      "transform": {
+        "position": {
+          "x": -4,
+          "y": -4,
+          "z": 0
+        },
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "scale": {
+          "x": 1.65,
+          "y": 1.65,
+          "z": 0.45
+        }
+      },
+      "render": {
+        "visible": true,
+        "mesh": "Sprite2D",
+        "color": {
+          "r": 0.32,
+          "g": 0.39,
+          "b": 0.52,
+          "a": 1
+        },
+        "emissive": 0,
+        "wireframe": false,
+        "label": "."
+      },
+      "physics": {
+        "enabled": false,
+        "is_static": true,
+        "is_trigger": false,
+        "velocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "angular_vel": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "radius": 0.6,
+        "mass": 1,
+        "use_gravity": false
+      },
+      "properties": {
+        "Damage": 0
+      }
+    },
+    {
+      "id": "tile_5_1",
+      "name": "Tile_5_1",
+      "tag": "Tile",
+      "tags": [
+        "Tile"
+      ],
+      "active": true,
+      "layer": 0,
+      "health": 100,
+      "max_health": 100,
+      "speed": 0,
+      "transform": {
+        "position": {
+          "x": -2.4,
+          "y": -4,
+          "z": 0
+        },
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "scale": {
+          "x": 1.65,
+          "y": 1.65,
+          "z": 0.45
+        }
+      },
+      "render": {
+        "visible": true,
+        "mesh": "Sprite2D",
+        "color": {
+          "r": 0.32,
+          "g": 0.39,
+          "b": 0.52,
+          "a": 1
+        },
+        "emissive": 0,
+        "wireframe": false,
+        "label": "."
+      },
+      "physics": {
+        "enabled": false,
+        "is_static": true,
+        "is_trigger": false,
+        "velocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "angular_vel": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "radius": 0.6,
+        "mass": 1,
+        "use_gravity": false
+      },
+      "properties": {
+        "Damage": 0
+      }
+    },
+    {
+      "id": "tile_5_2",
+      "name": "Tile_5_2",
+      "tag": "Tile",
+      "tags": [
+        "Tile"
+      ],
+      "active": true,
+      "layer": 0,
+      "health": 100,
+      "max_health": 100,
+      "speed": 0,
+      "transform": {
+        "position": {
+          "x": -0.7999999999999998,
+          "y": -4,
+          "z": 0
+        },
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "scale": {
+          "x": 1.65,
+          "y": 1.65,
+          "z": 0.45
+        }
+      },
+      "render": {
+        "visible": true,
+        "mesh": "Sprite2D",
+        "color": {
+          "r": 0.32,
+          "g": 0.39,
+          "b": 0.52,
+          "a": 1
+        },
+        "emissive": 0,
+        "wireframe": false,
+        "label": "."
+      },
+      "physics": {
+        "enabled": false,
+        "is_static": true,
+        "is_trigger": false,
+        "velocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "angular_vel": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "radius": 0.6,
+        "mass": 1,
+        "use_gravity": false
+      },
+      "properties": {
+        "Damage": 0
+      }
+    },
+    {
+      "id": "tile_5_3",
+      "name": "Tile_5_3",
+      "tag": "Tile",
+      "tags": [
+        "Tile"
+      ],
+      "active": true,
+      "layer": 0,
+      "health": 100,
+      "max_health": 100,
+      "speed": 0,
+      "transform": {
+        "position": {
+          "x": 0.8000000000000007,
+          "y": -4,
+          "z": 0
+        },
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "scale": {
+          "x": 1.65,
+          "y": 1.65,
+          "z": 0.45
+        }
+      },
+      "render": {
+        "visible": true,
+        "mesh": "Sprite2D",
+        "color": {
+          "r": 0.32,
+          "g": 0.39,
+          "b": 0.52,
+          "a": 1
+        },
+        "emissive": 0,
+        "wireframe": false,
+        "label": "."
+      },
+      "physics": {
+        "enabled": false,
+        "is_static": true,
+        "is_trigger": false,
+        "velocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "angular_vel": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "radius": 0.6,
+        "mass": 1,
+        "use_gravity": false
+      },
+      "properties": {
+        "Damage": 0
+      }
+    },
+    {
+      "id": "tile_5_4",
+      "name": "Tile_5_4",
+      "tag": "Tile",
+      "tags": [
+        "Tile"
+      ],
+      "active": true,
+      "layer": 0,
+      "health": 100,
+      "max_health": 100,
+      "speed": 0,
+      "transform": {
+        "position": {
+          "x": 2.4000000000000004,
+          "y": -4,
+          "z": 0
+        },
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "scale": {
+          "x": 1.65,
+          "y": 1.65,
+          "z": 0.45
+        }
+      },
+      "render": {
+        "visible": true,
+        "mesh": "Sprite2D",
+        "color": {
+          "r": 0.32,
+          "g": 0.39,
+          "b": 0.52,
+          "a": 1
+        },
+        "emissive": 0,
+        "wireframe": false,
+        "label": "."
+      },
+      "physics": {
+        "enabled": false,
+        "is_static": true,
+        "is_trigger": false,
+        "velocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "angular_vel": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "radius": 0.6,
+        "mass": 1,
+        "use_gravity": false
+      },
+      "properties": {
+        "Damage": 0
+      }
+    },
+    {
+      "id": "tile_5_5",
+      "name": "Tile_5_5",
+      "tag": "Tile",
+      "tags": [
+        "Tile"
+      ],
+      "active": true,
+      "layer": 0,
+      "health": 100,
+      "max_health": 100,
+      "speed": 1,
+      "transform": {
+        "position": {
+          "x": 4,
+          "y": -4,
+          "z": 0
+        },
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "scale": {
+          "x": 1.65,
+          "y": 1.65,
+          "z": 0.45
+        }
+      },
+      "render": {
+        "visible": true,
+        "mesh": "Sprite2D",
+        "color": {
+          "r": 0.32,
+          "g": 0.39,
+          "b": 0.52,
+          "a": 1
+        },
+        "emissive": 0,
+        "wireframe": false,
+        "label": "."
+      },
+      "physics": {
+        "enabled": false,
+        "is_static": true,
+        "is_trigger": false,
+        "velocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "angular_vel": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "radius": 0.6,
+        "mass": 1,
+        "use_gravity": false
+      },
+      "properties": {
+        "Damage": 0
+      }
+    },
+    {
+      "id": "scanner_hud",
+      "name": "MineScannerHUD",
+      "tag": "HUD",
+      "tags": [
+        "HUD"
+      ],
+      "active": true,
+      "layer": 0,
+      "health": 100,
+      "max_health": 100,
+      "speed": 5,
+      "transform": {
+        "position": {
+          "x": -6.8,
+          "y": 3.2,
+          "z": 0
+        },
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "scale": {
+          "x": 2.1,
+          "y": 1.65,
+          "z": 0.5
+        }
+      },
+      "render": {
+        "visible": true,
+        "mesh": "Sprite2D",
+        "color": {
+          "r": 0.2,
+          "g": 0.65,
+          "b": 0.95,
+          "a": 1
+        },
+        "emissive": 0,
+        "wireframe": false,
+        "label": "M:6"
+      },
+      "physics": {
+        "enabled": false,
+        "is_static": true,
+        "is_trigger": false,
+        "velocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "angular_vel": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "radius": 0.6,
+        "mass": 1,
+        "use_gravity": false
+      },
+      "scripts": [
+        {
+          "script_path": "scripts/MineScannerHUD.osmu",
+          "component_name": "MineScannerHUD",
+          "properties": {
+            "TotalMines": 6
+          }
+        }
+      ],
+      "properties": {
+        "Score": 0
+      }
+    },
+    {
+      "id": "board_cursor",
+      "name": "BoardCursor",
+      "tag": "Player",
+      "tags": [
+        "Player"
+      ],
+      "active": true,
+      "layer": 0,
+      "health": 100,
+      "max_health": 100,
+      "speed": 5,
+      "transform": {
+        "position": {
+          "x": -4,
+          "y": 4,
+          "z": 0.2
+        },
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "scale": {
+          "x": 1.78,
+          "y": 1.78,
+          "z": 0.55
+        }
+      },
+      "render": {
+        "visible": true,
+        "mesh": "Sprite2D",
+        "color": {
+          "r": 0.25,
+          "g": 0.95,
+          "b": 1,
+          "a": 1
+        },
+        "emissive": 0,
+        "wireframe": true
+      },
+      "physics": {
+        "enabled": false,
+        "is_static": true,
+        "is_trigger": false,
+        "velocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "angular_vel": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "radius": 0.6,
+        "mass": 1,
+        "use_gravity": false
+      },
+      "scripts": [
+        {
+          "script_path": "scripts/MinesweeperBoard.osmu",
+          "component_name": "MinesweeperBoard",
+          "properties": {
+            "AutoHintInterval": 0.55,
+            "BoardLimit": 4,
+            "StepSize": 1.6
+          }
+        }
+      ],
+      "properties": {
+        "Score": 0
+      }
+    }
+  ],
+  "node_graph": {
+    "nodes": [
+      {
+        "id": "ms_sig_rev",
+        "type": "OnSignal",
+        "title": "On Signal Received",
+        "category": "Event",
+        "x": 16,
+        "y": 18,
+        "width": 180,
+        "height": 112,
+        "inputs": null,
+        "outputs": [
+          {
+            "name": "Trigger",
+            "kind": "Flow"
+          },
+          {
+            "name": "Source",
+            "kind": "Entity"
+          }
+        ],
+        "params": {
+          "Signal": "TileRevealed"
+        }
+      },
+      {
+        "id": "ms_sig_flg",
+        "type": "OnSignal",
+        "title": "On Signal Received",
+        "category": "Event",
+        "x": 16,
+        "y": 148,
+        "width": 180,
+        "height": 112,
+        "inputs": null,
+        "outputs": [
+          {
+            "name": "Trigger",
+            "kind": "Flow"
+          },
+          {
+            "name": "Source",
+            "kind": "Entity"
+          }
+        ],
+        "params": {
+          "Signal": "FlagToggled"
+        }
+      },
+      {
+        "id": "ms_qry_safe",
+        "type": "QueryEntities",
+        "title": "Query Entities",
+        "category": "Query",
+        "x": 260,
+        "y": 18,
+        "width": 180,
+        "height": 132,
+        "inputs": [
+          {
+            "name": "In",
+            "kind": "Flow"
+          }
+        ],
+        "outputs": [
+          {
+            "name": "Found",
+            "kind": "Flow"
+          },
+          {
+            "name": "Entities",
+            "kind": "EntityList"
+          },
+          {
+            "name": "Nearest",
+            "kind": "Entity"
+          }
+        ],
+        "params": {
+          "Query": "Tag == \"Tile\" \u0026\u0026 Health == 0"
+        }
+      },
+      {
+        "id": "ms_qry_flg",
+        "type": "QueryEntities",
+        "title": "Query Entities",
+        "category": "Query",
+        "x": 260,
+        "y": 148,
+        "width": 180,
+        "height": 132,
+        "inputs": [
+          {
+            "name": "In",
+            "kind": "Flow"
+          }
+        ],
+        "outputs": [
+          {
+            "name": "Found",
+            "kind": "Flow"
+          },
+          {
+            "name": "Entities",
+            "kind": "EntityList"
+          },
+          {
+            "name": "Nearest",
+            "kind": "Entity"
+          }
+        ],
+        "params": {
+          "Query": "Tag == \"Tile\" \u0026\u0026 Health == 50"
+        }
+      },
+      {
+        "id": "ms_add_scr",
+        "type": "ModifyProperty",
+        "title": "Modify Property",
+        "category": "Action",
+        "x": 508,
+        "y": 18,
+        "width": 180,
+        "height": 160,
+        "inputs": [
+          {
+            "name": "In",
+            "kind": "Flow"
+          },
+          {
+            "name": "Targets",
+            "kind": "EntityList"
+          }
+        ],
+        "outputs": [
+          {
+            "name": "Done",
+            "kind": "Flow"
+          }
+        ],
+        "params": {
+          "Mode": "Add",
+          "Property": "Score",
+          "TargetTag": "Player",
+          "Value": "10"
+        }
+      },
+      {
+        "id": "ms_emit_scan",
+        "type": "EmitSignal",
+        "title": "Emit Signal",
+        "category": "Action",
+        "x": 508,
+        "y": 148,
+        "width": 180,
+        "height": 128,
+        "inputs": [
+          {
+            "name": "In",
+            "kind": "Flow"
+          },
+          {
+            "name": "Target",
+            "kind": "Entity"
+          }
+        ],
+        "outputs": [
+          {
+            "name": "Done",
+            "kind": "Flow"
+          }
+        ],
+        "params": {
+          "Arg": "OK",
+          "Signal": "SectorScanned"
+        }
+      }
+    ],
+    "links": [
+      {
+        "id": "link_1",
+        "from_node": "ms_sig_rev",
+        "from_socket": "Trigger",
+        "to_node": "ms_qry_safe",
+        "to_socket": "In",
+        "kind": "Flow"
+      },
+      {
+        "id": "link_2",
+        "from_node": "ms_sig_flg",
+        "from_socket": "Trigger",
+        "to_node": "ms_qry_safe",
+        "to_socket": "In",
+        "kind": "Flow"
+      },
+      {
+        "id": "link_3",
+        "from_node": "ms_sig_flg",
+        "from_socket": "Trigger",
+        "to_node": "ms_qry_flg",
+        "to_socket": "In",
+        "kind": "Flow"
+      },
+      {
+        "id": "link_4",
+        "from_node": "ms_qry_safe",
+        "from_socket": "Found",
+        "to_node": "ms_add_scr",
+        "to_socket": "In",
+        "kind": "Flow"
+      },
+      {
+        "id": "link_5",
+        "from_node": "ms_qry_safe",
+        "from_socket": "Entities",
+        "to_node": "ms_add_scr",
+        "to_socket": "Targets",
+        "kind": "EntityList"
+      },
+      {
+        "id": "link_6",
+        "from_node": "ms_qry_safe",
+        "from_socket": "Found",
+        "to_node": "ms_emit_scan",
+        "to_socket": "In",
+        "kind": "Flow"
+      },
+      {
+        "id": "link_7",
+        "from_node": "ms_qry_flg",
+        "from_socket": "Found",
+        "to_node": "ms_emit_scan",
+        "to_socket": "In",
+        "kind": "Flow"
+      },
+      {
+        "id": "link_8",
+        "from_node": "ms_qry_flg",
+        "from_socket": "Nearest",
+        "to_node": "ms_emit_scan",
+        "to_socket": "Target",
+        "kind": "Entity"
+      }
+    ],
+    "auto_group": true,
+    "group_thresh": 95
+  },
+  "scripts": [
+    {
+      "path": "scripts/MinesweeperBoard.osmu",
+      "source": "namespace Minesweeper;\n\ncomponent MinesweeperBoard : Entity {\n    [Export] public float StepSize = 1.6f;\n    [Export] public float BoardLimit = 4.0f;\n    [Export] public float AutoHintInterval = 0.55f;\n\n    private float moveCooldown = 0.0f;\n    private float autoTimer = 0.0f;\n    private bool eWasDown = false;\n    private bool fWasDown = false;\n    private bool hWasDown = false;\n    private bool rWasDown = false;\n    private bool manualControl = false;\n    private bool gameOver = false;\n    private bool gameWon = false;\n\n    signal TileRevealed(Entity tile, int adjMines);\n    signal FlagToggled(Entity tile, int totalFlags);\n    signal MineDetonated(Entity mineTile);\n    signal BoardCleared(int safeCount);\n    signal EntityClicked(Entity target);\n    signal EntityRightClicked(Entity target);\n\n    public void OnReady() {\n        Log(\"Minesweeper ready! LMB/E: Reveal | RMB/F: Flag | WASD: Move | H: AI Hint | R: Reset\");\n        this.ResetBoard();\n    }\n\n    public void ResetBoard() {\n        this.gameOver = false;\n        this.gameWon = false;\n        this.autoTimer = 0.0f;\n        this.Color = Color(0.25f, 0.95f, 1.0f, 1.0f);\n\n        List\u003cEntity\u003e allTiles = query Entities where Tag == \"Tile\";\n        foreach (Entity t in allTiles) {\n            t.Health = 100.0f;\n            t.MaxHealth = 100.0f;\n            t.Damage = 0.0f;\n            t.Label = \".\";\n            t.Color = Color(0.32f, 0.39f, 0.52f, 1.0f);\n        }\n\n        // Start at top-left safe corner (-4.0, 4.0) and open initial safe cascade\n        this.Position = Vec3(-4.0f, 4.0f, 0.0f);\n        this.RevealAtPos(this.Position);\n    }\n\n    public void OnUpdate(float dt) {\n        bool rDown = IsKeyDown(\"R\");\n        if (rDown \u0026\u0026 !this.rWasDown) {\n            this.manualControl = true;\n            this.ResetBoard();\n        }\n        this.rWasDown = rDown;\n\n        if (this.gameOver || this.gameWon) {\n            return;\n        }\n\n        this.moveCooldown = this.moveCooldown - dt;\n        float ix = InputAxisX();\n        float iy = InputAxisY();\n        if (ix != 0.0f || iy != 0.0f) {\n            this.manualControl = true;\n            if (this.moveCooldown \u003c= 0.0f) {\n                float nx = this.Position.X;\n                float ny = this.Position.Y;\n                if (ix \u003e 0.1f) {\n                    nx = nx + this.StepSize;\n                }\n                if (ix \u003c -0.1f) {\n                    nx = nx - this.StepSize;\n                }\n                if (iy \u003e 0.1f) {\n                    ny = ny + this.StepSize;\n                }\n                if (iy \u003c -0.1f) {\n                    ny = ny - this.StepSize;\n                }\n                nx = Clamp(nx, -this.BoardLimit, this.BoardLimit);\n                ny = Clamp(ny, -this.BoardLimit, this.BoardLimit);\n                this.Position = Vec3(nx, ny, 0.0f);\n                this.moveCooldown = 0.16f;\n            }\n        } else {\n            this.moveCooldown = 0.0f;\n        }\n\n        bool eDown = IsKeyDown(\"E\") || IsKeyDown(\"ENTER\");\n        if (eDown \u0026\u0026 !this.eWasDown) {\n            this.manualControl = true;\n            this.RevealAtPos(this.Position);\n        }\n        this.eWasDown = eDown;\n\n        bool fDown = IsKeyDown(\"F\");\n        if (fDown \u0026\u0026 !this.fWasDown) {\n            this.manualControl = true;\n            this.ToggleFlagAtPos(this.Position);\n        }\n        this.fWasDown = fDown;\n\n        bool hDown = IsKeyDown(\"H\");\n        if (hDown \u0026\u0026 !this.hWasDown) {\n            this.PerformAIHintStep();\n        }\n        this.hWasDown = hDown;\n\n        // If no manual input yet, demonstrate logical Minesweeper solving step-by-step\n        if (!this.manualControl) {\n            this.autoTimer = this.autoTimer + dt;\n            if (this.autoTimer \u003e= this.AutoHintInterval) {\n                this.autoTimer = 0.0f;\n                this.PerformAIHintStep();\n            }\n        }\n    }\n\n    public void RevealAtPos(Vec3 pos) {\n        List\u003cEntity\u003e found = query Entities\n            where Tag == \"Tile\" \u0026\u0026 DistanceTo(pos) \u003c= 0.6f\n            orderby DistanceTo(pos) asc;\n        if (found.Count \u003e 0) {\n            this.RevealTileAndCascade(found[0]);\n        }\n    }\n\n    public void ToggleFlagAtPos(Vec3 pos) {\n        List\u003cEntity\u003e found = query Entities\n            where Tag == \"Tile\" \u0026\u0026 DistanceTo(pos) \u003c= 0.6f\n            orderby DistanceTo(pos) asc;\n        if (found.Count \u003e 0) {\n            this.ToggleFlagTile(found[0]);\n        }\n    }\n\n    public void ToggleFlagTile(Entity tile) {\n        if (tile.Health \u003c 10.0f) {\n            return;\n        }\n        if (tile.Health \u003e 60.0f) {\n            tile.Health = 50.0f;\n            tile.Label = \"F\";\n            tile.Color = Color(0.88f, 0.54f, 0.14f, 1.0f);\n        } else {\n            tile.Health = 100.0f;\n            tile.Label = \".\";\n            tile.Color = Color(0.32f, 0.39f, 0.52f, 1.0f);\n        }\n        List\u003cEntity\u003e flags = query Entities\n            where Tag == \"Tile\" \u0026\u0026 Health \u003e 40.0f \u0026\u0026 Health \u003c 60.0f;\n        Log(\"Flag toggled on \" + tile.Name + \" (Total Flags: \" + flags.Count + \")\");\n        emit FlagToggled(tile, flags.Count);\n    }\n\n    public void RevealSingleTile(Entity tile) {\n        if (tile.Health \u003c 60.0f) {\n            return;\n        }\n        if (tile.Speed \u003e 0.5f) {\n            tile.Health = 0.0f;\n            tile.Label = \"*\";\n            tile.Color = Color(0.95f, 0.18f, 0.22f, 1.0f);\n            this.gameOver = true;\n            this.Color = Color(1.0f, 0.22f, 0.25f, 1.0f);\n\n            List\u003cEntity\u003e allMines = query Entities\n                where Tag == \"Tile\" \u0026\u0026 Speed \u003e 0.5f;\n            foreach (Entity m in allMines) {\n                m.Health = 0.0f;\n                m.Label = \"*\";\n                m.Color = Color(0.95f, 0.18f, 0.22f, 1.0f);\n            }\n            Log(\"MINE DETONATED at \" + tile.Name + \"! Press R to reset.\");\n            emit MineDetonated(tile);\n            return;\n        }\n\n        Vec3 tPos = tile.Position;\n        List\u003cEntity\u003e adjMines = query Entities\n            where Tag == \"Tile\" \u0026\u0026 Speed \u003e 0.5f \u0026\u0026 DistanceTo(tPos) \u003e 0.1f \u0026\u0026 DistanceTo(tPos) \u003c= 2.5f;\n        int adj = adjMines.Count;\n\n        tile.Health = 0.0f;\n        tile.Damage = adj;\n\n        if (adj == 0) {\n            tile.MaxHealth = 1.0f;\n            tile.Label = \"\";\n            tile.Color = Color(0.09f, 0.11f, 0.15f, 1.0f);\n        }\n        if (adj == 1) {\n            tile.Label = \"1\";\n            tile.Color = Color(0.16f, 0.38f, 0.72f, 1.0f);\n        }\n        if (adj == 2) {\n            tile.Label = \"2\";\n            tile.Color = Color(0.16f, 0.54f, 0.32f, 1.0f);\n        }\n        if (adj == 3) {\n            tile.Label = \"3\";\n            tile.Color = Color(0.72f, 0.24f, 0.28f, 1.0f);\n        }\n        if (adj \u003e= 4) {\n            tile.Label = \"\" + adj;\n            tile.Color = Color(0.52f, 0.24f, 0.72f, 1.0f);\n        }\n\n        emit TileRevealed(tile, adj);\n    }\n\n    public void RevealTileAndCascade(Entity startTile) {\n        if (startTile.Health \u003c 60.0f) {\n            return;\n        }\n        this.RevealSingleTile(startTile);\n        if (this.gameOver) {\n            return;\n        }\n\n        // Flood-fill cascade for connected 0-mine tiles using .osmu spatial queries\n        bool expanding = true;\n        while (expanding) {\n            List\u003cEntity\u003e zeroFront = query Entities\n                where Tag == \"Tile\" \u0026\u0026 Health == 0.0f \u0026\u0026 MaxHealth == 1.0f;\n            if (zeroFront.Count == 0) {\n                expanding = false;\n            } else {\n                foreach (Entity zt in zeroFront) {\n                    zt.MaxHealth = 0.0f;\n                    Vec3 zPos = zt.Position;\n                    List\u003cEntity\u003e neighbors = query Entities\n                        where Tag == \"Tile\" \u0026\u0026 Health \u003e 60.0f \u0026\u0026 DistanceTo(zPos) \u003e 0.1f \u0026\u0026 DistanceTo(zPos) \u003c= 2.5f;\n                    foreach (Entity nb in neighbors) {\n                        this.RevealSingleTile(nb);\n                    }\n                }\n            }\n        }\n\n        this.CheckWinCondition();\n    }\n\n    public void CheckWinCondition() {\n        List\u003cEntity\u003e hiddenSafe = query Entities\n            where Tag == \"Tile\" \u0026\u0026 Speed \u003c 0.5f \u0026\u0026 Health \u003e 10.0f;\n        if (hiddenSafe.Count == 0 \u0026\u0026 !this.gameWon \u0026\u0026 !this.gameOver) {\n            this.gameWon = true;\n            this.Color = Color(0.25f, 1.0f, 0.55f, 1.0f);\n            List\u003cEntity\u003e unflaggedMines = query Entities\n                where Tag == \"Tile\" \u0026\u0026 Speed \u003e 0.5f \u0026\u0026 Health \u003e 60.0f;\n            foreach (Entity m in unflaggedMines) {\n                m.Health = 50.0f;\n                m.Label = \"F\";\n                m.Color = Color(0.22f, 0.78f, 0.42f, 1.0f);\n            }\n            List\u003cEntity\u003e safeTiles = query Entities where Tag == \"Tile\" \u0026\u0026 Speed \u003c 0.5f;\n            Log(\"BOARD CLEARED! All \" + safeTiles.Count + \" safe tiles swept!\");\n            emit BoardCleared(safeTiles.Count);\n        }\n    }\n\n    public void PerformAIHintStep() {\n        if (this.gameOver || this.gameWon) {\n            return;\n        }\n\n        // Rule 1 \u0026 Rule 2 constraint-satisfaction over revealed numbered tiles\n        List\u003cEntity\u003e numbered = query Entities\n            where Tag == \"Tile\" \u0026\u0026 Health == 0.0f \u0026\u0026 Damage \u003e 0.0f\n            orderby Name asc;\n\n        foreach (Entity rt in numbered) {\n            Vec3 rPos = rt.Position;\n            List\u003cEntity\u003e hiddenNbs = query Entities\n                where Tag == \"Tile\" \u0026\u0026 Health \u003e 60.0f \u0026\u0026 DistanceTo(rPos) \u003e 0.1f \u0026\u0026 DistanceTo(rPos) \u003c= 2.5f;\n            List\u003cEntity\u003e flagNbs = query Entities\n                where Tag == \"Tile\" \u0026\u0026 Health \u003e 40.0f \u0026\u0026 Health \u003c 60.0f \u0026\u0026 DistanceTo(rPos) \u003e 0.1f \u0026\u0026 DistanceTo(rPos) \u003c= 2.5f;\n\n            if (hiddenNbs.Count \u003e 0) {\n                // Rule 1: If hiddenNbs + flagNbs == number on tile, all hiddenNbs are guaranteed mines\n                if (hiddenNbs.Count + flagNbs.Count == rt.Damage) {\n                    Entity mineTarget = hiddenNbs[0];\n                    this.Position = mineTarget.Position;\n                    this.ToggleFlagTile(mineTarget);\n                    return;\n                }\n                // Rule 2: If flagNbs == number on tile, all remaining hiddenNbs are guaranteed safe\n                if (flagNbs.Count == rt.Damage) {\n                    Entity safeTarget = hiddenNbs[0];\n                    this.Position = safeTarget.Position;\n                    Log(\"AI Solver: Deduced \" + safeTarget.Name + \" is safe from \" + rt.Name);\n                    this.RevealTileAndCascade(safeTarget);\n                    return;\n                }\n            }\n        }\n\n        // Fallback: pick nearest unrevealed safe tile\n        List\u003cEntity\u003e fallbackSafe = query Entities\n            where Tag == \"Tile\" \u0026\u0026 Speed \u003c 0.5f \u0026\u0026 Health \u003e 60.0f\n            orderby DistanceTo(this.Position) asc;\n        if (fallbackSafe.Count \u003e 0) {\n            Entity nextSafe = fallbackSafe[0];\n            this.Position = nextSafe.Position;\n            this.RevealTileAndCascade(nextSafe);\n        }\n    }\n\n    on EntityClicked(Entity target) {\n        if (target.HasTag(\"Tile\") \u0026\u0026 !this.gameOver \u0026\u0026 !this.gameWon) {\n            this.manualControl = true;\n            this.Position = target.Position;\n            this.RevealTileAndCascade(target);\n        }\n    }\n\n    on EntityRightClicked(Entity target) {\n        if (target.HasTag(\"Tile\") \u0026\u0026 !this.gameOver \u0026\u0026 !this.gameWon) {\n            this.manualControl = true;\n            this.Position = target.Position;\n            this.ToggleFlagTile(target);\n        }\n    }\n}\n",
+      "diagnostics": null
+    },
+    {
+      "path": "scripts/MineScannerHUD.osmu",
+      "source": "namespace Minesweeper;\n\ncomponent MineScannerHUD : Entity {\n    [Export] public int TotalMines = 6;\n    private int revealedCount = 0;\n    private int flagCount = 0;\n\n    signal TileRevealed(Entity tile, int adjMines);\n    signal FlagToggled(Entity tile, int totalFlags);\n    signal MineDetonated(Entity mineTile);\n    signal BoardCleared(int safeCount);\n\n    public void OnReady() {\n        this.revealedCount = 0;\n        this.flagCount = 0;\n        this.Label = \"MINES: \" + this.TotalMines;\n        this.Color = Color(0.20f, 0.65f, 0.95f, 1.0f);\n    }\n\n    public void OnUpdate(float dt) {\n        List\u003cEntity\u003e cleared = query Entities\n            where Tag == \"Tile\" \u0026\u0026 Health == 0.0f \u0026\u0026 Speed \u003c 0.5f;\n        this.revealedCount = cleared.Count;\n        this.Score = this.revealedCount;\n    }\n\n    on TileRevealed(Entity tile, int adjMines) {\n        List\u003cEntity\u003e flags = query Entities\n            where Tag == \"Tile\" \u0026\u0026 Health \u003e 40.0f \u0026\u0026 Health \u003c 60.0f;\n        int rem = this.TotalMines - flags.Count;\n        this.Label = \"M:\" + rem;\n    }\n\n    on FlagToggled(Entity tile, int totalFlags) {\n        this.flagCount = totalFlags;\n        int rem = this.TotalMines - totalFlags;\n        this.Label = \"M:\" + rem;\n        this.Color = Color(0.95f, 0.68f, 0.18f, 1.0f);\n    }\n\n    on MineDetonated(Entity mineTile) {\n        this.Label = \"BOOM\";\n        this.Color = Color(0.98f, 0.20f, 0.24f, 1.0f);\n    }\n\n    on BoardCleared(int safeCount) {\n        this.Label = \"WIN!\";\n        this.Color = Color(0.22f, 0.95f, 0.48f, 1.0f);\n    }\n}\n",
+      "diagnostics": null
+    }
+  ]
+}
