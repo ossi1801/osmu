@@ -379,7 +379,7 @@ func (app *EditorApp) UpdateAndBuildDrawList(in *platform.InputState, dt float64
 	return app.cmds
 }
 
-// --- Top Toolbar (with Project Loader, Scene Controls, and Minimize / Maximize / Close Window Buttons) ---
+// --- Top Toolbar (with Project Loader, Scene Controls, and Compiler Status) ---
 
 func (app *EditorApp) drawTopToolbar(r Rect, in *platform.InputState) {
 	app.emitRect(r.X, r.Y, r.W, r.H, 0.11, 0.13, 0.17, 1.0)
@@ -474,7 +474,7 @@ func (app *EditorApp) drawTopToolbar(r Rect, in *platform.InputState) {
 			diags += len(sf.Diagnostics)
 		}
 	}
-	compRect := Rect{r.W - 216, 7, 102, 28}
+	compRect := Rect{r.W - 110, 7, 102, 28}
 	if compRect.X > x+118 {
 		if diags == 0 {
 			app.emitRect(compRect.X, compRect.Y, compRect.W, compRect.H, 0.13, 0.36, 0.24, 1.0)
@@ -483,26 +483,6 @@ func (app *EditorApp) drawTopToolbar(r Rect, in *platform.InputState) {
 			app.emitRect(compRect.X, compRect.Y, compRect.W, compRect.H, 0.48, 0.18, 0.20, 1.0)
 			app.emitText(compRect.X+8, compRect.Y+9, fmt.Sprintf("Err: %d", diags), 1.3, 1.0, 0.65, 0.65, 1.0)
 		}
-	}
-
-	// Window Control Buttons on Top-Right: Minimize [_], Maximize/Restore [□], Close [X]
-	winX := r.W - 106
-	if app.drawButton(Rect{winX, 7, 30, 28}, "_", false, in) {
-		if app.Win != nil {
-			app.Win.Minimize()
-		}
-	}
-	maxLabel := "[]"
-	if in.IsMaximized {
-		maxLabel = "<>"
-	}
-	if app.drawButton(Rect{winX + 34, 7, 30, 28}, maxLabel, in.IsMaximized, in) {
-		if app.Win != nil {
-			app.Win.ToggleMaximize()
-		}
-	}
-	if app.drawButtonColor(Rect{winX + 68, 7, 30, 28}, "X", false, 0.72, 0.20, 0.24, in) {
-		in.ShouldClose = true
 	}
 }
 

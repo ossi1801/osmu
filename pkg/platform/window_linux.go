@@ -35,16 +35,17 @@ typedef struct {
 } OsmuX11Window;
 
 static void osmu_apply_wm_hints(Display* dpy, Window win, int w, int h) {
-    // 1. Standard XSizeHints (min/max size so WMs enable Maximize and Resize buttons)
+    // 1. Standard XSizeHints (minimum size so WMs allow resizing and maximization)
+    // Note: Do NOT set PMaxSize or max_width/max_height, as setting maximum size
+    // constraints causes many window managers (Mutter, XFWM, etc.) to disable or hide
+    // the Maximize button on the window frame.
     XSizeHints* sh = XAllocSizeHints();
     if (sh) {
-        sh->flags = PSize | PMinSize | PMaxSize;
+        sh->flags = PSize | PMinSize;
         sh->width = w;
         sh->height = h;
         sh->min_width = 640;
         sh->min_height = 420;
-        sh->max_width = 16384;
-        sh->max_height = 16384;
         XSetWMNormalHints(dpy, win, sh);
         XFree(sh);
     }
@@ -60,13 +61,19 @@ static void osmu_apply_wm_hints(Display* dpy, Window win, int w, int h) {
     }
 
     // 3. Motif hints requesting all decorations and all window functions (minimize, maximize, resize, close)
+    // In Motif specification:
+    //   flags: (1L << 0) [MWM_HINTS_FUNCTIONS] | (1L << 1) [MWM_HINTS_DECORATIONS]
+    //   functions: 1L [MWM_FUNC_ALL] enables all window functions (resize, move, minimize, maximize, close).
+    //   decorations: 1L [MWM_DECOR_ALL] enables all decorations (title, border, resize handles, menu, minimize, maximize).
+    // Note: When MWM_DECOR_ALL is set, any additional decoration bits are treated by Motif as SUBTRACTIONS (exclusions).
+    // Therefore, MWM_DECOR_ALL alone (1L) requests all decorations without excluding minimize or maximize.
     Atom motifAtom = XInternAtom(dpy, "_MOTIF_WM_HINTS", False);
     if (motifAtom != None) {
         MotifWmHints hints;
         memset(&hints, 0, sizeof(hints));
         hints.flags = (1L << 0) | (1L << 1); // MWM_HINTS_FUNCTIONS | MWM_HINTS_DECORATIONS
-        hints.functions = (1L << 0) | (1L << 1) | (1L << 2) | (1L << 3) | (1L << 4) | (1L << 5);
-        hints.decorations = (1L << 0) | (1L << 1) | (1L << 2) | (1L << 3) | (1L << 4) | (1L << 5) | (1L << 6);
+        hints.functions = 1L;                // MWM_FUNC_ALL
+        hints.decorations = 1L;              // MWM_DECOR_ALL
         XChangeProperty(dpy, win, motifAtom, motifAtom, 32, PropModeReplace,
                         (unsigned char*)&hints, 5);
     }
@@ -77,21 +84,6 @@ static void osmu_apply_wm_hints(Display* dpy, Window win, int w, int h) {
     if (wmType != None && wmTypeNormal != None) {
         XChangeProperty(dpy, win, wmType, XA_ATOM, 32, PropModeReplace,
                         (unsigned char*)&wmTypeNormal, 1);
-    }
-
-    // 5. EWMH _NET_WM_ALLOWED_ACTIONS (explicitly advertise minimize, maximize, resize, move, close)
-    Atom allowedAtom = XInternAtom(dpy, "_NET_WM_ALLOWED_ACTIONS", False);
-    if (allowedAtom != None) {
-        Atom actions[7];
-        actions[0] = XInternAtom(dpy, "_NET_WM_ACTION_MOVE", False);
-        actions[1] = XInternAtom(dpy, "_NET_WM_ACTION_RESIZE", False);
-        actions[2] = XInternAtom(dpy, "_NET_WM_ACTION_MINIMIZE", False);
-        actions[3] = XInternAtom(dpy, "_NET_WM_ACTION_MAXIMIZE_HORZ", False);
-        actions[4] = XInternAtom(dpy, "_NET_WM_ACTION_MAXIMIZE_VERT", False);
-        actions[5] = XInternAtom(dpy, "_NET_WM_ACTION_FULLSCREEN", False);
-        actions[6] = XInternAtom(dpy, "_NET_WM_ACTION_CLOSE", False);
-        XChangeProperty(dpy, win, allowedAtom, XA_ATOM, 32, PropModeReplace,
-                        (unsigned char*)actions, 7);
     }
 }
 
