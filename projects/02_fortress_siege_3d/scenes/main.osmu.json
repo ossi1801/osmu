@@ -1,0 +1,1550 @@
+{
+  "name": "3D Fortress Siege \u0026 Tower Defense",
+  "description": "3D Castle Defense with WASD Hero Paladin, 3 Auto-Targeting Artillery Towers, 3D Projectiles, and Siege Golems.",
+  "mode": "3D",
+  "entities": [
+    {
+      "id": "fort_ground",
+      "name": "BattlefieldTerrain",
+      "tag": "Environment",
+      "tags": [
+        "Environment"
+      ],
+      "active": true,
+      "layer": 0,
+      "health": 100,
+      "max_health": 100,
+      "speed": 5,
+      "transform": {
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "scale": {
+          "x": 20,
+          "y": 1,
+          "z": 20
+        }
+      },
+      "render": {
+        "visible": true,
+        "mesh": "Plane",
+        "color": {
+          "r": 0.14,
+          "g": 0.18,
+          "b": 0.22,
+          "a": 1
+        },
+        "emissive": 0,
+        "wireframe": false
+      },
+      "physics": {
+        "enabled": true,
+        "is_static": true,
+        "is_trigger": false,
+        "velocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "angular_vel": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "radius": 0.6,
+        "mass": 1,
+        "use_gravity": false
+      }
+    },
+    {
+      "id": "fort_citadel",
+      "name": "CitadelCore",
+      "tag": "Citadel",
+      "tags": [
+        "Citadel"
+      ],
+      "active": true,
+      "layer": 0,
+      "health": 100,
+      "max_health": 100,
+      "speed": 5,
+      "transform": {
+        "position": {
+          "x": 0,
+          "y": 1.4,
+          "z": 0
+        },
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "scale": {
+          "x": 2,
+          "y": 2.6,
+          "z": 2
+        }
+      },
+      "render": {
+        "visible": true,
+        "mesh": "Pyramid",
+        "color": {
+          "r": 0.28,
+          "g": 0.68,
+          "b": 0.98,
+          "a": 1
+        },
+        "emissive": 0,
+        "wireframe": false
+      },
+      "physics": {
+        "enabled": true,
+        "is_static": true,
+        "is_trigger": false,
+        "velocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "angular_vel": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "radius": 0.6,
+        "mass": 1,
+        "use_gravity": false
+      }
+    },
+    {
+      "id": "bastion_nw",
+      "name": "Bastion_NW",
+      "tag": "Wall",
+      "tags": [
+        "Wall"
+      ],
+      "active": true,
+      "layer": 0,
+      "health": 100,
+      "max_health": 100,
+      "speed": 5,
+      "transform": {
+        "position": {
+          "x": -3.8,
+          "y": 0.8,
+          "z": -3.8
+        },
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "scale": {
+          "x": 1.2,
+          "y": 1.6,
+          "z": 1.2
+        }
+      },
+      "render": {
+        "visible": true,
+        "mesh": "Cube",
+        "color": {
+          "r": 0.38,
+          "g": 0.44,
+          "b": 0.54,
+          "a": 1
+        },
+        "emissive": 0,
+        "wireframe": false
+      },
+      "physics": {
+        "enabled": true,
+        "is_static": true,
+        "is_trigger": false,
+        "velocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "angular_vel": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "radius": 0.6,
+        "mass": 1,
+        "use_gravity": false
+      }
+    },
+    {
+      "id": "bastion_ne",
+      "name": "Bastion_NE",
+      "tag": "Wall",
+      "tags": [
+        "Wall"
+      ],
+      "active": true,
+      "layer": 0,
+      "health": 100,
+      "max_health": 100,
+      "speed": 5,
+      "transform": {
+        "position": {
+          "x": 3.8,
+          "y": 0.8,
+          "z": -3.8
+        },
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "scale": {
+          "x": 1.2,
+          "y": 1.6,
+          "z": 1.2
+        }
+      },
+      "render": {
+        "visible": true,
+        "mesh": "Cube",
+        "color": {
+          "r": 0.38,
+          "g": 0.44,
+          "b": 0.54,
+          "a": 1
+        },
+        "emissive": 0,
+        "wireframe": false
+      },
+      "physics": {
+        "enabled": true,
+        "is_static": true,
+        "is_trigger": false,
+        "velocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "angular_vel": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "radius": 0.6,
+        "mass": 1,
+        "use_gravity": false
+      }
+    },
+    {
+      "id": "bastion_sw",
+      "name": "Bastion_SW",
+      "tag": "Wall",
+      "tags": [
+        "Wall"
+      ],
+      "active": true,
+      "layer": 0,
+      "health": 100,
+      "max_health": 100,
+      "speed": 5,
+      "transform": {
+        "position": {
+          "x": -3.8,
+          "y": 0.8,
+          "z": 3.8
+        },
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "scale": {
+          "x": 1.2,
+          "y": 1.6,
+          "z": 1.2
+        }
+      },
+      "render": {
+        "visible": true,
+        "mesh": "Cube",
+        "color": {
+          "r": 0.38,
+          "g": 0.44,
+          "b": 0.54,
+          "a": 1
+        },
+        "emissive": 0,
+        "wireframe": false
+      },
+      "physics": {
+        "enabled": true,
+        "is_static": true,
+        "is_trigger": false,
+        "velocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "angular_vel": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "radius": 0.6,
+        "mass": 1,
+        "use_gravity": false
+      }
+    },
+    {
+      "id": "bastion_se",
+      "name": "Bastion_SE",
+      "tag": "Wall",
+      "tags": [
+        "Wall"
+      ],
+      "active": true,
+      "layer": 0,
+      "health": 100,
+      "max_health": 100,
+      "speed": 5,
+      "transform": {
+        "position": {
+          "x": 3.8,
+          "y": 0.8,
+          "z": 3.8
+        },
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "scale": {
+          "x": 1.2,
+          "y": 1.6,
+          "z": 1.2
+        }
+      },
+      "render": {
+        "visible": true,
+        "mesh": "Cube",
+        "color": {
+          "r": 0.38,
+          "g": 0.44,
+          "b": 0.54,
+          "a": 1
+        },
+        "emissive": 0,
+        "wireframe": false
+      },
+      "physics": {
+        "enabled": true,
+        "is_static": true,
+        "is_trigger": false,
+        "velocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "angular_vel": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "radius": 0.6,
+        "mass": 1,
+        "use_gravity": false
+      }
+    },
+    {
+      "id": "hero_paladin",
+      "name": "HeroPaladin",
+      "tag": "Player",
+      "tags": [
+        "Player"
+      ],
+      "active": true,
+      "layer": 0,
+      "health": 100,
+      "max_health": 100,
+      "speed": 5,
+      "transform": {
+        "position": {
+          "x": 0,
+          "y": 0.85,
+          "z": 2.6
+        },
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "scale": {
+          "x": 1.1,
+          "y": 1.5,
+          "z": 1.1
+        }
+      },
+      "render": {
+        "visible": true,
+        "mesh": "Pyramid",
+        "color": {
+          "r": 0.2,
+          "g": 0.95,
+          "b": 0.88,
+          "a": 1
+        },
+        "emissive": 0,
+        "wireframe": false
+      },
+      "physics": {
+        "enabled": true,
+        "is_static": false,
+        "is_trigger": false,
+        "velocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "angular_vel": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "radius": 0.6,
+        "mass": 1,
+        "use_gravity": false
+      },
+      "scripts": [
+        {
+          "script_path": "scripts/HeroPaladin3D.osmu",
+          "component_name": "HeroPaladin3D",
+          "properties": {
+            "CleaveDamage": 45,
+            "CleaveRange": 3.4,
+            "MoveSpeed": 6
+          }
+        }
+      ],
+      "properties": {
+        "Score": 0
+      }
+    },
+    {
+      "id": "tower_w",
+      "name": "ArtilleryTower_West",
+      "tag": "Turret",
+      "tags": [
+        "Turret"
+      ],
+      "active": true,
+      "layer": 0,
+      "health": 100,
+      "max_health": 100,
+      "speed": 5,
+      "transform": {
+        "position": {
+          "x": -3.5,
+          "y": 1.2,
+          "z": 0
+        },
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "scale": {
+          "x": 1,
+          "y": 1.8,
+          "z": 1
+        }
+      },
+      "render": {
+        "visible": true,
+        "mesh": "Cylinder",
+        "color": {
+          "r": 0.32,
+          "g": 0.92,
+          "b": 0.52,
+          "a": 1
+        },
+        "emissive": 0,
+        "wireframe": false
+      },
+      "physics": {
+        "enabled": true,
+        "is_static": true,
+        "is_trigger": false,
+        "velocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "angular_vel": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "radius": 0.6,
+        "mass": 1,
+        "use_gravity": false
+      },
+      "scripts": [
+        {
+          "script_path": "scripts/DefenseTower3D.osmu",
+          "component_name": "DefenseTower3D",
+          "properties": {
+            "Range": 14,
+            "ReloadTime": 0.55,
+            "ShellSpeed": 15
+          }
+        }
+      ]
+    },
+    {
+      "id": "tower_e",
+      "name": "ArtilleryTower_East",
+      "tag": "Turret",
+      "tags": [
+        "Turret"
+      ],
+      "active": true,
+      "layer": 0,
+      "health": 100,
+      "max_health": 100,
+      "speed": 5,
+      "transform": {
+        "position": {
+          "x": 3.5,
+          "y": 1.2,
+          "z": 0
+        },
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "scale": {
+          "x": 1,
+          "y": 1.8,
+          "z": 1
+        }
+      },
+      "render": {
+        "visible": true,
+        "mesh": "Cylinder",
+        "color": {
+          "r": 0.32,
+          "g": 0.92,
+          "b": 0.52,
+          "a": 1
+        },
+        "emissive": 0,
+        "wireframe": false
+      },
+      "physics": {
+        "enabled": true,
+        "is_static": true,
+        "is_trigger": false,
+        "velocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "angular_vel": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "radius": 0.6,
+        "mass": 1,
+        "use_gravity": false
+      },
+      "scripts": [
+        {
+          "script_path": "scripts/DefenseTower3D.osmu",
+          "component_name": "DefenseTower3D",
+          "properties": {
+            "Range": 14,
+            "ReloadTime": 0.55,
+            "ShellSpeed": 15
+          }
+        }
+      ]
+    },
+    {
+      "id": "tower_n",
+      "name": "SentinelTower_North",
+      "tag": "Turret",
+      "tags": [
+        "Turret"
+      ],
+      "active": true,
+      "layer": 0,
+      "health": 100,
+      "max_health": 100,
+      "speed": 5,
+      "transform": {
+        "position": {
+          "x": 0,
+          "y": 1.2,
+          "z": -3.5
+        },
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "scale": {
+          "x": 1,
+          "y": 1.8,
+          "z": 1
+        }
+      },
+      "render": {
+        "visible": true,
+        "mesh": "Cylinder",
+        "color": {
+          "r": 0.32,
+          "g": 0.92,
+          "b": 0.52,
+          "a": 1
+        },
+        "emissive": 0,
+        "wireframe": false
+      },
+      "physics": {
+        "enabled": true,
+        "is_static": true,
+        "is_trigger": false,
+        "velocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "angular_vel": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "radius": 0.6,
+        "mass": 1,
+        "use_gravity": false
+      },
+      "scripts": [
+        {
+          "script_path": "scripts/DefenseTower3D.osmu",
+          "component_name": "DefenseTower3D",
+          "properties": {
+            "Range": 14,
+            "ReloadTime": 0.55,
+            "ShellSpeed": 15
+          }
+        }
+      ]
+    },
+    {
+      "id": "siege_1",
+      "name": "SiegeGolem_North",
+      "tag": "Enemy",
+      "tags": [
+        "Enemy"
+      ],
+      "active": true,
+      "layer": 0,
+      "health": 160,
+      "max_health": 160,
+      "speed": 5,
+      "transform": {
+        "position": {
+          "x": -1.8,
+          "y": 1,
+          "z": -7.8
+        },
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "scale": {
+          "x": 1.4,
+          "y": 1.8,
+          "z": 1.4
+        }
+      },
+      "render": {
+        "visible": true,
+        "mesh": "Cube",
+        "color": {
+          "r": 0.95,
+          "g": 0.28,
+          "b": 0.32,
+          "a": 1
+        },
+        "emissive": 0,
+        "wireframe": false
+      },
+      "physics": {
+        "enabled": true,
+        "is_static": false,
+        "is_trigger": false,
+        "velocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "angular_vel": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "radius": 0.6,
+        "mass": 1,
+        "use_gravity": false
+      }
+    },
+    {
+      "id": "siege_2",
+      "name": "SiegeGolem_East",
+      "tag": "Enemy",
+      "tags": [
+        "Enemy"
+      ],
+      "active": true,
+      "layer": 0,
+      "health": 160,
+      "max_health": 160,
+      "speed": 5,
+      "transform": {
+        "position": {
+          "x": 7.8,
+          "y": 1,
+          "z": -1.5
+        },
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "scale": {
+          "x": 1.4,
+          "y": 1.8,
+          "z": 1.4
+        }
+      },
+      "render": {
+        "visible": true,
+        "mesh": "Cube",
+        "color": {
+          "r": 0.95,
+          "g": 0.28,
+          "b": 0.32,
+          "a": 1
+        },
+        "emissive": 0,
+        "wireframe": false
+      },
+      "physics": {
+        "enabled": true,
+        "is_static": false,
+        "is_trigger": false,
+        "velocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "angular_vel": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "radius": 0.6,
+        "mass": 1,
+        "use_gravity": false
+      }
+    },
+    {
+      "id": "siege_3",
+      "name": "Raider_NW",
+      "tag": "Enemy",
+      "tags": [
+        "Enemy"
+      ],
+      "active": true,
+      "layer": 0,
+      "health": 85,
+      "max_health": 85,
+      "speed": 5,
+      "transform": {
+        "position": {
+          "x": -7,
+          "y": 0.75,
+          "z": -5.5
+        },
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "scale": {
+          "x": 1,
+          "y": 1.2,
+          "z": 1
+        }
+      },
+      "render": {
+        "visible": true,
+        "mesh": "Cube",
+        "color": {
+          "r": 0.98,
+          "g": 0.48,
+          "b": 0.22,
+          "a": 1
+        },
+        "emissive": 0,
+        "wireframe": false
+      },
+      "physics": {
+        "enabled": true,
+        "is_static": false,
+        "is_trigger": false,
+        "velocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "angular_vel": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "radius": 0.6,
+        "mass": 1,
+        "use_gravity": false
+      }
+    },
+    {
+      "id": "siege_4",
+      "name": "Raider_NE",
+      "tag": "Enemy",
+      "tags": [
+        "Enemy"
+      ],
+      "active": true,
+      "layer": 0,
+      "health": 85,
+      "max_health": 85,
+      "speed": 5,
+      "transform": {
+        "position": {
+          "x": 6.8,
+          "y": 0.75,
+          "z": -6
+        },
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "scale": {
+          "x": 1,
+          "y": 1.2,
+          "z": 1
+        }
+      },
+      "render": {
+        "visible": true,
+        "mesh": "Cube",
+        "color": {
+          "r": 0.98,
+          "g": 0.48,
+          "b": 0.22,
+          "a": 1
+        },
+        "emissive": 0,
+        "wireframe": false
+      },
+      "physics": {
+        "enabled": true,
+        "is_static": false,
+        "is_trigger": false,
+        "velocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "angular_vel": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "radius": 0.6,
+        "mass": 1,
+        "use_gravity": false
+      }
+    },
+    {
+      "id": "siege_5",
+      "name": "Raider_SW",
+      "tag": "Enemy",
+      "tags": [
+        "Enemy"
+      ],
+      "active": true,
+      "layer": 0,
+      "health": 85,
+      "max_health": 85,
+      "speed": 5,
+      "transform": {
+        "position": {
+          "x": -6.8,
+          "y": 0.75,
+          "z": 5.8
+        },
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "scale": {
+          "x": 1,
+          "y": 1.2,
+          "z": 1
+        }
+      },
+      "render": {
+        "visible": true,
+        "mesh": "Cube",
+        "color": {
+          "r": 0.98,
+          "g": 0.48,
+          "b": 0.22,
+          "a": 1
+        },
+        "emissive": 0,
+        "wireframe": false
+      },
+      "physics": {
+        "enabled": true,
+        "is_static": false,
+        "is_trigger": false,
+        "velocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "angular_vel": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "radius": 0.6,
+        "mass": 1,
+        "use_gravity": false
+      }
+    },
+    {
+      "id": "siege_6",
+      "name": "Raider_SE",
+      "tag": "Enemy",
+      "tags": [
+        "Enemy"
+      ],
+      "active": true,
+      "layer": 0,
+      "health": 85,
+      "max_health": 85,
+      "speed": 5,
+      "transform": {
+        "position": {
+          "x": 6.8,
+          "y": 0.75,
+          "z": 5.8
+        },
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "scale": {
+          "x": 1,
+          "y": 1.2,
+          "z": 1
+        }
+      },
+      "render": {
+        "visible": true,
+        "mesh": "Cube",
+        "color": {
+          "r": 0.98,
+          "g": 0.48,
+          "b": 0.22,
+          "a": 1
+        },
+        "emissive": 0,
+        "wireframe": false
+      },
+      "physics": {
+        "enabled": true,
+        "is_static": false,
+        "is_trigger": false,
+        "velocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "angular_vel": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "radius": 0.6,
+        "mass": 1,
+        "use_gravity": false
+      }
+    },
+    {
+      "id": "siege_boss",
+      "name": "InfernalColossus",
+      "tag": "Enemy",
+      "tags": [
+        "Enemy"
+      ],
+      "active": true,
+      "layer": 0,
+      "health": 240,
+      "max_health": 240,
+      "speed": 5,
+      "transform": {
+        "position": {
+          "x": 0,
+          "y": 1.3,
+          "z": 8.2
+        },
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "scale": {
+          "x": 1.8,
+          "y": 2.3,
+          "z": 1.8
+        }
+      },
+      "render": {
+        "visible": true,
+        "mesh": "Cube",
+        "color": {
+          "r": 0.88,
+          "g": 0.18,
+          "b": 0.42,
+          "a": 1
+        },
+        "emissive": 0,
+        "wireframe": false
+      },
+      "physics": {
+        "enabled": true,
+        "is_static": false,
+        "is_trigger": false,
+        "velocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "angular_vel": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "radius": 0.6,
+        "mass": 1,
+        "use_gravity": false
+      }
+    },
+    {
+      "id": "mana_1",
+      "name": "ManaCrystal_01",
+      "tag": "Coin",
+      "tags": [
+        "Coin"
+      ],
+      "active": true,
+      "layer": 0,
+      "health": 100,
+      "max_health": 100,
+      "speed": 5,
+      "transform": {
+        "position": {
+          "x": -2.4,
+          "y": 0.7,
+          "z": 2.2
+        },
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "scale": {
+          "x": 0.75,
+          "y": 0.75,
+          "z": 0.75
+        }
+      },
+      "render": {
+        "visible": true,
+        "mesh": "Sphere",
+        "color": {
+          "r": 1,
+          "g": 0.86,
+          "b": 0.2,
+          "a": 1
+        },
+        "emissive": 0,
+        "wireframe": false
+      },
+      "physics": {
+        "enabled": true,
+        "is_static": false,
+        "is_trigger": false,
+        "velocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "angular_vel": {
+          "x": 0,
+          "y": 90,
+          "z": 0
+        },
+        "radius": 0.6,
+        "mass": 1,
+        "use_gravity": false
+      }
+    },
+    {
+      "id": "mana_2",
+      "name": "ManaCrystal_02",
+      "tag": "Coin",
+      "tags": [
+        "Coin"
+      ],
+      "active": true,
+      "layer": 0,
+      "health": 100,
+      "max_health": 100,
+      "speed": 5,
+      "transform": {
+        "position": {
+          "x": 2.4,
+          "y": 0.7,
+          "z": 2.2
+        },
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "scale": {
+          "x": 0.75,
+          "y": 0.75,
+          "z": 0.75
+        }
+      },
+      "render": {
+        "visible": true,
+        "mesh": "Sphere",
+        "color": {
+          "r": 1,
+          "g": 0.86,
+          "b": 0.2,
+          "a": 1
+        },
+        "emissive": 0,
+        "wireframe": false
+      },
+      "physics": {
+        "enabled": true,
+        "is_static": false,
+        "is_trigger": false,
+        "velocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "angular_vel": {
+          "x": 0,
+          "y": 90,
+          "z": 0
+        },
+        "radius": 0.6,
+        "mass": 1,
+        "use_gravity": false
+      }
+    },
+    {
+      "id": "mana_3",
+      "name": "ManaCrystal_03",
+      "tag": "Coin",
+      "tags": [
+        "Coin"
+      ],
+      "active": true,
+      "layer": 0,
+      "health": 100,
+      "max_health": 100,
+      "speed": 5,
+      "transform": {
+        "position": {
+          "x": 0,
+          "y": 0.7,
+          "z": -2.2
+        },
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "scale": {
+          "x": 0.75,
+          "y": 0.75,
+          "z": 0.75
+        }
+      },
+      "render": {
+        "visible": true,
+        "mesh": "Sphere",
+        "color": {
+          "r": 1,
+          "g": 0.86,
+          "b": 0.2,
+          "a": 1
+        },
+        "emissive": 0,
+        "wireframe": false
+      },
+      "physics": {
+        "enabled": true,
+        "is_static": false,
+        "is_trigger": false,
+        "velocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "angular_vel": {
+          "x": 0,
+          "y": 90,
+          "z": 0
+        },
+        "radius": 0.6,
+        "mass": 1,
+        "use_gravity": false
+      }
+    }
+  ],
+  "node_graph": {
+    "nodes": [
+      {
+        "id": "f_upd",
+        "type": "OnUpdate",
+        "title": "On Frame Update",
+        "category": "Event",
+        "x": 16,
+        "y": 14,
+        "width": 180,
+        "height": 112,
+        "inputs": null,
+        "outputs": [
+          {
+            "name": "Tick",
+            "kind": "Flow"
+          },
+          {
+            "name": "Dt",
+            "kind": "Float"
+          }
+        ],
+        "params": {
+          "Interval": "0.0"
+        }
+      },
+      {
+        "id": "f_sig",
+        "type": "OnSignal",
+        "title": "On Signal Received",
+        "category": "Event",
+        "x": 16,
+        "y": 134,
+        "width": 180,
+        "height": 112,
+        "inputs": null,
+        "outputs": [
+          {
+            "name": "Trigger",
+            "kind": "Flow"
+          },
+          {
+            "name": "Source",
+            "kind": "Entity"
+          }
+        ],
+        "params": {
+          "Signal": "TowerFired"
+        }
+      },
+      {
+        "id": "f_col",
+        "type": "OnCollision",
+        "title": "On Tag Collision",
+        "category": "Event",
+        "x": 16,
+        "y": 254,
+        "width": 180,
+        "height": 148,
+        "inputs": null,
+        "outputs": [
+          {
+            "name": "Hit",
+            "kind": "Flow"
+          },
+          {
+            "name": "Self",
+            "kind": "Entity"
+          },
+          {
+            "name": "Other",
+            "kind": "Entity"
+          }
+        ],
+        "params": {
+          "TagA": "Player",
+          "TagB": "Coin"
+        }
+      },
+      {
+        "id": "f_qry",
+        "type": "QueryEntities",
+        "title": "Query Entities",
+        "category": "Query",
+        "x": 260,
+        "y": 14,
+        "width": 180,
+        "height": 132,
+        "inputs": [
+          {
+            "name": "In",
+            "kind": "Flow"
+          }
+        ],
+        "outputs": [
+          {
+            "name": "Found",
+            "kind": "Flow"
+          },
+          {
+            "name": "Entities",
+            "kind": "EntityList"
+          },
+          {
+            "name": "Nearest",
+            "kind": "Entity"
+          }
+        ],
+        "params": {
+          "Query": "Tag == \"Enemy\" \u0026\u0026 Health \u003e 0 orderby Distance asc"
+        }
+      },
+      {
+        "id": "f_flt",
+        "type": "FilterLowHealth",
+        "title": "Filter By Property",
+        "category": "Query",
+        "x": 260,
+        "y": 156,
+        "width": 180,
+        "height": 144,
+        "inputs": [
+          {
+            "name": "In",
+            "kind": "Flow"
+          },
+          {
+            "name": "Entities",
+            "kind": "EntityList"
+          }
+        ],
+        "outputs": [
+          {
+            "name": "Match",
+            "kind": "Flow"
+          },
+          {
+            "name": "Filtered",
+            "kind": "EntityList"
+          }
+        ],
+        "params": {
+          "Op": "\u003c=",
+          "Property": "Health",
+          "Value": "90"
+        }
+      },
+      {
+        "id": "f_mov",
+        "type": "MoveTowards",
+        "title": "Move Towards Target",
+        "category": "Action",
+        "x": 508,
+        "y": 14,
+        "width": 180,
+        "height": 164,
+        "inputs": [
+          {
+            "name": "In",
+            "kind": "Flow"
+          },
+          {
+            "name": "Actors",
+            "kind": "EntityList"
+          },
+          {
+            "name": "Goal",
+            "kind": "Entity"
+          }
+        ],
+        "outputs": [
+          {
+            "name": "Done",
+            "kind": "Flow"
+          }
+        ],
+        "params": {
+          "ActorTag": "Enemy",
+          "GoalTag": "Citadel",
+          "Speed": "1.65"
+        }
+      },
+      {
+        "id": "f_scr",
+        "type": "ModifyProperty",
+        "title": "Modify Property",
+        "category": "Action",
+        "x": 508,
+        "y": 156,
+        "width": 180,
+        "height": 160,
+        "inputs": [
+          {
+            "name": "In",
+            "kind": "Flow"
+          },
+          {
+            "name": "Targets",
+            "kind": "EntityList"
+          }
+        ],
+        "outputs": [
+          {
+            "name": "Done",
+            "kind": "Flow"
+          }
+        ],
+        "params": {
+          "Mode": "Add",
+          "Property": "Score",
+          "TargetTag": "Player",
+          "Value": "50"
+        }
+      }
+    ],
+    "links": [
+      {
+        "id": "link_1",
+        "from_node": "f_upd",
+        "from_socket": "Tick",
+        "to_node": "f_qry",
+        "to_socket": "In",
+        "kind": "Flow"
+      },
+      {
+        "id": "link_2",
+        "from_node": "f_sig",
+        "from_socket": "Trigger",
+        "to_node": "f_qry",
+        "to_socket": "In",
+        "kind": "Flow"
+      },
+      {
+        "id": "link_3",
+        "from_node": "f_sig",
+        "from_socket": "Trigger",
+        "to_node": "f_flt",
+        "to_socket": "In",
+        "kind": "Flow"
+      },
+      {
+        "id": "link_4",
+        "from_node": "f_qry",
+        "from_socket": "Found",
+        "to_node": "f_mov",
+        "to_socket": "In",
+        "kind": "Flow"
+      },
+      {
+        "id": "link_5",
+        "from_node": "f_qry",
+        "from_socket": "Entities",
+        "to_node": "f_mov",
+        "to_socket": "Actors",
+        "kind": "EntityList"
+      },
+      {
+        "id": "link_6",
+        "from_node": "f_qry",
+        "from_socket": "Nearest",
+        "to_node": "f_mov",
+        "to_socket": "Goal",
+        "kind": "Entity"
+      },
+      {
+        "id": "link_7",
+        "from_node": "f_flt",
+        "from_socket": "Match",
+        "to_node": "f_scr",
+        "to_socket": "In",
+        "kind": "Flow"
+      },
+      {
+        "id": "link_8",
+        "from_node": "f_col",
+        "from_socket": "Hit",
+        "to_node": "f_scr",
+        "to_socket": "In",
+        "kind": "Flow"
+      }
+    ],
+    "auto_group": true,
+    "group_thresh": 95
+  },
+  "scripts": [
+    {
+      "path": "scripts/HeroPaladin3D.osmu",
+      "source": "namespace FortressSiege;\n\ncomponent HeroPaladin3D : Entity {\n    [Export] public float MoveSpeed = 6.0f;\n    [Export] public float CleaveRange = 3.2f;\n    [Export] public float CleaveDamage = 40.0f;\n    private float attackTimer = 0.0f;\n\n    signal CleaveStrike(Entity target, float dmg);\n\n    public void OnReady() {\n        Log(\"HeroPaladin3D defending the Citadel! Use WASD to command.\");\n    }\n\n    public void OnUpdate(float dt) {\n        this.attackTimer = this.attackTimer - dt;\n        float ix = InputAxisX();\n        float iz = InputAxisY();\n        if (ix != 0.0f || iz != 0.0f) {\n            this.Position = this.Position + Vec3(ix * this.MoveSpeed * dt, 0.0f, -iz * this.MoveSpeed * dt);\n        } else {\n            // Patrol toward nearest gold mana crystal or closest siege attacker\n            List\u003cEntity\u003e crystals = query Entities\n                where Tag == \"Coin\" \u0026\u0026 Active == true\n                orderby DistanceTo(this.Position) asc;\n            if (crystals.Count \u003e 0) {\n                Entity c = crystals[0];\n                this.LookAt(c.Position);\n                float d = Distance(this.Position, c.Position);\n                if (d \u003e 0.25f) {\n                    this.Position = this.Position + ((c.Position - this.Position) / d) * (this.MoveSpeed * 0.75f * dt);\n                }\n            }\n        }\n\n        List\u003cEntity\u003e raiders = query Entities\n            where Tag == \"Enemy\" \u0026\u0026 Health \u003e 0.0f \u0026\u0026 DistanceTo(this.Position) \u003c= this.CleaveRange\n            orderby DistanceTo(this.Position) asc;\n\n        if (raiders.Count \u003e 0 \u0026\u0026 this.attackTimer \u003c= 0.0f) {\n            this.attackTimer = 0.45f;\n            Entity target = raiders[0];\n            this.LookAt(target.Position);\n            emit CleaveStrike(target, this.CleaveDamage);\n        }\n    }\n\n    on CleaveStrike(Entity target, float dmg) {\n        target.Health = target.Health - dmg;\n        if (target.Health \u003c= 0.0f) {\n            Log(\"Paladin vanquished \" + target.Name);\n            Destroy(target);\n        }\n    }\n}\n",
+      "diagnostics": null
+    },
+    {
+      "path": "scripts/DefenseTower3D.osmu",
+      "source": "namespace FortressSiege;\n\ncomponent DefenseTower3D : Entity {\n    [Export] public float Range = 13.5f;\n    [Export] public float ReloadTime = 0.65f;\n    [Export] public float ShellSpeed = 15.0f;\n    private float timer = 0.0f;\n\n    signal TowerFired(Entity enemy, float dist);\n\n    public void OnReady() {\n        Log(\"DefenseTower3D armed: \" + this.Name);\n    }\n\n    public void OnUpdate(float dt) {\n        this.timer = this.timer - dt;\n\n        List\u003cEntity\u003e enemies = query Entities\n            where Tag == \"Enemy\" \u0026\u0026 Health \u003e 0.0f \u0026\u0026 DistanceTo(this.Position) \u003c= this.Range\n            orderby DistanceTo(this.Position) asc;\n\n        if (enemies.Count \u003e 0) {\n            Entity primary = enemies[0];\n            this.LookAt(primary.Position);\n            float dist = Distance(this.Position, primary.Position);\n            if (this.timer \u003c= 0.0f \u0026\u0026 dist \u003e 0.2f) {\n                this.timer = this.ReloadTime;\n                Vec3 dir = (primary.Position - this.Position) / dist;\n                Spawn(\"CannonShell\", \"Projectile\", \"Sphere\", this.Position + Vec3(0.0f, 0.6f, 0.0f), dir * this.ShellSpeed);\n                emit TowerFired(primary, dist);\n            }\n        } else {\n            this.Rotation = this.Rotation + Vec3(0.0f, 25.0f * dt, 0.0f);\n        }\n    }\n}\n",
+      "diagnostics": null
+    }
+  ]
+}

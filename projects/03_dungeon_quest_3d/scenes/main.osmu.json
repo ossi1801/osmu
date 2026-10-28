@@ -1,0 +1,965 @@
+{
+  "name": "3D Dungeon Quest \u0026 Signal Vault",
+  "description": "3D Dungeon Adventure where activating 3 Ancient Runes energizes Obelisk Relays via bundled visual nodes to raise the Vault Gate.",
+  "mode": "3D",
+  "entities": [
+    {
+      "id": "dng_floor",
+      "name": "DungeonFloor",
+      "tag": "Environment",
+      "tags": [
+        "Environment"
+      ],
+      "active": true,
+      "layer": 0,
+      "health": 100,
+      "max_health": 100,
+      "speed": 5,
+      "transform": {
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "scale": {
+          "x": 18,
+          "y": 1,
+          "z": 18
+        }
+      },
+      "render": {
+        "visible": true,
+        "mesh": "Plane",
+        "color": {
+          "r": 0.13,
+          "g": 0.15,
+          "b": 0.2,
+          "a": 1
+        },
+        "emissive": 0,
+        "wireframe": false
+      },
+      "physics": {
+        "enabled": true,
+        "is_static": true,
+        "is_trigger": false,
+        "velocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "angular_vel": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "radius": 0.6,
+        "mass": 1,
+        "use_gravity": false
+      }
+    },
+    {
+      "id": "wall_n",
+      "name": "DungeonWall_North",
+      "tag": "Wall",
+      "tags": [
+        "Wall"
+      ],
+      "active": true,
+      "layer": 0,
+      "health": 100,
+      "max_health": 100,
+      "speed": 5,
+      "transform": {
+        "position": {
+          "x": 0,
+          "y": 1.2,
+          "z": -5.5
+        },
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "scale": {
+          "x": 12,
+          "y": 2.4,
+          "z": 0.6
+        }
+      },
+      "render": {
+        "visible": true,
+        "mesh": "Cube",
+        "color": {
+          "r": 0.32,
+          "g": 0.36,
+          "b": 0.45,
+          "a": 1
+        },
+        "emissive": 0,
+        "wireframe": false
+      },
+      "physics": {
+        "enabled": true,
+        "is_static": true,
+        "is_trigger": false,
+        "velocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "angular_vel": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "radius": 0.6,
+        "mass": 1,
+        "use_gravity": false
+      }
+    },
+    {
+      "id": "wall_s",
+      "name": "DungeonWall_South",
+      "tag": "Wall",
+      "tags": [
+        "Wall"
+      ],
+      "active": true,
+      "layer": 0,
+      "health": 100,
+      "max_health": 100,
+      "speed": 5,
+      "transform": {
+        "position": {
+          "x": 0,
+          "y": 1.2,
+          "z": 5.5
+        },
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "scale": {
+          "x": 12,
+          "y": 2.4,
+          "z": 0.6
+        }
+      },
+      "render": {
+        "visible": true,
+        "mesh": "Cube",
+        "color": {
+          "r": 0.32,
+          "g": 0.36,
+          "b": 0.45,
+          "a": 1
+        },
+        "emissive": 0,
+        "wireframe": false
+      },
+      "physics": {
+        "enabled": true,
+        "is_static": true,
+        "is_trigger": false,
+        "velocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "angular_vel": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "radius": 0.6,
+        "mass": 1,
+        "use_gravity": false
+      }
+    },
+    {
+      "id": "pillar_1",
+      "name": "StoneColumn_NW",
+      "tag": "Wall",
+      "tags": [
+        "Wall"
+      ],
+      "active": true,
+      "layer": 0,
+      "health": 100,
+      "max_health": 100,
+      "speed": 5,
+      "transform": {
+        "position": {
+          "x": -2.5,
+          "y": 1.3,
+          "z": -2.5
+        },
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "scale": {
+          "x": 0.9,
+          "y": 2.6,
+          "z": 0.9
+        }
+      },
+      "render": {
+        "visible": true,
+        "mesh": "Cube",
+        "color": {
+          "r": 0.32,
+          "g": 0.36,
+          "b": 0.45,
+          "a": 1
+        },
+        "emissive": 0,
+        "wireframe": false
+      },
+      "physics": {
+        "enabled": true,
+        "is_static": true,
+        "is_trigger": false,
+        "velocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "angular_vel": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "radius": 0.6,
+        "mass": 1,
+        "use_gravity": false
+      }
+    },
+    {
+      "id": "pillar_2",
+      "name": "StoneColumn_SW",
+      "tag": "Wall",
+      "tags": [
+        "Wall"
+      ],
+      "active": true,
+      "layer": 0,
+      "health": 100,
+      "max_health": 100,
+      "speed": 5,
+      "transform": {
+        "position": {
+          "x": -2.5,
+          "y": 1.3,
+          "z": 2.5
+        },
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "scale": {
+          "x": 0.9,
+          "y": 2.6,
+          "z": 0.9
+        }
+      },
+      "render": {
+        "visible": true,
+        "mesh": "Cube",
+        "color": {
+          "r": 0.32,
+          "g": 0.36,
+          "b": 0.45,
+          "a": 1
+        },
+        "emissive": 0,
+        "wireframe": false
+      },
+      "physics": {
+        "enabled": true,
+        "is_static": true,
+        "is_trigger": false,
+        "velocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "angular_vel": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "radius": 0.6,
+        "mass": 1,
+        "use_gravity": false
+      }
+    },
+    {
+      "id": "dng_hero",
+      "name": "DungeonExplorer",
+      "tag": "Player",
+      "tags": [
+        "Player"
+      ],
+      "active": true,
+      "layer": 0,
+      "health": 100,
+      "max_health": 100,
+      "speed": 5,
+      "transform": {
+        "position": {
+          "x": -5.2,
+          "y": 0.85,
+          "z": 0
+        },
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "scale": {
+          "x": 1.1,
+          "y": 1.5,
+          "z": 1.1
+        }
+      },
+      "render": {
+        "visible": true,
+        "mesh": "Pyramid",
+        "color": {
+          "r": 0.22,
+          "g": 0.92,
+          "b": 0.98,
+          "a": 1
+        },
+        "emissive": 0,
+        "wireframe": false
+      },
+      "physics": {
+        "enabled": true,
+        "is_static": false,
+        "is_trigger": false,
+        "velocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "angular_vel": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "radius": 0.6,
+        "mass": 1,
+        "use_gravity": false
+      },
+      "scripts": [
+        {
+          "script_path": "scripts/DungeonExplorer3D.osmu",
+          "component_name": "DungeonExplorer3D",
+          "properties": {
+            "Speed": 5.5
+          }
+        }
+      ],
+      "properties": {
+        "Score": 0
+      }
+    },
+    {
+      "id": "rune_1",
+      "name": "Rune_Crimson",
+      "tag": "Coin",
+      "tags": [
+        "Coin"
+      ],
+      "active": true,
+      "layer": 0,
+      "health": 100,
+      "max_health": 100,
+      "speed": 5,
+      "transform": {
+        "position": {
+          "x": -1.2,
+          "y": 0.75,
+          "z": -1.8
+        },
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "scale": {
+          "x": 0.8,
+          "y": 0.8,
+          "z": 0.8
+        }
+      },
+      "render": {
+        "visible": true,
+        "mesh": "Sphere",
+        "color": {
+          "r": 1,
+          "g": 0.82,
+          "b": 0.22,
+          "a": 1
+        },
+        "emissive": 0,
+        "wireframe": false
+      },
+      "physics": {
+        "enabled": true,
+        "is_static": false,
+        "is_trigger": false,
+        "velocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "angular_vel": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "radius": 0.6,
+        "mass": 1,
+        "use_gravity": false
+      }
+    },
+    {
+      "id": "rune_2",
+      "name": "Rune_Azure",
+      "tag": "Coin",
+      "tags": [
+        "Coin"
+      ],
+      "active": true,
+      "layer": 0,
+      "health": 100,
+      "max_health": 100,
+      "speed": 5,
+      "transform": {
+        "position": {
+          "x": 0.2,
+          "y": 0.75,
+          "z": 1.8
+        },
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "scale": {
+          "x": 0.8,
+          "y": 0.8,
+          "z": 0.8
+        }
+      },
+      "render": {
+        "visible": true,
+        "mesh": "Sphere",
+        "color": {
+          "r": 1,
+          "g": 0.82,
+          "b": 0.22,
+          "a": 1
+        },
+        "emissive": 0,
+        "wireframe": false
+      },
+      "physics": {
+        "enabled": true,
+        "is_static": false,
+        "is_trigger": false,
+        "velocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "angular_vel": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "radius": 0.6,
+        "mass": 1,
+        "use_gravity": false
+      }
+    },
+    {
+      "id": "rune_3",
+      "name": "Rune_Solar",
+      "tag": "Coin",
+      "tags": [
+        "Coin"
+      ],
+      "active": true,
+      "layer": 0,
+      "health": 100,
+      "max_health": 100,
+      "speed": 5,
+      "transform": {
+        "position": {
+          "x": 2,
+          "y": 0.75,
+          "z": 0
+        },
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "scale": {
+          "x": 0.8,
+          "y": 0.8,
+          "z": 0.8
+        }
+      },
+      "render": {
+        "visible": true,
+        "mesh": "Sphere",
+        "color": {
+          "r": 1,
+          "g": 0.82,
+          "b": 0.22,
+          "a": 1
+        },
+        "emissive": 0,
+        "wireframe": false
+      },
+      "physics": {
+        "enabled": true,
+        "is_static": false,
+        "is_trigger": false,
+        "velocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "angular_vel": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "radius": 0.6,
+        "mass": 1,
+        "use_gravity": false
+      }
+    },
+    {
+      "id": "obelisk_n",
+      "name": "ObeliskRelay_North",
+      "tag": "Relay",
+      "tags": [
+        "Relay"
+      ],
+      "active": true,
+      "layer": 0,
+      "health": 50,
+      "max_health": 100,
+      "speed": 5,
+      "transform": {
+        "position": {
+          "x": 3.2,
+          "y": 1.2,
+          "z": -2.8
+        },
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "scale": {
+          "x": 0.9,
+          "y": 2.2,
+          "z": 0.9
+        }
+      },
+      "render": {
+        "visible": true,
+        "mesh": "Cylinder",
+        "color": {
+          "r": 0.32,
+          "g": 0.95,
+          "b": 0.58,
+          "a": 1
+        },
+        "emissive": 0,
+        "wireframe": false
+      },
+      "physics": {
+        "enabled": true,
+        "is_static": true,
+        "is_trigger": false,
+        "velocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "angular_vel": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "radius": 0.6,
+        "mass": 1,
+        "use_gravity": false
+      }
+    },
+    {
+      "id": "obelisk_s",
+      "name": "ObeliskRelay_South",
+      "tag": "Relay",
+      "tags": [
+        "Relay"
+      ],
+      "active": true,
+      "layer": 0,
+      "health": 50,
+      "max_health": 100,
+      "speed": 5,
+      "transform": {
+        "position": {
+          "x": 3.2,
+          "y": 1.2,
+          "z": 2.8
+        },
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "scale": {
+          "x": 0.9,
+          "y": 2.2,
+          "z": 0.9
+        }
+      },
+      "render": {
+        "visible": true,
+        "mesh": "Cylinder",
+        "color": {
+          "r": 0.32,
+          "g": 0.95,
+          "b": 0.58,
+          "a": 1
+        },
+        "emissive": 0,
+        "wireframe": false
+      },
+      "physics": {
+        "enabled": true,
+        "is_static": true,
+        "is_trigger": false,
+        "velocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "angular_vel": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "radius": 0.6,
+        "mass": 1,
+        "use_gravity": false
+      }
+    },
+    {
+      "id": "vault_gate",
+      "name": "AncientVaultGate",
+      "tag": "Gate",
+      "tags": [
+        "Gate"
+      ],
+      "active": true,
+      "layer": 0,
+      "health": 100,
+      "max_health": 100,
+      "speed": 5,
+      "transform": {
+        "position": {
+          "x": 5.2,
+          "y": 1.4,
+          "z": 0
+        },
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "scale": {
+          "x": 0.8,
+          "y": 2.8,
+          "z": 4.8
+        }
+      },
+      "render": {
+        "visible": true,
+        "mesh": "Cube",
+        "color": {
+          "r": 0.95,
+          "g": 0.32,
+          "b": 0.42,
+          "a": 1
+        },
+        "emissive": 0,
+        "wireframe": false
+      },
+      "physics": {
+        "enabled": true,
+        "is_static": true,
+        "is_trigger": false,
+        "velocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "angular_vel": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "radius": 0.6,
+        "mass": 1,
+        "use_gravity": false
+      },
+      "scripts": [
+        {
+          "script_path": "scripts/VaultGate3D.osmu",
+          "component_name": "VaultGate3D",
+          "properties": {
+            "LiftSpeed": 2.8,
+            "OpenHeight": 4.8
+          }
+        }
+      ]
+    }
+  ],
+  "node_graph": {
+    "nodes": [
+      {
+        "id": "np_col",
+        "type": "OnCollision",
+        "title": "On Tag Collision",
+        "category": "Event",
+        "x": 16,
+        "y": 20,
+        "width": 180,
+        "height": 148,
+        "inputs": null,
+        "outputs": [
+          {
+            "name": "Hit",
+            "kind": "Flow"
+          },
+          {
+            "name": "Self",
+            "kind": "Entity"
+          },
+          {
+            "name": "Other",
+            "kind": "Entity"
+          }
+        ],
+        "params": {
+          "TagA": "Player",
+          "TagB": "Coin"
+        }
+      },
+      {
+        "id": "np_sig",
+        "type": "OnSignal",
+        "title": "On Signal Received",
+        "category": "Event",
+        "x": 16,
+        "y": 155,
+        "width": 180,
+        "height": 112,
+        "inputs": null,
+        "outputs": [
+          {
+            "name": "Trigger",
+            "kind": "Flow"
+          },
+          {
+            "name": "Source",
+            "kind": "Entity"
+          }
+        ],
+        "params": {
+          "Signal": "RuneTriggered"
+        }
+      },
+      {
+        "id": "np_qry",
+        "type": "QueryEntities",
+        "title": "Query Entities",
+        "category": "Query",
+        "x": 260,
+        "y": 20,
+        "width": 180,
+        "height": 132,
+        "inputs": [
+          {
+            "name": "In",
+            "kind": "Flow"
+          }
+        ],
+        "outputs": [
+          {
+            "name": "Found",
+            "kind": "Flow"
+          },
+          {
+            "name": "Entities",
+            "kind": "EntityList"
+          },
+          {
+            "name": "Nearest",
+            "kind": "Entity"
+          }
+        ],
+        "params": {
+          "Query": "Tag == \"Relay\""
+        }
+      },
+      {
+        "id": "np_chg",
+        "type": "ModifyProperty",
+        "title": "Modify Property",
+        "category": "Action",
+        "x": 508,
+        "y": 20,
+        "width": 180,
+        "height": 160,
+        "inputs": [
+          {
+            "name": "In",
+            "kind": "Flow"
+          },
+          {
+            "name": "Targets",
+            "kind": "EntityList"
+          }
+        ],
+        "outputs": [
+          {
+            "name": "Done",
+            "kind": "Flow"
+          }
+        ],
+        "params": {
+          "Mode": "Set",
+          "Property": "Health",
+          "TargetTag": "Relay",
+          "Value": "100"
+        }
+      },
+      {
+        "id": "np_emt",
+        "type": "EmitSignal",
+        "title": "Emit Signal",
+        "category": "Action",
+        "x": 508,
+        "y": 155,
+        "width": 180,
+        "height": 128,
+        "inputs": [
+          {
+            "name": "In",
+            "kind": "Flow"
+          },
+          {
+            "name": "Target",
+            "kind": "Entity"
+          }
+        ],
+        "outputs": [
+          {
+            "name": "Done",
+            "kind": "Flow"
+          }
+        ],
+        "params": {
+          "Arg": "Unlocked",
+          "Signal": "VaultCleared"
+        }
+      }
+    ],
+    "links": [
+      {
+        "id": "link_1",
+        "from_node": "np_col",
+        "from_socket": "Hit",
+        "to_node": "np_qry",
+        "to_socket": "In",
+        "kind": "Flow"
+      },
+      {
+        "id": "link_2",
+        "from_node": "np_sig",
+        "from_socket": "Trigger",
+        "to_node": "np_qry",
+        "to_socket": "In",
+        "kind": "Flow"
+      },
+      {
+        "id": "link_3",
+        "from_node": "np_qry",
+        "from_socket": "Found",
+        "to_node": "np_chg",
+        "to_socket": "In",
+        "kind": "Flow"
+      },
+      {
+        "id": "link_4",
+        "from_node": "np_qry",
+        "from_socket": "Entities",
+        "to_node": "np_chg",
+        "to_socket": "Targets",
+        "kind": "EntityList"
+      },
+      {
+        "id": "link_5",
+        "from_node": "np_qry",
+        "from_socket": "Found",
+        "to_node": "np_emt",
+        "to_socket": "In",
+        "kind": "Flow"
+      },
+      {
+        "id": "link_6",
+        "from_node": "np_qry",
+        "from_socket": "Nearest",
+        "to_node": "np_emt",
+        "to_socket": "Target",
+        "kind": "Entity"
+      }
+    ],
+    "auto_group": true,
+    "group_thresh": 95
+  },
+  "scripts": [
+    {
+      "path": "scripts/DungeonExplorer3D.osmu",
+      "source": "namespace DungeonQuest;\n\ncomponent DungeonExplorer3D : Entity {\n    [Export] public float Speed = 5.5f;\n    private int runesActivated = 0;\n\n    signal RuneTriggered(int count);\n\n    public void OnReady() {\n        Log(\"DungeonExplorer entered the Vault! Activate all 3 Runes.\");\n    }\n\n    public void OnUpdate(float dt) {\n        float ix = InputAxisX();\n        float iz = InputAxisY();\n        if (ix != 0.0f || iz != 0.0f) {\n            this.Position = this.Position + Vec3(ix * this.Speed * dt, 0.0f, -iz * this.Speed * dt);\n        } else {\n            // Navigate toward next uncollected Rune crystal\n            List\u003cEntity\u003e runes = query Entities\n                where Tag == \"Coin\" \u0026\u0026 Active == true\n                orderby DistanceTo(this.Position) asc;\n            if (runes.Count \u003e 0) {\n                Entity nextRune = runes[0];\n                this.LookAt(nextRune.Position);\n                float d = Distance(this.Position, nextRune.Position);\n                if (d \u003e 0.2f) {\n                    this.Position = this.Position + ((nextRune.Position - this.Position) / d) * (this.Speed * dt);\n                }\n            }\n        }\n    }\n\n    public void OnCollision(Entity other) {\n        if (other.HasTag(\"Coin\")) {\n            Destroy(other);\n            this.runesActivated = this.runesActivated + 1;\n            Log(\"Activated Ancient Rune #\" + this.runesActivated);\n            emit RuneTriggered(this.runesActivated);\n        }\n    }\n}\n",
+      "diagnostics": null
+    },
+    {
+      "path": "scripts/VaultGate3D.osmu",
+      "source": "namespace DungeonQuest;\n\ncomponent VaultGate3D : Entity {\n    [Export] public float OpenHeight = 4.6f;\n    [Export] public float LiftSpeed = 2.8f;\n    private bool unlocked = false;\n\n    signal VaultOpened(string gateName);\n\n    public void OnReady() {\n        Log(\"VaultGate3D sealed: awaiting 3 charged Obelisks.\");\n    }\n\n    public void OnUpdate(float dt) {\n        List\u003cEntity\u003e charged = query Entities\n            where Tag == \"Relay\" \u0026\u0026 Health \u003e= 100.0f\n            orderby Name asc;\n\n        if (charged.Count \u003e= 2 \u0026\u0026 !this.unlocked) {\n            this.unlocked = true;\n            Log(\"All Obelisks energized! Raising \" + this.Name);\n            emit VaultOpened(this.Name);\n        }\n\n        if (this.unlocked \u0026\u0026 this.Position.Y \u003c this.OpenHeight) {\n            this.Position = this.Position + Vec3(0.0f, this.LiftSpeed * dt, 0.0f);\n        }\n    }\n}\n",
+      "diagnostics": null
+    }
+  ]
+}

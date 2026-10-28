@@ -1,0 +1,1539 @@
+{
+  "name": "Cyber Survivors 2D - Neon Arena",
+  "description": "Playable 2D Twin-Stick / Bullet-Heaven Action Game (WASD + Auto-Targeting Plasma Bolts + Orbital Drones + XP Leveling)",
+  "mode": "2D",
+  "entities": [
+    {
+      "id": "pillar_nw",
+      "name": "NeonPillar",
+      "tag": "Environment",
+      "tags": [
+        "Environment"
+      ],
+      "active": true,
+      "layer": 0,
+      "health": 100,
+      "max_health": 100,
+      "speed": 5,
+      "transform": {
+        "position": {
+          "x": -4.5,
+          "y": 3.2,
+          "z": 0
+        },
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "scale": {
+          "x": 1.1,
+          "y": 1.1,
+          "z": 1
+        }
+      },
+      "render": {
+        "visible": true,
+        "mesh": "Sprite2D",
+        "color": {
+          "r": 0.22,
+          "g": 0.28,
+          "b": 0.42,
+          "a": 1
+        },
+        "emissive": 0,
+        "wireframe": false
+      },
+      "physics": {
+        "enabled": true,
+        "is_static": true,
+        "is_trigger": false,
+        "velocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "angular_vel": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "radius": 0.6,
+        "mass": 1,
+        "use_gravity": false
+      }
+    },
+    {
+      "id": "pillar_ne",
+      "name": "NeonPillar",
+      "tag": "Environment",
+      "tags": [
+        "Environment"
+      ],
+      "active": true,
+      "layer": 0,
+      "health": 100,
+      "max_health": 100,
+      "speed": 5,
+      "transform": {
+        "position": {
+          "x": 4.5,
+          "y": 3.2,
+          "z": 0
+        },
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "scale": {
+          "x": 1.1,
+          "y": 1.1,
+          "z": 1
+        }
+      },
+      "render": {
+        "visible": true,
+        "mesh": "Sprite2D",
+        "color": {
+          "r": 0.22,
+          "g": 0.28,
+          "b": 0.42,
+          "a": 1
+        },
+        "emissive": 0,
+        "wireframe": false
+      },
+      "physics": {
+        "enabled": true,
+        "is_static": true,
+        "is_trigger": false,
+        "velocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "angular_vel": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "radius": 0.6,
+        "mass": 1,
+        "use_gravity": false
+      }
+    },
+    {
+      "id": "pillar_sw",
+      "name": "NeonPillar",
+      "tag": "Environment",
+      "tags": [
+        "Environment"
+      ],
+      "active": true,
+      "layer": 0,
+      "health": 100,
+      "max_health": 100,
+      "speed": 5,
+      "transform": {
+        "position": {
+          "x": -4.5,
+          "y": -3.2,
+          "z": 0
+        },
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "scale": {
+          "x": 1.1,
+          "y": 1.1,
+          "z": 1
+        }
+      },
+      "render": {
+        "visible": true,
+        "mesh": "Sprite2D",
+        "color": {
+          "r": 0.22,
+          "g": 0.28,
+          "b": 0.42,
+          "a": 1
+        },
+        "emissive": 0,
+        "wireframe": false
+      },
+      "physics": {
+        "enabled": true,
+        "is_static": true,
+        "is_trigger": false,
+        "velocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "angular_vel": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "radius": 0.6,
+        "mass": 1,
+        "use_gravity": false
+      }
+    },
+    {
+      "id": "pillar_se",
+      "name": "NeonPillar",
+      "tag": "Environment",
+      "tags": [
+        "Environment"
+      ],
+      "active": true,
+      "layer": 0,
+      "health": 100,
+      "max_health": 100,
+      "speed": 5,
+      "transform": {
+        "position": {
+          "x": 4.5,
+          "y": -3.2,
+          "z": 0
+        },
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "scale": {
+          "x": 1.1,
+          "y": 1.1,
+          "z": 1
+        }
+      },
+      "render": {
+        "visible": true,
+        "mesh": "Sprite2D",
+        "color": {
+          "r": 0.22,
+          "g": 0.28,
+          "b": 0.42,
+          "a": 1
+        },
+        "emissive": 0,
+        "wireframe": false
+      },
+      "physics": {
+        "enabled": true,
+        "is_static": true,
+        "is_trigger": false,
+        "velocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "angular_vel": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "radius": 0.6,
+        "mass": 1,
+        "use_gravity": false
+      }
+    },
+    {
+      "id": "hero_2d",
+      "name": "CyberValkyrie",
+      "tag": "Player",
+      "tags": [
+        "Player"
+      ],
+      "active": true,
+      "layer": 0,
+      "health": 100,
+      "max_health": 100,
+      "speed": 5,
+      "transform": {
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "scale": {
+          "x": 1.15,
+          "y": 1.15,
+          "z": 1
+        }
+      },
+      "render": {
+        "visible": true,
+        "mesh": "Sprite2D",
+        "color": {
+          "r": 0.15,
+          "g": 0.95,
+          "b": 1,
+          "a": 1
+        },
+        "emissive": 0,
+        "wireframe": false
+      },
+      "physics": {
+        "enabled": true,
+        "is_static": false,
+        "is_trigger": false,
+        "velocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "angular_vel": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "radius": 0.6,
+        "mass": 1,
+        "use_gravity": false
+      },
+      "scripts": [
+        {
+          "script_path": "scripts/CyberHero2D.osmu",
+          "component_name": "CyberHero2D",
+          "properties": {
+            "FireInterval": 0.28,
+            "FireRange": 9.5,
+            "MoveSpeed": 6.5
+          }
+        }
+      ],
+      "properties": {
+        "Score": 0
+      }
+    },
+    {
+      "id": "drone_2d_1",
+      "name": "OrbitalDrone_A",
+      "tag": "Drone",
+      "tags": [
+        "Drone"
+      ],
+      "active": true,
+      "layer": 0,
+      "health": 100,
+      "max_health": 100,
+      "speed": 5,
+      "transform": {
+        "position": {
+          "x": 2.2,
+          "y": 0,
+          "z": 0
+        },
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "scale": {
+          "x": 0.7,
+          "y": 0.7,
+          "z": 0.7
+        }
+      },
+      "render": {
+        "visible": true,
+        "mesh": "Ring2D",
+        "color": {
+          "r": 0.35,
+          "g": 1,
+          "b": 0.65,
+          "a": 1
+        },
+        "emissive": 0,
+        "wireframe": false
+      },
+      "physics": {
+        "enabled": true,
+        "is_static": false,
+        "is_trigger": false,
+        "velocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "angular_vel": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "radius": 0.6,
+        "mass": 1,
+        "use_gravity": false
+      },
+      "scripts": [
+        {
+          "script_path": "scripts/OrbitalDrone2D.osmu",
+          "component_name": "OrbitalDrone2D",
+          "properties": {
+            "OrbitRadius": 2.4,
+            "OrbitSpeed": 3,
+            "PhaseOffset": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "drone_2d_2",
+      "name": "OrbitalDrone_B",
+      "tag": "Drone",
+      "tags": [
+        "Drone"
+      ],
+      "active": true,
+      "layer": 0,
+      "health": 100,
+      "max_health": 100,
+      "speed": 5,
+      "transform": {
+        "position": {
+          "x": 2.2,
+          "y": 0,
+          "z": 0
+        },
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "scale": {
+          "x": 0.7,
+          "y": 0.7,
+          "z": 0.7
+        }
+      },
+      "render": {
+        "visible": true,
+        "mesh": "Ring2D",
+        "color": {
+          "r": 0.35,
+          "g": 1,
+          "b": 0.65,
+          "a": 1
+        },
+        "emissive": 0,
+        "wireframe": false
+      },
+      "physics": {
+        "enabled": true,
+        "is_static": false,
+        "is_trigger": false,
+        "velocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "angular_vel": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "radius": 0.6,
+        "mass": 1,
+        "use_gravity": false
+      },
+      "scripts": [
+        {
+          "script_path": "scripts/OrbitalDrone2D.osmu",
+          "component_name": "OrbitalDrone2D",
+          "properties": {
+            "OrbitRadius": 2.4,
+            "OrbitSpeed": 3,
+            "PhaseOffset": 3.14159
+          }
+        }
+      ]
+    },
+    {
+      "id": "sw_01",
+      "name": "Swarmer_01",
+      "tag": "Enemy",
+      "tags": [
+        "Enemy"
+      ],
+      "active": true,
+      "layer": 0,
+      "health": 70,
+      "max_health": 70,
+      "speed": 5,
+      "transform": {
+        "position": {
+          "x": -7,
+          "y": 4.2,
+          "z": 0
+        },
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "scale": {
+          "x": 0.85,
+          "y": 0.85,
+          "z": 1
+        }
+      },
+      "render": {
+        "visible": true,
+        "mesh": "Circle2D",
+        "color": {
+          "r": 1,
+          "g": 0.28,
+          "b": 0.52,
+          "a": 1
+        },
+        "emissive": 0,
+        "wireframe": false
+      },
+      "physics": {
+        "enabled": true,
+        "is_static": false,
+        "is_trigger": false,
+        "velocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "angular_vel": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "radius": 0.6,
+        "mass": 1,
+        "use_gravity": false
+      }
+    },
+    {
+      "id": "sw_02",
+      "name": "Swarmer_02",
+      "tag": "Enemy",
+      "tags": [
+        "Enemy"
+      ],
+      "active": true,
+      "layer": 0,
+      "health": 70,
+      "max_health": 70,
+      "speed": 5,
+      "transform": {
+        "position": {
+          "x": -6.2,
+          "y": -4,
+          "z": 0
+        },
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "scale": {
+          "x": 0.85,
+          "y": 0.85,
+          "z": 1
+        }
+      },
+      "render": {
+        "visible": true,
+        "mesh": "Circle2D",
+        "color": {
+          "r": 1,
+          "g": 0.28,
+          "b": 0.52,
+          "a": 1
+        },
+        "emissive": 0,
+        "wireframe": false
+      },
+      "physics": {
+        "enabled": true,
+        "is_static": false,
+        "is_trigger": false,
+        "velocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "angular_vel": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "radius": 0.6,
+        "mass": 1,
+        "use_gravity": false
+      }
+    },
+    {
+      "id": "sw_03",
+      "name": "Swarmer_03",
+      "tag": "Enemy",
+      "tags": [
+        "Enemy"
+      ],
+      "active": true,
+      "layer": 0,
+      "health": 70,
+      "max_health": 70,
+      "speed": 5,
+      "transform": {
+        "position": {
+          "x": 7.2,
+          "y": 3.8,
+          "z": 0
+        },
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "scale": {
+          "x": 0.85,
+          "y": 0.85,
+          "z": 1
+        }
+      },
+      "render": {
+        "visible": true,
+        "mesh": "Circle2D",
+        "color": {
+          "r": 1,
+          "g": 0.28,
+          "b": 0.52,
+          "a": 1
+        },
+        "emissive": 0,
+        "wireframe": false
+      },
+      "physics": {
+        "enabled": true,
+        "is_static": false,
+        "is_trigger": false,
+        "velocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "angular_vel": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "radius": 0.6,
+        "mass": 1,
+        "use_gravity": false
+      }
+    },
+    {
+      "id": "sw_04",
+      "name": "Swarmer_04",
+      "tag": "Enemy",
+      "tags": [
+        "Enemy"
+      ],
+      "active": true,
+      "layer": 0,
+      "health": 70,
+      "max_health": 70,
+      "speed": 5,
+      "transform": {
+        "position": {
+          "x": 6.5,
+          "y": -4.2,
+          "z": 0
+        },
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "scale": {
+          "x": 0.85,
+          "y": 0.85,
+          "z": 1
+        }
+      },
+      "render": {
+        "visible": true,
+        "mesh": "Circle2D",
+        "color": {
+          "r": 1,
+          "g": 0.28,
+          "b": 0.52,
+          "a": 1
+        },
+        "emissive": 0,
+        "wireframe": false
+      },
+      "physics": {
+        "enabled": true,
+        "is_static": false,
+        "is_trigger": false,
+        "velocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "angular_vel": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "radius": 0.6,
+        "mass": 1,
+        "use_gravity": false
+      }
+    },
+    {
+      "id": "sw_05",
+      "name": "Swarmer_05",
+      "tag": "Enemy",
+      "tags": [
+        "Enemy"
+      ],
+      "active": true,
+      "layer": 0,
+      "health": 70,
+      "max_health": 70,
+      "speed": 5,
+      "transform": {
+        "position": {
+          "x": 0,
+          "y": 5.8,
+          "z": 0
+        },
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "scale": {
+          "x": 0.85,
+          "y": 0.85,
+          "z": 1
+        }
+      },
+      "render": {
+        "visible": true,
+        "mesh": "Circle2D",
+        "color": {
+          "r": 1,
+          "g": 0.28,
+          "b": 0.52,
+          "a": 1
+        },
+        "emissive": 0,
+        "wireframe": false
+      },
+      "physics": {
+        "enabled": true,
+        "is_static": false,
+        "is_trigger": false,
+        "velocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "angular_vel": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "radius": 0.6,
+        "mass": 1,
+        "use_gravity": false
+      }
+    },
+    {
+      "id": "sw_06",
+      "name": "Swarmer_06",
+      "tag": "Enemy",
+      "tags": [
+        "Enemy"
+      ],
+      "active": true,
+      "layer": 0,
+      "health": 70,
+      "max_health": 70,
+      "speed": 5,
+      "transform": {
+        "position": {
+          "x": 0,
+          "y": -5.8,
+          "z": 0
+        },
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "scale": {
+          "x": 0.85,
+          "y": 0.85,
+          "z": 1
+        }
+      },
+      "render": {
+        "visible": true,
+        "mesh": "Circle2D",
+        "color": {
+          "r": 1,
+          "g": 0.28,
+          "b": 0.52,
+          "a": 1
+        },
+        "emissive": 0,
+        "wireframe": false
+      },
+      "physics": {
+        "enabled": true,
+        "is_static": false,
+        "is_trigger": false,
+        "velocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "angular_vel": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "radius": 0.6,
+        "mass": 1,
+        "use_gravity": false
+      }
+    },
+    {
+      "id": "el_01",
+      "name": "CyberBrute_Alpha",
+      "tag": "Enemy",
+      "tags": [
+        "Enemy"
+      ],
+      "active": true,
+      "layer": 0,
+      "health": 160,
+      "max_health": 160,
+      "speed": 5,
+      "transform": {
+        "position": {
+          "x": -8.2,
+          "y": 0,
+          "z": 0
+        },
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "scale": {
+          "x": 1.35,
+          "y": 1.35,
+          "z": 1
+        }
+      },
+      "render": {
+        "visible": true,
+        "mesh": "Circle2D",
+        "color": {
+          "r": 0.95,
+          "g": 0.45,
+          "b": 0.18,
+          "a": 1
+        },
+        "emissive": 0,
+        "wireframe": false
+      },
+      "physics": {
+        "enabled": true,
+        "is_static": false,
+        "is_trigger": false,
+        "velocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "angular_vel": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "radius": 0.6,
+        "mass": 1,
+        "use_gravity": false
+      }
+    },
+    {
+      "id": "el_02",
+      "name": "CyberBrute_Omega",
+      "tag": "Enemy",
+      "tags": [
+        "Enemy"
+      ],
+      "active": true,
+      "layer": 0,
+      "health": 160,
+      "max_health": 160,
+      "speed": 5,
+      "transform": {
+        "position": {
+          "x": 8.2,
+          "y": 0,
+          "z": 0
+        },
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "scale": {
+          "x": 1.35,
+          "y": 1.35,
+          "z": 1
+        }
+      },
+      "render": {
+        "visible": true,
+        "mesh": "Circle2D",
+        "color": {
+          "r": 0.95,
+          "g": 0.45,
+          "b": 0.18,
+          "a": 1
+        },
+        "emissive": 0,
+        "wireframe": false
+      },
+      "physics": {
+        "enabled": true,
+        "is_static": false,
+        "is_trigger": false,
+        "velocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "angular_vel": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "radius": 0.6,
+        "mass": 1,
+        "use_gravity": false
+      }
+    },
+    {
+      "id": "gem_2d_1",
+      "name": "XPCrystal_01",
+      "tag": "Coin",
+      "tags": [
+        "Coin"
+      ],
+      "active": true,
+      "layer": 0,
+      "health": 100,
+      "max_health": 100,
+      "speed": 5,
+      "transform": {
+        "position": {
+          "x": -2.5,
+          "y": 1.8,
+          "z": 0
+        },
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "scale": {
+          "x": 0.65,
+          "y": 0.65,
+          "z": 1
+        }
+      },
+      "render": {
+        "visible": true,
+        "mesh": "Ring2D",
+        "color": {
+          "r": 1,
+          "g": 0.9,
+          "b": 0.22,
+          "a": 1
+        },
+        "emissive": 0,
+        "wireframe": false
+      },
+      "physics": {
+        "enabled": true,
+        "is_static": false,
+        "is_trigger": false,
+        "velocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "angular_vel": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "radius": 0.6,
+        "mass": 1,
+        "use_gravity": false
+      }
+    },
+    {
+      "id": "gem_2d_2",
+      "name": "XPCrystal_02",
+      "tag": "Coin",
+      "tags": [
+        "Coin"
+      ],
+      "active": true,
+      "layer": 0,
+      "health": 100,
+      "max_health": 100,
+      "speed": 5,
+      "transform": {
+        "position": {
+          "x": 2.6,
+          "y": 1.8,
+          "z": 0
+        },
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "scale": {
+          "x": 0.65,
+          "y": 0.65,
+          "z": 1
+        }
+      },
+      "render": {
+        "visible": true,
+        "mesh": "Ring2D",
+        "color": {
+          "r": 1,
+          "g": 0.9,
+          "b": 0.22,
+          "a": 1
+        },
+        "emissive": 0,
+        "wireframe": false
+      },
+      "physics": {
+        "enabled": true,
+        "is_static": false,
+        "is_trigger": false,
+        "velocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "angular_vel": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "radius": 0.6,
+        "mass": 1,
+        "use_gravity": false
+      }
+    },
+    {
+      "id": "gem_2d_3",
+      "name": "XPCrystal_03",
+      "tag": "Coin",
+      "tags": [
+        "Coin"
+      ],
+      "active": true,
+      "layer": 0,
+      "health": 100,
+      "max_health": 100,
+      "speed": 5,
+      "transform": {
+        "position": {
+          "x": -2.6,
+          "y": -1.9,
+          "z": 0
+        },
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "scale": {
+          "x": 0.65,
+          "y": 0.65,
+          "z": 1
+        }
+      },
+      "render": {
+        "visible": true,
+        "mesh": "Ring2D",
+        "color": {
+          "r": 1,
+          "g": 0.9,
+          "b": 0.22,
+          "a": 1
+        },
+        "emissive": 0,
+        "wireframe": false
+      },
+      "physics": {
+        "enabled": true,
+        "is_static": false,
+        "is_trigger": false,
+        "velocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "angular_vel": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "radius": 0.6,
+        "mass": 1,
+        "use_gravity": false
+      }
+    },
+    {
+      "id": "gem_2d_4",
+      "name": "XPCrystal_04",
+      "tag": "Coin",
+      "tags": [
+        "Coin"
+      ],
+      "active": true,
+      "layer": 0,
+      "health": 100,
+      "max_health": 100,
+      "speed": 5,
+      "transform": {
+        "position": {
+          "x": 2.5,
+          "y": -1.9,
+          "z": 0
+        },
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "scale": {
+          "x": 0.65,
+          "y": 0.65,
+          "z": 1
+        }
+      },
+      "render": {
+        "visible": true,
+        "mesh": "Ring2D",
+        "color": {
+          "r": 1,
+          "g": 0.9,
+          "b": 0.22,
+          "a": 1
+        },
+        "emissive": 0,
+        "wireframe": false
+      },
+      "physics": {
+        "enabled": true,
+        "is_static": false,
+        "is_trigger": false,
+        "velocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "angular_vel": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "radius": 0.6,
+        "mass": 1,
+        "use_gravity": false
+      }
+    },
+    {
+      "id": "gem_2d_5",
+      "name": "XPCrystal_05",
+      "tag": "Coin",
+      "tags": [
+        "Coin"
+      ],
+      "active": true,
+      "layer": 0,
+      "health": 100,
+      "max_health": 100,
+      "speed": 5,
+      "transform": {
+        "position": {
+          "x": 0,
+          "y": 3.2,
+          "z": 0
+        },
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "scale": {
+          "x": 0.65,
+          "y": 0.65,
+          "z": 1
+        }
+      },
+      "render": {
+        "visible": true,
+        "mesh": "Ring2D",
+        "color": {
+          "r": 1,
+          "g": 0.9,
+          "b": 0.22,
+          "a": 1
+        },
+        "emissive": 0,
+        "wireframe": false
+      },
+      "physics": {
+        "enabled": true,
+        "is_static": false,
+        "is_trigger": false,
+        "velocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "angular_vel": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "radius": 0.6,
+        "mass": 1,
+        "use_gravity": false
+      }
+    }
+  ],
+  "node_graph": {
+    "nodes": [
+      {
+        "id": "n_upd",
+        "type": "OnUpdate",
+        "title": "On Frame Update",
+        "category": "Event",
+        "x": 16,
+        "y": 14,
+        "width": 180,
+        "height": 112,
+        "inputs": null,
+        "outputs": [
+          {
+            "name": "Tick",
+            "kind": "Flow"
+          },
+          {
+            "name": "Dt",
+            "kind": "Float"
+          }
+        ],
+        "params": {
+          "Interval": "0.0"
+        }
+      },
+      {
+        "id": "n_sig",
+        "type": "OnSignal",
+        "title": "On Signal Received",
+        "category": "Event",
+        "x": 16,
+        "y": 134,
+        "width": 180,
+        "height": 112,
+        "inputs": null,
+        "outputs": [
+          {
+            "name": "Trigger",
+            "kind": "Flow"
+          },
+          {
+            "name": "Source",
+            "kind": "Entity"
+          }
+        ],
+        "params": {
+          "Signal": "PlasmaFired"
+        }
+      },
+      {
+        "id": "n_col",
+        "type": "OnCollision",
+        "title": "On Tag Collision",
+        "category": "Event",
+        "x": 16,
+        "y": 254,
+        "width": 180,
+        "height": 148,
+        "inputs": null,
+        "outputs": [
+          {
+            "name": "Hit",
+            "kind": "Flow"
+          },
+          {
+            "name": "Self",
+            "kind": "Entity"
+          },
+          {
+            "name": "Other",
+            "kind": "Entity"
+          }
+        ],
+        "params": {
+          "TagA": "Player",
+          "TagB": "Coin"
+        }
+      },
+      {
+        "id": "n_qry",
+        "type": "QueryEntities",
+        "title": "Query Entities",
+        "category": "Query",
+        "x": 260,
+        "y": 14,
+        "width": 180,
+        "height": 132,
+        "inputs": [
+          {
+            "name": "In",
+            "kind": "Flow"
+          }
+        ],
+        "outputs": [
+          {
+            "name": "Found",
+            "kind": "Flow"
+          },
+          {
+            "name": "Entities",
+            "kind": "EntityList"
+          },
+          {
+            "name": "Nearest",
+            "kind": "Entity"
+          }
+        ],
+        "params": {
+          "Query": "Tag == \"Enemy\" \u0026\u0026 Health \u003e 0 orderby Distance asc"
+        }
+      },
+      {
+        "id": "n_flt",
+        "type": "FilterLowHealth",
+        "title": "Filter By Property",
+        "category": "Query",
+        "x": 260,
+        "y": 156,
+        "width": 180,
+        "height": 144,
+        "inputs": [
+          {
+            "name": "In",
+            "kind": "Flow"
+          },
+          {
+            "name": "Entities",
+            "kind": "EntityList"
+          }
+        ],
+        "outputs": [
+          {
+            "name": "Match",
+            "kind": "Flow"
+          },
+          {
+            "name": "Filtered",
+            "kind": "EntityList"
+          }
+        ],
+        "params": {
+          "Op": "\u003c=",
+          "Property": "Health",
+          "Value": "80"
+        }
+      },
+      {
+        "id": "n_mov",
+        "type": "MoveTowards",
+        "title": "Move Towards Target",
+        "category": "Action",
+        "x": 508,
+        "y": 14,
+        "width": 180,
+        "height": 164,
+        "inputs": [
+          {
+            "name": "In",
+            "kind": "Flow"
+          },
+          {
+            "name": "Actors",
+            "kind": "EntityList"
+          },
+          {
+            "name": "Goal",
+            "kind": "Entity"
+          }
+        ],
+        "outputs": [
+          {
+            "name": "Done",
+            "kind": "Flow"
+          }
+        ],
+        "params": {
+          "ActorTag": "Enemy",
+          "GoalTag": "Player",
+          "Speed": "2.2"
+        }
+      },
+      {
+        "id": "n_scr",
+        "type": "ModifyProperty",
+        "title": "Modify Property",
+        "category": "Action",
+        "x": 508,
+        "y": 156,
+        "width": 180,
+        "height": 160,
+        "inputs": [
+          {
+            "name": "In",
+            "kind": "Flow"
+          },
+          {
+            "name": "Targets",
+            "kind": "EntityList"
+          }
+        ],
+        "outputs": [
+          {
+            "name": "Done",
+            "kind": "Flow"
+          }
+        ],
+        "params": {
+          "Mode": "Add",
+          "Property": "Score",
+          "TargetTag": "Player",
+          "Value": "25"
+        }
+      }
+    ],
+    "links": [
+      {
+        "id": "link_1",
+        "from_node": "n_upd",
+        "from_socket": "Tick",
+        "to_node": "n_qry",
+        "to_socket": "In",
+        "kind": "Flow"
+      },
+      {
+        "id": "link_2",
+        "from_node": "n_sig",
+        "from_socket": "Trigger",
+        "to_node": "n_qry",
+        "to_socket": "In",
+        "kind": "Flow"
+      },
+      {
+        "id": "link_3",
+        "from_node": "n_sig",
+        "from_socket": "Trigger",
+        "to_node": "n_flt",
+        "to_socket": "In",
+        "kind": "Flow"
+      },
+      {
+        "id": "link_4",
+        "from_node": "n_qry",
+        "from_socket": "Found",
+        "to_node": "n_mov",
+        "to_socket": "In",
+        "kind": "Flow"
+      },
+      {
+        "id": "link_5",
+        "from_node": "n_qry",
+        "from_socket": "Entities",
+        "to_node": "n_mov",
+        "to_socket": "Actors",
+        "kind": "EntityList"
+      },
+      {
+        "id": "link_6",
+        "from_node": "n_qry",
+        "from_socket": "Nearest",
+        "to_node": "n_mov",
+        "to_socket": "Goal",
+        "kind": "Entity"
+      },
+      {
+        "id": "link_7",
+        "from_node": "n_flt",
+        "from_socket": "Match",
+        "to_node": "n_scr",
+        "to_socket": "In",
+        "kind": "Flow"
+      },
+      {
+        "id": "link_8",
+        "from_node": "n_col",
+        "from_socket": "Hit",
+        "to_node": "n_scr",
+        "to_socket": "In",
+        "kind": "Flow"
+      }
+    ],
+    "auto_group": true,
+    "group_thresh": 95
+  },
+  "scripts": [
+    {
+      "path": "scripts/CyberHero2D.osmu",
+      "source": "namespace CyberSurvivors;\n\ncomponent CyberHero2D : Entity {\n    [Export] public float MoveSpeed = 6.5f;\n    [Export] public float FireRange = 9.5f;\n    [Export] public float FireInterval = 0.28f;\n    private float fireTimer = 0.0f;\n    private int xp = 0;\n    private int level = 1;\n\n    signal PlasmaFired(Entity target, int level);\n    signal HeroLevelUp(int newLevel);\n\n    public void OnReady() {\n        Log(\"CyberHero2D ready! Use WASD / Arrows to move.\");\n    }\n\n    public void OnUpdate(float dt) {\n        this.fireTimer = this.fireTimer - dt;\n\n        // Player WASD / Arrow movement (with smart kiting if no keys pressed)\n        float ix = InputAxisX();\n        float iy = InputAxisY();\n        if (ix != 0.0f || iy != 0.0f) {\n            this.Position = this.Position + Vec3(ix * this.MoveSpeed * dt, iy * this.MoveSpeed * dt, 0.0f);\n        } else {\n            // Auto-pilot toward nearest XP gem while evading close enemies\n            List\u003cEntity\u003e gems = query Entities\n                where Tag == \"Coin\" \u0026\u0026 Active == true\n                orderby DistanceTo(this.Position) asc;\n            if (gems.Count \u003e 0) {\n                Entity g = gems[0];\n                float gd = Distance(this.Position, g.Position);\n                if (gd \u003e 0.25f) {\n                    Vec3 dir = (g.Position - this.Position) / gd;\n                    this.Position = this.Position + dir * (this.MoveSpeed * 0.65f * dt);\n                }\n            }\n        }\n\n        // Auto-target nearest enemy within FireRange using 1-line .osmu query\n        List\u003cEntity\u003e enemies = query Entities\n            where Tag == \"Enemy\" \u0026\u0026 Health \u003e 0.0f \u0026\u0026 DistanceTo(this.Position) \u003c= this.FireRange\n            orderby DistanceTo(this.Position) asc;\n\n        if (enemies.Count \u003e 0 \u0026\u0026 this.fireTimer \u003c= 0.0f) {\n            Entity nearest = enemies[0];\n            this.LookAt(nearest.Position);\n            float d = Distance(this.Position, nearest.Position);\n            if (d \u003e 0.1f) {\n                Vec3 boltVel = ((nearest.Position - this.Position) / d) * 14.0f;\n                Spawn(\"PlasmaBolt\", \"Projectile\", \"Circle2D\", this.Position, boltVel);\n                this.fireTimer = this.FireInterval;\n                emit PlasmaFired(nearest, this.level);\n            }\n        }\n    }\n\n    public void OnCollision(Entity other) {\n        if (other.HasTag(\"Coin\")) {\n            Destroy(other);\n            this.xp = this.xp + 1;\n            if (this.xp \u003e= 2) {\n                this.xp = 0;\n                this.level = this.level + 1;\n                if (this.FireInterval \u003e 0.12f) {\n                    this.FireInterval = this.FireInterval - 0.04f;\n                }\n                Log(\"LEVEL UP! Hero reached Level \" + this.level);\n                emit HeroLevelUp(this.level);\n            }\n        }\n    }\n}\n",
+      "diagnostics": null
+    },
+    {
+      "path": "scripts/OrbitalDrone2D.osmu",
+      "source": "namespace CyberSurvivors;\n\ncomponent OrbitalDrone2D : Entity {\n    [Export] public float OrbitRadius = 2.4f;\n    [Export] public float OrbitSpeed = 2.8f;\n    [Export] public float PhaseOffset = 0.0f;\n    private float angle = 0.0f;\n\n    public void OnReady() {\n        this.angle = this.PhaseOffset;\n    }\n\n    public void OnUpdate(float dt) {\n        this.angle = this.angle + this.OrbitSpeed * dt;\n        List\u003cEntity\u003e heroes = query Entities where Tag == \"Player\";\n        if (heroes.Count \u003e 0) {\n            Entity hero = heroes[0];\n            float ox = Cos(this.angle) * this.OrbitRadius;\n            float oy = Sin(this.angle) * this.OrbitRadius;\n            this.Position = hero.Position + Vec3(ox, oy, 0.0f);\n        }\n\n        // Zap any enemy touching the orbital ring\n        List\u003cEntity\u003e closeFoes = query Entities\n            where Tag == \"Enemy\" \u0026\u0026 DistanceTo(this.Position) \u003c= 1.3f;\n        foreach (Entity foe in closeFoes) {\n            foe.Health = foe.Health - (45.0f * dt);\n            if (foe.Health \u003c= 0.0f) {\n                Destroy(foe);\n            }\n        }\n    }\n}\n",
+      "diagnostics": null
+    }
+  ]
+}

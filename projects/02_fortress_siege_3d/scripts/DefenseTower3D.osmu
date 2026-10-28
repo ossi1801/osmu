@@ -1,0 +1,36 @@
+namespace FortressSiege;
+
+component DefenseTower3D : Entity {
+    [Export] public float Range = 13.5f;
+    [Export] public float ReloadTime = 0.65f;
+    [Export] public float ShellSpeed = 15.0f;
+    private float timer = 0.0f;
+
+    signal TowerFired(Entity enemy, float dist);
+
+    public void OnReady() {
+        Log("DefenseTower3D armed: " + this.Name);
+    }
+
+    public void OnUpdate(float dt) {
+        this.timer = this.timer - dt;
+
+        List<Entity> enemies = query Entities
+            where Tag == "Enemy" && Health > 0.0f && DistanceTo(this.Position) <= this.Range
+            orderby DistanceTo(this.Position) asc;
+
+        if (enemies.Count > 0) {
+            Entity primary = enemies[0];
+            this.LookAt(primary.Position);
+            float dist = Distance(this.Position, primary.Position);
+            if (this.timer <= 0.0f && dist > 0.2f) {
+                this.timer = this.ReloadTime;
+                Vec3 dir = (primary.Position - this.Position) / dist;
+                Spawn("CannonShell", "Projectile", "Sphere", this.Position + Vec3(0.0f, 0.6f, 0.0f), dir * this.ShellSpeed);
+                emit TowerFired(primary, dist);
+            }
+        } else {
+            this.Rotation = this.Rotation + Vec3(0.0f, 25.0f * dt, 0.0f);
+        }
+    }
+}

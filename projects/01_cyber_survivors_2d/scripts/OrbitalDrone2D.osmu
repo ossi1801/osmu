@@ -1,0 +1,33 @@
+namespace CyberSurvivors;
+
+component OrbitalDrone2D : Entity {
+    [Export] public float OrbitRadius = 2.4f;
+    [Export] public float OrbitSpeed = 2.8f;
+    [Export] public float PhaseOffset = 0.0f;
+    private float angle = 0.0f;
+
+    public void OnReady() {
+        this.angle = this.PhaseOffset;
+    }
+
+    public void OnUpdate(float dt) {
+        this.angle = this.angle + this.OrbitSpeed * dt;
+        List<Entity> heroes = query Entities where Tag == "Player";
+        if (heroes.Count > 0) {
+            Entity hero = heroes[0];
+            float ox = Cos(this.angle) * this.OrbitRadius;
+            float oy = Sin(this.angle) * this.OrbitRadius;
+            this.Position = hero.Position + Vec3(ox, oy, 0.0f);
+        }
+
+        // Zap any enemy touching the orbital ring
+        List<Entity> closeFoes = query Entities
+            where Tag == "Enemy" && DistanceTo(this.Position) <= 1.3f;
+        foreach (Entity foe in closeFoes) {
+            foe.Health = foe.Health - (45.0f * dt);
+            if (foe.Health <= 0.0f) {
+                Destroy(foe);
+            }
+        }
+    }
+}

@@ -1,0 +1,15 @@
+{
+  "name": "3D Dungeon Quest \u0026 Signal Vault",
+  "version": "1.0.0",
+  "description": "3D Dungeon Adventure where activating 3 Ancient Runes energizes Obelisk Relays via bundled visual nodes to raise the Vault Gate.",
+  "genre": "3D Adventure / Signal Puzzle",
+  "default_mode": "3D",
+  "default_scene": "scenes/main.osmu.json",
+  "scenes": [
+    "scenes/main.osmu.json"
+  ],
+  "scripts": [
+    "scripts/DungeonExplorer3D.osmu",
+    "scripts/VaultGate3D.osmu"
+  ]
+}

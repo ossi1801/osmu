@@ -1,0 +1,50 @@
+namespace Minesweeper;
+
+component MineScannerHUD : Entity {
+    [Export] public int TotalMines = 6;
+    private int revealedCount = 0;
+    private int flagCount = 0;
+
+    signal TileRevealed(Entity tile, int adjMines);
+    signal FlagToggled(Entity tile, int totalFlags);
+    signal MineDetonated(Entity mineTile);
+    signal BoardCleared(int safeCount);
+
+    public void OnReady() {
+        this.revealedCount = 0;
+        this.flagCount = 0;
+        this.Label = "MINES: " + this.TotalMines;
+        this.Color = Color(0.20f, 0.65f, 0.95f, 1.0f);
+    }
+
+    public void OnUpdate(float dt) {
+        List<Entity> cleared = query Entities
+            where Tag == "Tile" && Health == 0.0f && Speed < 0.5f;
+        this.revealedCount = cleared.Count;
+        this.Score = this.revealedCount;
+    }
+
+    on TileRevealed(Entity tile, int adjMines) {
+        List<Entity> flags = query Entities
+            where Tag == "Tile" && Health > 40.0f && Health < 60.0f;
+        int rem = this.TotalMines - flags.Count;
+        this.Label = "M:" + rem;
+    }
+
+    on FlagToggled(Entity tile, int totalFlags) {
+        this.flagCount = totalFlags;
+        int rem = this.TotalMines - totalFlags;
+        this.Label = "M:" + rem;
+        this.Color = Color(0.95f, 0.68f, 0.18f, 1.0f);
+    }
+
+    on MineDetonated(Entity mineTile) {
+        this.Label = "BOOM";
+        this.Color = Color(0.98f, 0.20f, 0.24f, 1.0f);
+    }
+
+    on BoardCleared(int safeCount) {
+        this.Label = "WIN!";
+        this.Color = Color(0.22f, 0.95f, 0.48f, 1.0f);
+    }
+}

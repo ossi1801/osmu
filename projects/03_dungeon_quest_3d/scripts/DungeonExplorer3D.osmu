@@ -1,0 +1,42 @@
+namespace DungeonQuest;
+
+component DungeonExplorer3D : Entity {
+    [Export] public float Speed = 5.5f;
+    private int runesActivated = 0;
+
+    signal RuneTriggered(int count);
+
+    public void OnReady() {
+        Log("DungeonExplorer entered the Vault! Activate all 3 Runes.");
+    }
+
+    public void OnUpdate(float dt) {
+        float ix = InputAxisX();
+        float iz = InputAxisY();
+        if (ix != 0.0f || iz != 0.0f) {
+            this.Position = this.Position + Vec3(ix * this.Speed * dt, 0.0f, -iz * this.Speed * dt);
+        } else {
+            // Navigate toward next uncollected Rune crystal
+            List<Entity> runes = query Entities
+                where Tag == "Coin" && Active == true
+                orderby DistanceTo(this.Position) asc;
+            if (runes.Count > 0) {
+                Entity nextRune = runes[0];
+                this.LookAt(nextRune.Position);
+                float d = Distance(this.Position, nextRune.Position);
+                if (d > 0.2f) {
+                    this.Position = this.Position + ((nextRune.Position - this.Position) / d) * (this.Speed * dt);
+                }
+            }
+        }
+    }
+
+    public void OnCollision(Entity other) {
+        if (other.HasTag("Coin")) {
+            Destroy(other);
+            this.runesActivated = this.runesActivated + 1;
+            Log("Activated Ancient Rune #" + this.runesActivated);
+            emit RuneTriggered(this.runesActivated);
+        }
+    }
+}

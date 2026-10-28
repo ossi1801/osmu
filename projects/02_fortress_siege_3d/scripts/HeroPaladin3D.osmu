@@ -1,0 +1,55 @@
+namespace FortressSiege;
+
+component HeroPaladin3D : Entity {
+    [Export] public float MoveSpeed = 6.0f;
+    [Export] public float CleaveRange = 3.2f;
+    [Export] public float CleaveDamage = 40.0f;
+    private float attackTimer = 0.0f;
+
+    signal CleaveStrike(Entity target, float dmg);
+
+    public void OnReady() {
+        Log("HeroPaladin3D defending the Citadel! Use WASD to command.");
+    }
+
+    public void OnUpdate(float dt) {
+        this.attackTimer = this.attackTimer - dt;
+        float ix = InputAxisX();
+        float iz = InputAxisY();
+        if (ix != 0.0f || iz != 0.0f) {
+            this.Position = this.Position + Vec3(ix * this.MoveSpeed * dt, 0.0f, -iz * this.MoveSpeed * dt);
+        } else {
+            // Patrol toward nearest gold mana crystal or closest siege attacker
+            List<Entity> crystals = query Entities
+                where Tag == "Coin" && Active == true
+                orderby DistanceTo(this.Position) asc;
+            if (crystals.Count > 0) {
+                Entity c = crystals[0];
+                this.LookAt(c.Position);
+                float d = Distance(this.Position, c.Position);
+                if (d > 0.25f) {
+                    this.Position = this.Position + ((c.Position - this.Position) / d) * (this.MoveSpeed * 0.75f * dt);
+                }
+            }
+        }
+
+        List<Entity> raiders = query Entities
+            where Tag == "Enemy" && Health > 0.0f && DistanceTo(this.Position) <= this.CleaveRange
+            orderby DistanceTo(this.Position) asc;
+
+        if (raiders.Count > 0 && this.attackTimer <= 0.0f) {
+            this.attackTimer = 0.45f;
+            Entity target = raiders[0];
+            this.LookAt(target.Position);
+            emit CleaveStrike(target, this.CleaveDamage);
+        }
+    }
+
+    on CleaveStrike(Entity target, float dmg) {
+        target.Health = target.Health - dmg;
+        if (target.Health <= 0.0f) {
+            Log("Paladin vanquished " + target.Name);
+            Destroy(target);
+        }
+    }
+}

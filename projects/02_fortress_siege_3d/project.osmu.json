@@ -1,0 +1,15 @@
+{
+  "name": "3D Fortress Siege \u0026 Tower Defense",
+  "version": "1.0.0",
+  "description": "3D Castle Defense with WASD Hero Paladin, 3 Auto-Targeting Artillery Towers, 3D Projectiles, and Siege Golems.",
+  "genre": "3D Action Strategy / Tower Defense",
+  "default_mode": "3D",
+  "default_scene": "scenes/main.osmu.json",
+  "scenes": [
+    "scenes/main.osmu.json"
+  ],
+  "scripts": [
+    "scripts/HeroPaladin3D.osmu",
+    "scripts/DefenseTower3D.osmu"
+  ]
+}

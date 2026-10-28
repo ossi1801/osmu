@@ -1,0 +1,15 @@
+{
+  "name": "Cyber Survivors 2D",
+  "version": "1.0.0",
+  "description": "Playable 2D Twin-Stick / Bullet-Heaven Action Game (WASD + Auto-Targeting Plasma Bolts + Orbital Drones + XP Leveling)",
+  "genre": "2D Action / Bullet-Heaven",
+  "default_mode": "2D",
+  "default_scene": "scenes/main.osmu.json",
+  "scenes": [
+    "scenes/main.osmu.json"
+  ],
+  "scripts": [
+    "scripts/CyberHero2D.osmu",
+    "scripts/OrbitalDrone2D.osmu"
+  ]
+}

@@ -1,0 +1,29 @@
+namespace DungeonQuest;
+
+component VaultGate3D : Entity {
+    [Export] public float OpenHeight = 4.6f;
+    [Export] public float LiftSpeed = 2.8f;
+    private bool unlocked = false;
+
+    signal VaultOpened(string gateName);
+
+    public void OnReady() {
+        Log("VaultGate3D sealed: awaiting 3 charged Obelisks.");
+    }
+
+    public void OnUpdate(float dt) {
+        List<Entity> charged = query Entities
+            where Tag == "Relay" && Health >= 100.0f
+            orderby Name asc;
+
+        if (charged.Count >= 2 && !this.unlocked) {
+            this.unlocked = true;
+            Log("All Obelisks energized! Raising " + this.Name);
+            emit VaultOpened(this.Name);
+        }
+
+        if (this.unlocked && this.Position.Y < this.OpenHeight) {
+            this.Position = this.Position + Vec3(0.0f, this.LiftSpeed * dt, 0.0f);
+        }
+    }
+}

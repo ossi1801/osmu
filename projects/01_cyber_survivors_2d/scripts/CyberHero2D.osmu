@@ -1,0 +1,74 @@
+namespace CyberSurvivors;
+
+component CyberHero2D : Entity {
+    [Export] public float MoveSpeed = 6.5f;
+    [Export] public float FireRange = 9.5f;
+    [Export] public float FireInterval = 0.28f;
+    private float fireTimer = 0.0f;
+    private int xp = 0;
+    private int level = 1;
+
+    signal PlasmaFired(Entity target, int level);
+    signal HeroLevelUp(int newLevel);
+
+    public void OnReady() {
+        Log("CyberHero2D ready! Use WASD / Arrows to move.");
+    }
+
+    public void OnUpdate(float dt) {
+        this.fireTimer = this.fireTimer - dt;
+
+        // Player WASD / Arrow movement (with smart kiting if no keys pressed)
+        float ix = InputAxisX();
+        float iy = InputAxisY();
+        if (ix != 0.0f || iy != 0.0f) {
+            this.Position = this.Position + Vec3(ix * this.MoveSpeed * dt, iy * this.MoveSpeed * dt, 0.0f);
+        } else {
+            // Auto-pilot toward nearest XP gem while evading close enemies
+            List<Entity> gems = query Entities
+                where Tag == "Coin" && Active == true
+                orderby DistanceTo(this.Position) asc;
+            if (gems.Count > 0) {
+                Entity g = gems[0];
+                float gd = Distance(this.Position, g.Position);
+                if (gd > 0.25f) {
+                    Vec3 dir = (g.Position - this.Position) / gd;
+                    this.Position = this.Position + dir * (this.MoveSpeed * 0.65f * dt);
+                }
+            }
+        }
+
+        // Auto-target nearest enemy within FireRange using 1-line .osmu query
+        List<Entity> enemies = query Entities
+            where Tag == "Enemy" && Health > 0.0f && DistanceTo(this.Position) <= this.FireRange
+            orderby DistanceTo(this.Position) asc;
+
+        if (enemies.Count > 0 && this.fireTimer <= 0.0f) {
+            Entity nearest = enemies[0];
+            this.LookAt(nearest.Position);
+            float d = Distance(this.Position, nearest.Position);
+            if (d > 0.1f) {
+                Vec3 boltVel = ((nearest.Position - this.Position) / d) * 14.0f;
+                Spawn("PlasmaBolt", "Projectile", "Circle2D", this.Position, boltVel);
+                this.fireTimer = this.FireInterval;
+                emit PlasmaFired(nearest, this.level);
+            }
+        }
+    }
+
+    public void OnCollision(Entity other) {
+        if (other.HasTag("Coin")) {
+            Destroy(other);
+            this.xp = this.xp + 1;
+            if (this.xp >= 2) {
+                this.xp = 0;
+                this.level = this.level + 1;
+                if (this.FireInterval > 0.12f) {
+                    this.FireInterval = this.FireInterval - 0.04f;
+                }
+                Log("LEVEL UP! Hero reached Level " + this.level);
+                emit HeroLevelUp(this.level);
+            }
+        }
+    }
+}
