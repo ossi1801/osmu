@@ -43,7 +43,7 @@ component FlappyBirdController : Entity {
         this.Label = "0";
         this.Score = 0.0f;
 
-        // Reset pipe pairs across the screen at X = 3.0, 8.5, 14.0, 19.5
+        // Reset pipe pairs across the screen at X = 3.5, 9.0, 14.5, 20.0
         List<Entity> topPipes = query Entities
             where Tag == "PipeTop"
             orderby Name asc;

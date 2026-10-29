@@ -230,7 +230,7 @@ osmu screenshot build/preview.png 0 25
 
 ```bash
 # Clone the repository
-git clone https://github.com/rat/osmu.git
+git clone https://github.com/ossi1801/osmu.git
 cd osmu
 
 # Verify the test suite across all subsystems

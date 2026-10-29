@@ -1,0 +1,1514 @@
+{
+  "name": "Flappy Bird 2D - Sky Run",
+  "description": "Playable 2D/3D Flappy Bird built in .osmu with Gravity/Flap Physics, Procedural Scrolling Pipes, Spatial Queries \u0026 Auto-Pilot AI",
+  "mode": "2D",
+  "entities": [
+    {
+      "id": "cloud_1",
+      "name": "SkyCloud_01",
+      "tag": "Cloud",
+      "tags": [
+        "Cloud"
+      ],
+      "active": true,
+      "layer": 0,
+      "health": 100,
+      "max_health": 100,
+      "speed": 5,
+      "transform": {
+        "position": {
+          "x": -7.5,
+          "y": 4.2,
+          "z": -0.5
+        },
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "scale": {
+          "x": 2.2,
+          "y": 1.1,
+          "z": 0.4
+        }
+      },
+      "render": {
+        "visible": true,
+        "mesh": "Circle2D",
+        "color": {
+          "r": 0.22,
+          "g": 0.3,
+          "b": 0.44,
+          "a": 1
+        },
+        "emissive": 0,
+        "wireframe": false
+      },
+      "physics": {
+        "enabled": false,
+        "is_static": true,
+        "is_trigger": false,
+        "velocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "angular_vel": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "radius": 0.6,
+        "mass": 1,
+        "use_gravity": false
+      }
+    },
+    {
+      "id": "cloud_2",
+      "name": "SkyCloud_02",
+      "tag": "Cloud",
+      "tags": [
+        "Cloud"
+      ],
+      "active": true,
+      "layer": 0,
+      "health": 100,
+      "max_health": 100,
+      "speed": 5,
+      "transform": {
+        "position": {
+          "x": -1.5,
+          "y": 4.8,
+          "z": -0.5
+        },
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "scale": {
+          "x": 2.2,
+          "y": 1.1,
+          "z": 0.4
+        }
+      },
+      "render": {
+        "visible": true,
+        "mesh": "Circle2D",
+        "color": {
+          "r": 0.22,
+          "g": 0.3,
+          "b": 0.44,
+          "a": 1
+        },
+        "emissive": 0,
+        "wireframe": false
+      },
+      "physics": {
+        "enabled": false,
+        "is_static": true,
+        "is_trigger": false,
+        "velocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "angular_vel": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "radius": 0.6,
+        "mass": 1,
+        "use_gravity": false
+      }
+    },
+    {
+      "id": "cloud_3",
+      "name": "SkyCloud_03",
+      "tag": "Cloud",
+      "tags": [
+        "Cloud"
+      ],
+      "active": true,
+      "layer": 0,
+      "health": 100,
+      "max_health": 100,
+      "speed": 5,
+      "transform": {
+        "position": {
+          "x": 4.5,
+          "y": 3.9,
+          "z": -0.5
+        },
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "scale": {
+          "x": 2.2,
+          "y": 1.1,
+          "z": 0.4
+        }
+      },
+      "render": {
+        "visible": true,
+        "mesh": "Circle2D",
+        "color": {
+          "r": 0.22,
+          "g": 0.3,
+          "b": 0.44,
+          "a": 1
+        },
+        "emissive": 0,
+        "wireframe": false
+      },
+      "physics": {
+        "enabled": false,
+        "is_static": true,
+        "is_trigger": false,
+        "velocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "angular_vel": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "radius": 0.6,
+        "mass": 1,
+        "use_gravity": false
+      }
+    },
+    {
+      "id": "cloud_4",
+      "name": "SkyCloud_04",
+      "tag": "Cloud",
+      "tags": [
+        "Cloud"
+      ],
+      "active": true,
+      "layer": 0,
+      "health": 100,
+      "max_health": 100,
+      "speed": 5,
+      "transform": {
+        "position": {
+          "x": 10.5,
+          "y": 4.5,
+          "z": -0.5
+        },
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "scale": {
+          "x": 2.2,
+          "y": 1.1,
+          "z": 0.4
+        }
+      },
+      "render": {
+        "visible": true,
+        "mesh": "Circle2D",
+        "color": {
+          "r": 0.22,
+          "g": 0.3,
+          "b": 0.44,
+          "a": 1
+        },
+        "emissive": 0,
+        "wireframe": false
+      },
+      "physics": {
+        "enabled": false,
+        "is_static": true,
+        "is_trigger": false,
+        "velocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "angular_vel": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "radius": 0.6,
+        "mass": 1,
+        "use_gravity": false
+      }
+    },
+    {
+      "id": "pipe_top_1",
+      "name": "PipeTop_01",
+      "tag": "PipeTop",
+      "tags": [
+        "PipeTop"
+      ],
+      "active": true,
+      "layer": 0,
+      "health": 100,
+      "max_health": 0,
+      "speed": 5,
+      "transform": {
+        "position": {
+          "x": 3.5,
+          "y": 6.4,
+          "z": 0
+        },
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "scale": {
+          "x": 1.6,
+          "y": 8,
+          "z": 1.2
+        }
+      },
+      "render": {
+        "visible": true,
+        "mesh": "Sprite2D",
+        "color": {
+          "r": 0.22,
+          "g": 0.78,
+          "b": 0.35,
+          "a": 1
+        },
+        "emissive": 0,
+        "wireframe": false
+      },
+      "physics": {
+        "enabled": false,
+        "is_static": true,
+        "is_trigger": false,
+        "velocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "angular_vel": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "radius": 0.6,
+        "mass": 1,
+        "use_gravity": false
+      },
+      "properties": {
+        "Damage": 0.6
+      }
+    },
+    {
+      "id": "pipe_bot_1",
+      "name": "PipeBottom_01",
+      "tag": "PipeBottom",
+      "tags": [
+        "PipeBottom"
+      ],
+      "active": true,
+      "layer": 0,
+      "health": 100,
+      "max_health": 0,
+      "speed": 5,
+      "transform": {
+        "position": {
+          "x": 3.5,
+          "y": -5.2,
+          "z": 0
+        },
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "scale": {
+          "x": 1.6,
+          "y": 8,
+          "z": 1.2
+        }
+      },
+      "render": {
+        "visible": true,
+        "mesh": "Sprite2D",
+        "color": {
+          "r": 0.22,
+          "g": 0.78,
+          "b": 0.35,
+          "a": 1
+        },
+        "emissive": 0,
+        "wireframe": false
+      },
+      "physics": {
+        "enabled": false,
+        "is_static": true,
+        "is_trigger": false,
+        "velocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "angular_vel": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "radius": 0.6,
+        "mass": 1,
+        "use_gravity": false
+      },
+      "properties": {
+        "Damage": 0.6
+      }
+    },
+    {
+      "id": "pipe_top_2",
+      "name": "PipeTop_02",
+      "tag": "PipeTop",
+      "tags": [
+        "PipeTop"
+      ],
+      "active": true,
+      "layer": 0,
+      "health": 100,
+      "max_health": 0,
+      "speed": 5,
+      "transform": {
+        "position": {
+          "x": 9,
+          "y": 4.6,
+          "z": 0
+        },
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "scale": {
+          "x": 1.6,
+          "y": 8,
+          "z": 1.2
+        }
+      },
+      "render": {
+        "visible": true,
+        "mesh": "Sprite2D",
+        "color": {
+          "r": 0.22,
+          "g": 0.78,
+          "b": 0.35,
+          "a": 1
+        },
+        "emissive": 0,
+        "wireframe": false
+      },
+      "physics": {
+        "enabled": false,
+        "is_static": true,
+        "is_trigger": false,
+        "velocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "angular_vel": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "radius": 0.6,
+        "mass": 1,
+        "use_gravity": false
+      },
+      "properties": {
+        "Damage": -1.2
+      }
+    },
+    {
+      "id": "pipe_bot_2",
+      "name": "PipeBottom_02",
+      "tag": "PipeBottom",
+      "tags": [
+        "PipeBottom"
+      ],
+      "active": true,
+      "layer": 0,
+      "health": 100,
+      "max_health": 0,
+      "speed": 5,
+      "transform": {
+        "position": {
+          "x": 9,
+          "y": -7,
+          "z": 0
+        },
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "scale": {
+          "x": 1.6,
+          "y": 8,
+          "z": 1.2
+        }
+      },
+      "render": {
+        "visible": true,
+        "mesh": "Sprite2D",
+        "color": {
+          "r": 0.22,
+          "g": 0.78,
+          "b": 0.35,
+          "a": 1
+        },
+        "emissive": 0,
+        "wireframe": false
+      },
+      "physics": {
+        "enabled": false,
+        "is_static": true,
+        "is_trigger": false,
+        "velocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "angular_vel": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "radius": 0.6,
+        "mass": 1,
+        "use_gravity": false
+      },
+      "properties": {
+        "Damage": -1.2
+      }
+    },
+    {
+      "id": "pipe_top_3",
+      "name": "PipeTop_03",
+      "tag": "PipeTop",
+      "tags": [
+        "PipeTop"
+      ],
+      "active": true,
+      "layer": 0,
+      "health": 100,
+      "max_health": 0,
+      "speed": 5,
+      "transform": {
+        "position": {
+          "x": 14.5,
+          "y": 7.2,
+          "z": 0
+        },
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "scale": {
+          "x": 1.6,
+          "y": 8,
+          "z": 1.2
+        }
+      },
+      "render": {
+        "visible": true,
+        "mesh": "Sprite2D",
+        "color": {
+          "r": 0.22,
+          "g": 0.78,
+          "b": 0.35,
+          "a": 1
+        },
+        "emissive": 0,
+        "wireframe": false
+      },
+      "physics": {
+        "enabled": false,
+        "is_static": true,
+        "is_trigger": false,
+        "velocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "angular_vel": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "radius": 0.6,
+        "mass": 1,
+        "use_gravity": false
+      },
+      "properties": {
+        "Damage": 1.4
+      }
+    },
+    {
+      "id": "pipe_bot_3",
+      "name": "PipeBottom_03",
+      "tag": "PipeBottom",
+      "tags": [
+        "PipeBottom"
+      ],
+      "active": true,
+      "layer": 0,
+      "health": 100,
+      "max_health": 0,
+      "speed": 5,
+      "transform": {
+        "position": {
+          "x": 14.5,
+          "y": -4.4,
+          "z": 0
+        },
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "scale": {
+          "x": 1.6,
+          "y": 8,
+          "z": 1.2
+        }
+      },
+      "render": {
+        "visible": true,
+        "mesh": "Sprite2D",
+        "color": {
+          "r": 0.22,
+          "g": 0.78,
+          "b": 0.35,
+          "a": 1
+        },
+        "emissive": 0,
+        "wireframe": false
+      },
+      "physics": {
+        "enabled": false,
+        "is_static": true,
+        "is_trigger": false,
+        "velocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "angular_vel": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "radius": 0.6,
+        "mass": 1,
+        "use_gravity": false
+      },
+      "properties": {
+        "Damage": 1.4
+      }
+    },
+    {
+      "id": "pipe_top_4",
+      "name": "PipeTop_04",
+      "tag": "PipeTop",
+      "tags": [
+        "PipeTop"
+      ],
+      "active": true,
+      "layer": 0,
+      "health": 100,
+      "max_health": 0,
+      "speed": 5,
+      "transform": {
+        "position": {
+          "x": 20,
+          "y": 5.3,
+          "z": 0
+        },
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "scale": {
+          "x": 1.6,
+          "y": 8,
+          "z": 1.2
+        }
+      },
+      "render": {
+        "visible": true,
+        "mesh": "Sprite2D",
+        "color": {
+          "r": 0.22,
+          "g": 0.78,
+          "b": 0.35,
+          "a": 1
+        },
+        "emissive": 0,
+        "wireframe": false
+      },
+      "physics": {
+        "enabled": false,
+        "is_static": true,
+        "is_trigger": false,
+        "velocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "angular_vel": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "radius": 0.6,
+        "mass": 1,
+        "use_gravity": false
+      },
+      "properties": {
+        "Damage": -0.5
+      }
+    },
+    {
+      "id": "pipe_bot_4",
+      "name": "PipeBottom_04",
+      "tag": "PipeBottom",
+      "tags": [
+        "PipeBottom"
+      ],
+      "active": true,
+      "layer": 0,
+      "health": 100,
+      "max_health": 0,
+      "speed": 5,
+      "transform": {
+        "position": {
+          "x": 20,
+          "y": -6.3,
+          "z": 0
+        },
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "scale": {
+          "x": 1.6,
+          "y": 8,
+          "z": 1.2
+        }
+      },
+      "render": {
+        "visible": true,
+        "mesh": "Sprite2D",
+        "color": {
+          "r": 0.22,
+          "g": 0.78,
+          "b": 0.35,
+          "a": 1
+        },
+        "emissive": 0,
+        "wireframe": false
+      },
+      "physics": {
+        "enabled": false,
+        "is_static": true,
+        "is_trigger": false,
+        "velocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "angular_vel": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "radius": 0.6,
+        "mass": 1,
+        "use_gravity": false
+      },
+      "properties": {
+        "Damage": -0.5
+      }
+    },
+    {
+      "id": "ground_seg_1",
+      "name": "GroundStrip_01",
+      "tag": "GroundTile",
+      "tags": [
+        "GroundTile"
+      ],
+      "active": true,
+      "layer": 0,
+      "health": 100,
+      "max_health": 100,
+      "speed": 5,
+      "transform": {
+        "position": {
+          "x": -10,
+          "y": -7.2,
+          "z": 0.1
+        },
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "scale": {
+          "x": 4.8,
+          "y": 2.4,
+          "z": 0.8
+        }
+      },
+      "render": {
+        "visible": true,
+        "mesh": "Sprite2D",
+        "color": {
+          "r": 0.32,
+          "g": 0.62,
+          "b": 0.26,
+          "a": 1
+        },
+        "emissive": 0,
+        "wireframe": false
+      },
+      "physics": {
+        "enabled": false,
+        "is_static": true,
+        "is_trigger": false,
+        "velocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "angular_vel": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "radius": 0.6,
+        "mass": 1,
+        "use_gravity": false
+      }
+    },
+    {
+      "id": "ground_seg_2",
+      "name": "GroundStrip_02",
+      "tag": "GroundTile",
+      "tags": [
+        "GroundTile"
+      ],
+      "active": true,
+      "layer": 0,
+      "health": 100,
+      "max_health": 100,
+      "speed": 5,
+      "transform": {
+        "position": {
+          "x": -6,
+          "y": -7.2,
+          "z": 0.1
+        },
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "scale": {
+          "x": 4.8,
+          "y": 2.4,
+          "z": 0.8
+        }
+      },
+      "render": {
+        "visible": true,
+        "mesh": "Sprite2D",
+        "color": {
+          "r": 0.32,
+          "g": 0.62,
+          "b": 0.26,
+          "a": 1
+        },
+        "emissive": 0,
+        "wireframe": false
+      },
+      "physics": {
+        "enabled": false,
+        "is_static": true,
+        "is_trigger": false,
+        "velocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "angular_vel": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "radius": 0.6,
+        "mass": 1,
+        "use_gravity": false
+      }
+    },
+    {
+      "id": "ground_seg_3",
+      "name": "GroundStrip_03",
+      "tag": "GroundTile",
+      "tags": [
+        "GroundTile"
+      ],
+      "active": true,
+      "layer": 0,
+      "health": 100,
+      "max_health": 100,
+      "speed": 5,
+      "transform": {
+        "position": {
+          "x": -2,
+          "y": -7.2,
+          "z": 0.1
+        },
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "scale": {
+          "x": 4.8,
+          "y": 2.4,
+          "z": 0.8
+        }
+      },
+      "render": {
+        "visible": true,
+        "mesh": "Sprite2D",
+        "color": {
+          "r": 0.32,
+          "g": 0.62,
+          "b": 0.26,
+          "a": 1
+        },
+        "emissive": 0,
+        "wireframe": false
+      },
+      "physics": {
+        "enabled": false,
+        "is_static": true,
+        "is_trigger": false,
+        "velocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "angular_vel": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "radius": 0.6,
+        "mass": 1,
+        "use_gravity": false
+      }
+    },
+    {
+      "id": "ground_seg_4",
+      "name": "GroundStrip_04",
+      "tag": "GroundTile",
+      "tags": [
+        "GroundTile"
+      ],
+      "active": true,
+      "layer": 0,
+      "health": 100,
+      "max_health": 100,
+      "speed": 5,
+      "transform": {
+        "position": {
+          "x": 2,
+          "y": -7.2,
+          "z": 0.1
+        },
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "scale": {
+          "x": 4.8,
+          "y": 2.4,
+          "z": 0.8
+        }
+      },
+      "render": {
+        "visible": true,
+        "mesh": "Sprite2D",
+        "color": {
+          "r": 0.32,
+          "g": 0.62,
+          "b": 0.26,
+          "a": 1
+        },
+        "emissive": 0,
+        "wireframe": false
+      },
+      "physics": {
+        "enabled": false,
+        "is_static": true,
+        "is_trigger": false,
+        "velocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "angular_vel": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "radius": 0.6,
+        "mass": 1,
+        "use_gravity": false
+      }
+    },
+    {
+      "id": "ground_seg_5",
+      "name": "GroundStrip_05",
+      "tag": "GroundTile",
+      "tags": [
+        "GroundTile"
+      ],
+      "active": true,
+      "layer": 0,
+      "health": 100,
+      "max_health": 100,
+      "speed": 5,
+      "transform": {
+        "position": {
+          "x": 6,
+          "y": -7.2,
+          "z": 0.1
+        },
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "scale": {
+          "x": 4.8,
+          "y": 2.4,
+          "z": 0.8
+        }
+      },
+      "render": {
+        "visible": true,
+        "mesh": "Sprite2D",
+        "color": {
+          "r": 0.32,
+          "g": 0.62,
+          "b": 0.26,
+          "a": 1
+        },
+        "emissive": 0,
+        "wireframe": false
+      },
+      "physics": {
+        "enabled": false,
+        "is_static": true,
+        "is_trigger": false,
+        "velocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "angular_vel": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "radius": 0.6,
+        "mass": 1,
+        "use_gravity": false
+      }
+    },
+    {
+      "id": "ground_seg_6",
+      "name": "GroundStrip_06",
+      "tag": "GroundTile",
+      "tags": [
+        "GroundTile"
+      ],
+      "active": true,
+      "layer": 0,
+      "health": 100,
+      "max_health": 100,
+      "speed": 5,
+      "transform": {
+        "position": {
+          "x": 10,
+          "y": -7.2,
+          "z": 0.1
+        },
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "scale": {
+          "x": 4.8,
+          "y": 2.4,
+          "z": 0.8
+        }
+      },
+      "render": {
+        "visible": true,
+        "mesh": "Sprite2D",
+        "color": {
+          "r": 0.32,
+          "g": 0.62,
+          "b": 0.26,
+          "a": 1
+        },
+        "emissive": 0,
+        "wireframe": false
+      },
+      "physics": {
+        "enabled": false,
+        "is_static": true,
+        "is_trigger": false,
+        "velocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "angular_vel": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "radius": 0.6,
+        "mass": 1,
+        "use_gravity": false
+      }
+    },
+    {
+      "id": "flappy_hud",
+      "name": "FlappyScoreHUD",
+      "tag": "HUD",
+      "tags": [
+        "HUD"
+      ],
+      "active": true,
+      "layer": 0,
+      "health": 100,
+      "max_health": 100,
+      "speed": 5,
+      "transform": {
+        "position": {
+          "x": -7.2,
+          "y": 4.8,
+          "z": 0.3
+        },
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "scale": {
+          "x": 2.8,
+          "y": 1.3,
+          "z": 0.5
+        }
+      },
+      "render": {
+        "visible": true,
+        "mesh": "Sprite2D",
+        "color": {
+          "r": 0.2,
+          "g": 0.68,
+          "b": 0.98,
+          "a": 1
+        },
+        "emissive": 0,
+        "wireframe": false,
+        "label": "SCORE: 0"
+      },
+      "physics": {
+        "enabled": false,
+        "is_static": true,
+        "is_trigger": false,
+        "velocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "angular_vel": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "radius": 0.6,
+        "mass": 1,
+        "use_gravity": false
+      },
+      "scripts": [
+        {
+          "script_path": "scripts/FlappyScoreHUD.osmu",
+          "component_name": "FlappyScoreHUD"
+        }
+      ],
+      "properties": {
+        "Score": 0
+      }
+    },
+    {
+      "id": "flappy_bird",
+      "name": "FlappyBird",
+      "tag": "Player",
+      "tags": [
+        "Player"
+      ],
+      "active": true,
+      "layer": 0,
+      "health": 100,
+      "max_health": 100,
+      "speed": 5,
+      "transform": {
+        "position": {
+          "x": -3.5,
+          "y": 0.5,
+          "z": 0.2
+        },
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "scale": {
+          "x": 1.15,
+          "y": 1.15,
+          "z": 1.15
+        }
+      },
+      "render": {
+        "visible": true,
+        "mesh": "Circle2D",
+        "color": {
+          "r": 1,
+          "g": 0.85,
+          "b": 0.15,
+          "a": 1
+        },
+        "emissive": 0,
+        "wireframe": false,
+        "label": "0"
+      },
+      "physics": {
+        "enabled": false,
+        "is_static": false,
+        "is_trigger": false,
+        "velocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "angular_vel": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "radius": 0.6,
+        "mass": 1,
+        "use_gravity": false
+      },
+      "scripts": [
+        {
+          "script_path": "scripts/FlappyBirdController.osmu",
+          "component_name": "FlappyBirdController",
+          "properties": {
+            "BirdRadius": 0.55,
+            "CeilingY": 5.8,
+            "FlapVelocity": 8.2,
+            "FloorY": -5.8,
+            "Gravity": 22,
+            "PipeGap": 3.6,
+            "PipeHeight": 8,
+            "PipeSpeed": 4.5,
+            "PipeWidth": 1.6
+          }
+        }
+      ],
+      "properties": {
+        "Score": 0
+      }
+    }
+  ],
+  "node_graph": {
+    "nodes": [
+      {
+        "id": "fb_sig_score",
+        "type": "OnSignal",
+        "title": "On Signal Received",
+        "category": "Event",
+        "x": 16,
+        "y": 18,
+        "width": 180,
+        "height": 112,
+        "inputs": null,
+        "outputs": [
+          {
+            "name": "Trigger",
+            "kind": "Flow"
+          },
+          {
+            "name": "Source",
+            "kind": "Entity"
+          }
+        ],
+        "params": {
+          "Signal": "ScoreIncreased"
+        }
+      },
+      {
+        "id": "fb_sig_flap",
+        "type": "OnSignal",
+        "title": "On Signal Received",
+        "category": "Event",
+        "x": 16,
+        "y": 148,
+        "width": 180,
+        "height": 112,
+        "inputs": null,
+        "outputs": [
+          {
+            "name": "Trigger",
+            "kind": "Flow"
+          },
+          {
+            "name": "Source",
+            "kind": "Entity"
+          }
+        ],
+        "params": {
+          "Signal": "BirdFlapped"
+        }
+      },
+      {
+        "id": "fb_qry_pipes",
+        "type": "QueryEntities",
+        "title": "Query Entities",
+        "category": "Query",
+        "x": 260,
+        "y": 18,
+        "width": 180,
+        "height": 132,
+        "inputs": [
+          {
+            "name": "In",
+            "kind": "Flow"
+          }
+        ],
+        "outputs": [
+          {
+            "name": "Found",
+            "kind": "Flow"
+          },
+          {
+            "name": "Entities",
+            "kind": "EntityList"
+          },
+          {
+            "name": "Nearest",
+            "kind": "Entity"
+          }
+        ],
+        "params": {
+          "Query": "Tag == \"PipeTop\" orderby Distance asc"
+        }
+      },
+      {
+        "id": "fb_qry_hud",
+        "type": "QueryEntities",
+        "title": "Query Entities",
+        "category": "Query",
+        "x": 260,
+        "y": 148,
+        "width": 180,
+        "height": 132,
+        "inputs": [
+          {
+            "name": "In",
+            "kind": "Flow"
+          }
+        ],
+        "outputs": [
+          {
+            "name": "Found",
+            "kind": "Flow"
+          },
+          {
+            "name": "Entities",
+            "kind": "EntityList"
+          },
+          {
+            "name": "Nearest",
+            "kind": "Entity"
+          }
+        ],
+        "params": {
+          "Query": "Tag == \"HUD\""
+        }
+      },
+      {
+        "id": "fb_mod_score",
+        "type": "ModifyProperty",
+        "title": "Modify Property",
+        "category": "Action",
+        "x": 508,
+        "y": 18,
+        "width": 180,
+        "height": 160,
+        "inputs": [
+          {
+            "name": "In",
+            "kind": "Flow"
+          },
+          {
+            "name": "Targets",
+            "kind": "EntityList"
+          }
+        ],
+        "outputs": [
+          {
+            "name": "Done",
+            "kind": "Flow"
+          }
+        ],
+        "params": {
+          "Mode": "Add",
+          "Property": "Score",
+          "TargetTag": "HUD",
+          "Value": "1"
+        }
+      },
+      {
+        "id": "fb_emit_pass",
+        "type": "EmitSignal",
+        "title": "Emit Signal",
+        "category": "Action",
+        "x": 508,
+        "y": 148,
+        "width": 180,
+        "height": 128,
+        "inputs": [
+          {
+            "name": "In",
+            "kind": "Flow"
+          },
+          {
+            "name": "Target",
+            "kind": "Entity"
+          }
+        ],
+        "outputs": [
+          {
+            "name": "Done",
+            "kind": "Flow"
+          }
+        ],
+        "params": {
+          "Arg": " +1",
+          "Signal": "GateCleared"
+        }
+      }
+    ],
+    "links": [
+      {
+        "id": "link_1",
+        "from_node": "fb_sig_score",
+        "from_socket": "Trigger",
+        "to_node": "fb_qry_pipes",
+        "to_socket": "In",
+        "kind": "Flow"
+      },
+      {
+        "id": "link_2",
+        "from_node": "fb_sig_score",
+        "from_socket": "Trigger",
+        "to_node": "fb_qry_hud",
+        "to_socket": "In",
+        "kind": "Flow"
+      },
+      {
+        "id": "link_3",
+        "from_node": "fb_sig_flap",
+        "from_socket": "Trigger",
+        "to_node": "fb_qry_pipes",
+        "to_socket": "In",
+        "kind": "Flow"
+      },
+      {
+        "id": "link_4",
+        "from_node": "fb_qry_hud",
+        "from_socket": "Found",
+        "to_node": "fb_mod_score",
+        "to_socket": "In",
+        "kind": "Flow"
+      },
+      {
+        "id": "link_5",
+        "from_node": "fb_qry_hud",
+        "from_socket": "Entities",
+        "to_node": "fb_mod_score",
+        "to_socket": "Targets",
+        "kind": "EntityList"
+      },
+      {
+        "id": "link_6",
+        "from_node": "fb_qry_pipes",
+        "from_socket": "Found",
+        "to_node": "fb_emit_pass",
+        "to_socket": "In",
+        "kind": "Flow"
+      },
+      {
+        "id": "link_7",
+        "from_node": "fb_qry_pipes",
+        "from_socket": "Nearest",
+        "to_node": "fb_emit_pass",
+        "to_socket": "Target",
+        "kind": "Entity"
+      }
+    ],
+    "auto_group": true,
+    "group_thresh": 95
+  },
+  "scripts": [
+    {
+      "path": "scripts/FlappyBirdController.osmu",
+      "source": "namespace FlappyBird;\n\ncomponent FlappyBirdController : Entity {\n    [Export] public float Gravity = 22.0f;\n    [Export] public float FlapVelocity = 8.2f;\n    [Export] public float PipeSpeed = 4.5f;\n    [Export] public float PipeGap = 3.6f;\n    [Export] public float PipeWidth = 1.6f;\n    [Export] public float PipeHeight = 8.0f;\n    [Export] public float BirdRadius = 0.55f;\n    [Export] public float FloorY = -5.8f;\n    [Export] public float CeilingY = 5.8f;\n\n    private float vy = 0.0f;\n    private int score = 0;\n    private int bestScore = 0;\n    private bool gameOver = false;\n    private bool manualControl = false;\n    private bool flapWasDown = false;\n    private bool rWasDown = false;\n    private float aiCooldown = 0.0f;\n    private int rngSeed = 7;\n\n    signal BirdFlapped(float yPos, float velY);\n    signal ScoreIncreased(int newScore, int best);\n    signal GameOver(int finalScore, int best);\n    signal GameReset();\n    signal EntityClicked(Entity target);\n\n    public void OnReady() {\n        Log(\"Flappy Bird ready! SPACE/W/UP/Click: Flap | R: Reset (Auto-Pilot active until input)\");\n        this.ResetGame();\n    }\n\n    public void ResetGame() {\n        this.gameOver = false;\n        this.score = 0;\n        this.vy = 2.5f;\n        this.aiCooldown = 0.0f;\n        this.Position = Vec3(-3.5f, 0.5f, 0.2f);\n        this.Rotation = Vec3(0.0f, 0.0f, 12.0f);\n        this.Color = Color(1.0f, 0.85f, 0.15f, 1.0f);\n        this.Label = \"0\";\n        this.Score = 0.0f;\n\n        // Reset pipe pairs across the screen at X = 3.5, 9.0, 14.5, 20.0\n        List\u003cEntity\u003e topPipes = query Entities\n            where Tag == \"PipeTop\"\n            orderby Name asc;\n        List\u003cEntity\u003e botPipes = query Entities\n            where Tag == \"PipeBottom\"\n            orderby Name asc;\n\n        float startX = 3.5f;\n        float spacing = 5.5f;\n        int idx = 0;\n        while (idx \u003c topPipes.Count \u0026\u0026 idx \u003c botPipes.Count) {\n            Entity pt = topPipes[idx];\n            Entity pb = botPipes[idx];\n            float px = startX + idx * spacing;\n            float gapY = this.NextGapY(idx);\n            float halfGap = this.PipeGap * 0.5f;\n            float halfH = this.PipeHeight * 0.5f;\n\n            pt.Position = Vec3(px, gapY + halfGap + halfH, 0.0f);\n            pb.Position = Vec3(px, gapY - halfGap - halfH, 0.0f);\n            pt.Damage = gapY;\n            pb.Damage = gapY;\n            pt.MaxHealth = 0.0f;\n            pb.MaxHealth = 0.0f;\n            pt.Color = Color(0.22f, 0.78f, 0.35f, 1.0f);\n            pb.Color = Color(0.22f, 0.78f, 0.35f, 1.0f);\n            idx = idx + 1;\n        }\n\n        emit GameReset();\n    }\n\n    public float NextGapY(int step) {\n        this.rngSeed = this.rngSeed + 1 + step;\n        float wave = Sin(this.rngSeed * 1.85f) * 2.1f + Cos(this.rngSeed * 0.95f) * 0.8f;\n        return Clamp(wave, -2.4f, 2.4f);\n    }\n\n    public void Flap() {\n        if (this.gameOver) {\n            return;\n        }\n        this.vy = this.FlapVelocity;\n        this.Rotation = Vec3(0.0f, 0.0f, 25.0f);\n        emit BirdFlapped(this.Position.Y, this.vy);\n    }\n\n    public void OnUpdate(float dt) {\n        bool rDown = IsKeyDown(\"R\");\n        if (rDown \u0026\u0026 !this.rWasDown) {\n            this.ResetGame();\n        }\n        this.rWasDown = rDown;\n\n        bool keyFlap = IsKeyDown(\"SPACE\") || IsKeyDown(\"W\") || IsKeyDown(\"UP\") || IsKeyDown(\"E\") || IsKeyDown(\"ENTER\");\n        if (keyFlap \u0026\u0026 !this.flapWasDown) {\n            this.manualControl = true;\n            if (this.gameOver) {\n                this.ResetGame();\n            } else {\n                this.Flap();\n            }\n        }\n        this.flapWasDown = keyFlap;\n\n        if (this.gameOver) {\n            return;\n        }\n\n        // Scroll background clouds slowly for parallax depth\n        List\u003cEntity\u003e clouds = query Entities where Tag == \"Cloud\";\n        foreach (Entity cl in clouds) {\n            float cx = cl.Position.X - (this.PipeSpeed * 0.32f * dt);\n            if (cx \u003c -13.0f) {\n                cx = 13.0f;\n            }\n            cl.Position = Vec3(cx, cl.Position.Y, cl.Position.Z);\n        }\n\n        // Scroll ground segments for continuous motion\n        List\u003cEntity\u003e grounds = query Entities where Tag == \"GroundTile\";\n        foreach (Entity gr in grounds) {\n            float gx = gr.Position.X - (this.PipeSpeed * dt);\n            if (gx \u003c -12.0f) {\n                gx = gx + 24.0f;\n            }\n            gr.Position = Vec3(gx, gr.Position.Y, gr.Position.Z);\n        }\n\n        // Auto-pilot AI when player has not pressed any manual flap key yet\n        if (!this.manualControl) {\n            this.aiCooldown = this.aiCooldown - dt;\n            float targetY = 0.2f;\n\n            // Find the nearest upcoming pipe that hasn't been passed yet\n            List\u003cEntity\u003e upcoming = query Entities\n                where Tag == \"PipeTop\" \u0026\u0026 Position.X \u003e= (this.Position.X - 1.1f)\n                orderby Position.X asc;\n\n            if (upcoming.Count \u003e 0) {\n                Entity nextPipe = upcoming[0];\n                targetY = nextPipe.Damage - 0.35f;\n            }\n\n            if (this.aiCooldown \u003c= 0.0f) {\n                if (this.Position.Y \u003c targetY \u0026\u0026 this.vy \u003c 1.8f) {\n                    this.Flap();\n                    this.aiCooldown = 0.14f;\n                } else if (this.Position.Y \u003c (this.FloorY + 1.5f) \u0026\u0026 this.vy \u003c 0.0f) {\n                    this.Flap();\n                    this.aiCooldown = 0.14f;\n                }\n            }\n        }\n\n        // Apply gravity \u0026 vertical velocity to Bird\n        this.vy = this.vy - (this.Gravity * dt);\n        this.vy = Clamp(this.vy, -14.0f, 12.0f);\n        float newY = this.Position.Y + (this.vy * dt);\n        this.Position = Vec3(this.Position.X, newY, this.Position.Z);\n\n        // Tilt bird nose up when rising, down when falling\n        float pitchAngle = Clamp(this.vy * 4.5f, -65.0f, 30.0f);\n        this.Rotation = Vec3(0.0f, 0.0f, pitchAngle);\n\n        // Move pipes left, recycle off-screen pipes, and check collisions \u0026 scoring\n        List\u003cEntity\u003e topPipes = query Entities\n            where Tag == \"PipeTop\"\n            orderby Name asc;\n        List\u003cEntity\u003e botPipes = query Entities\n            where Tag == \"PipeBottom\"\n            orderby Name asc;\n\n        float halfW = (this.PipeWidth * 0.5f) + this.BirdRadius - 0.12f;\n        float halfH = (this.PipeHeight * 0.5f) + this.BirdRadius - 0.12f;\n\n        int i = 0;\n        while (i \u003c topPipes.Count \u0026\u0026 i \u003c botPipes.Count) {\n            Entity pt = topPipes[i];\n            Entity pb = botPipes[i];\n\n            float nx = pt.Position.X - (this.PipeSpeed * dt);\n\n            // Recycle pipe pair to the right when it exits left of the screen\n            if (nx \u003c -11.0f) {\n                nx = nx + 22.0f;\n                float newGapY = this.NextGapY(this.score + i);\n                float halfGap = this.PipeGap * 0.5f;\n                float pipeHalfH = this.PipeHeight * 0.5f;\n                pt.Position = Vec3(nx, newGapY + halfGap + pipeHalfH, 0.0f);\n                pb.Position = Vec3(nx, newGapY - halfGap - pipeHalfH, 0.0f);\n                pt.Damage = newGapY;\n                pb.Damage = newGapY;\n                pt.MaxHealth = 0.0f;\n                pb.MaxHealth = 0.0f;\n                pt.Color = Color(0.22f, 0.78f, 0.35f, 1.0f);\n                pb.Color = Color(0.22f, 0.78f, 0.35f, 1.0f);\n            } else {\n                pt.Position = Vec3(nx, pt.Position.Y, 0.0f);\n                pb.Position = Vec3(nx, pb.Position.Y, 0.0f);\n            }\n\n            // Score point when bird passes the center of the pipe pair\n            if (pt.MaxHealth \u003c 0.5f \u0026\u0026 nx \u003c this.Position.X) {\n                pt.MaxHealth = 1.0f;\n                pb.MaxHealth = 1.0f;\n                pt.Color = Color(0.32f, 0.92f, 0.48f, 1.0f);\n                pb.Color = Color(0.32f, 0.92f, 0.48f, 1.0f);\n                this.score = this.score + 1;\n                if (this.score \u003e this.bestScore) {\n                    this.bestScore = this.score;\n                }\n                this.Score = this.score;\n                this.Label = \"\" + this.score;\n                Log(\"Pipe cleared! Score: \" + this.score + \" (Best: \" + this.bestScore + \")\");\n                emit ScoreIncreased(this.score, this.bestScore);\n            }\n\n            // AABB Collision check against Top Pipe and Bottom Pipe\n            float dx = this.Position.X - nx;\n            if (dx \u003c 0.0f) {\n                dx = -dx;\n            }\n            if (dx \u003c halfW) {\n                float dyTop = this.Position.Y - pt.Position.Y;\n                if (dyTop \u003c 0.0f) {\n                    dyTop = -dyTop;\n                }\n                float dyBot = this.Position.Y - pb.Position.Y;\n                if (dyBot \u003c 0.0f) {\n                    dyBot = -dyBot;\n                }\n                if (dyTop \u003c halfH || dyBot \u003c halfH) {\n                    pt.Color = Color(0.95f, 0.25f, 0.25f, 1.0f);\n                    pb.Color = Color(0.95f, 0.25f, 0.25f, 1.0f);\n                    this.TriggerGameOver(\"Hit \" + pt.Name);\n                    return;\n                }\n            }\n\n            i = i + 1;\n        }\n\n        // Check floor / ceiling bounds\n        if (this.Position.Y \u003c= this.FloorY) {\n            this.Position = Vec3(this.Position.X, this.FloorY, this.Position.Z);\n            this.TriggerGameOver(\"Hit the ground\");\n            return;\n        }\n        if (this.Position.Y \u003e= this.CeilingY) {\n            this.Position = Vec3(this.Position.X, this.CeilingY, this.Position.Z);\n            this.vy = 0.0f;\n        }\n    }\n\n    public void TriggerGameOver(string reason) {\n        if (this.gameOver) {\n            return;\n        }\n        this.gameOver = true;\n        this.vy = 0.0f;\n        this.Color = Color(0.98f, 0.22f, 0.25f, 1.0f);\n        this.Label = \"X\";\n        Log(\"GAME OVER (\" + reason + \")! Final Score: \" + this.score + \" | Press R or SPACE to restart.\");\n        emit GameOver(this.score, this.bestScore);\n    }\n\n    on EntityClicked(Entity target) {\n        this.manualControl = true;\n        if (this.gameOver) {\n            this.ResetGame();\n        } else {\n            this.Flap();\n        }\n    }\n}\n",
+      "diagnostics": null
+    },
+    {
+      "path": "scripts/FlappyScoreHUD.osmu",
+      "source": "namespace FlappyBird;\n\ncomponent FlappyScoreHUD : Entity {\n    private int currentScore = 0;\n    private int bestScore = 0;\n\n    signal ScoreIncreased(int newScore, int best);\n    signal GameOver(int finalScore, int best);\n    signal GameReset();\n\n    public void OnReady() {\n        this.currentScore = 0;\n        this.Label = \"SCORE: 0\";\n        this.Color = Color(0.20f, 0.68f, 0.98f, 1.0f);\n    }\n\n    on ScoreIncreased(int newScore, int best) {\n        this.currentScore = newScore;\n        this.bestScore = best;\n        this.Score = newScore;\n        this.Label = \"S:\" + newScore + \" B:\" + best;\n        this.Color = Color(0.22f, 0.88f, 0.52f, 1.0f);\n    }\n\n    on GameOver(int finalScore, int best) {\n        this.Label = \"DEAD S:\" + finalScore;\n        this.Color = Color(0.95f, 0.24f, 0.28f, 1.0f);\n    }\n\n    on GameReset() {\n        this.currentScore = 0;\n        this.Label = \"S:0 B:\" + this.bestScore;\n        this.Color = Color(0.20f, 0.68f, 0.98f, 1.0f);\n    }\n}\n",
+      "diagnostics": null
+    }
+  ]
+}

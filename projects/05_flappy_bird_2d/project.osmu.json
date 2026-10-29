@@ -1,0 +1,15 @@
+{
+  "name": "Flappy Bird 2D",
+  "version": "1.0.0",
+  "description": "Playable 2D/3D Flappy Bird built in .osmu with Gravity/Flap Physics, Procedural Scrolling Pipes, Spatial Queries \u0026 Auto-Pilot AI",
+  "genre": "2D Arcade / Endless Flyer",
+  "default_mode": "2D",
+  "default_scene": "scenes/main.osmu.json",
+  "scenes": [
+    "scenes/main.osmu.json"
+  ],
+  "scripts": [
+    "scripts/FlappyBirdController.osmu",
+    "scripts/FlappyScoreHUD.osmu"
+  ]
+}

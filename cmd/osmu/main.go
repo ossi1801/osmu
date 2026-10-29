@@ -106,7 +106,7 @@ func runCheck(args []string) {
 			if sf.CheckResult != nil && sf.CheckResult.AST != nil {
 				comps = len(sf.CheckResult.AST.Components)
 			}
-			fmt.Printf("✓ %s — OK (%d component(s) verified)\n", sf.Path, comps)
+			fmt.Printf("[OK] %s — OK (%d component(s) verified)\n", sf.Path, comps)
 			continue
 		}
 		lines := strings.Split(sf.Source, "\n")
@@ -229,6 +229,9 @@ func runScreenshot(args []string) {
 		if app.Scene != nil && strings.Contains(strings.ToLower(app.Scene.Name), "minesweeper") {
 			app.Cam2DZoom = 34.0
 			app.Cam2DOffset = engine.V2(25.0, 0.0)
+		} else if app.Scene != nil && strings.Contains(strings.ToLower(app.Scene.Name), "flappy") {
+			app.Cam2DZoom = 34.0
+			app.Cam2DOffset = engine.V2(0.0, 0.0)
 		}
 	}
 	if steps > 0 && app.Scene != nil {
@@ -402,6 +405,9 @@ func runPlayGame(args []string) {
 	if strings.Contains(strings.ToLower(app.Scene.Name), "minesweeper") {
 		app.Cam2DZoom = 34.0
 		app.Cam2DOffset = engine.V2(25.0, 0.0)
+	} else if strings.Contains(strings.ToLower(app.Scene.Name), "flappy") {
+		app.Cam2DZoom = 34.0
+		app.Cam2DOffset = engine.V2(0.0, 0.0)
 	}
 
 	ws := editor.NewWebServer(app)

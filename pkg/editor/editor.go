@@ -493,7 +493,9 @@ func (app *EditorApp) drawStandaloneHUD(w, h float64, in *platform.InputState) {
 	app.emitLine(0, h-barH, w, h-barH, 1.0, 0.18, 0.22, 0.30, 0.8)
 
 	controls := "LMB: Reveal  |  RMB: Flag  |  WASD: Move Cursor  |  E: Reveal  |  F: Flag  |  H: Hint  |  R: Reset"
-	if app.Scene != nil && app.Scene.Mode == runtime.Mode3D {
+	if app.Scene != nil && strings.Contains(strings.ToLower(app.Scene.Name), "flappy") {
+		controls = "SPACE / W / UP / LMB: Flap Wings  |  R: Restart  |  3D/2D: View Mode  |  ESC: Quit"
+	} else if app.Scene != nil && app.Scene.Mode == runtime.Mode3D {
 		controls = "WASD: Move  |  RMB: Orbit Camera  |  Scroll: Zoom  |  LMB: Select / Interact  |  ESC: Quit"
 	}
 	app.emitText(14, h-barH+6, controls, 1.15, 0.70, 0.82, 0.94, 1.0)
@@ -730,7 +732,7 @@ func (app *EditorApp) drawProjectBrowserModal(w, h float64, in *platform.InputSt
 	app.emitRect(0, 0, w, h, 0.02, 0.03, 0.05, 0.72)
 
 	mw := 680.0
-	mh := 430.0
+	mh := 495.0
 	mx := (w - mw) * 0.5
 	my := (h - mh) * 0.5
 	app.emitRect(mx, my, mw, mh, 0.12, 0.15, 0.20, 0.98)
@@ -1329,11 +1331,17 @@ func (app *EditorApp) drawViewport2D(r Rect, in *platform.InputState) {
 			app.emitCircle(sp.X, sp.Y, rad+5.0, 0.20, 0.95, 0.65, 0.35)
 		}
 		if ent.Render.Mesh == engine.MeshSprite2D {
-			if ent.Render.Wireframe {
-				app.emitRectOutline(sp.X-halfW, sp.Y-halfH, halfW*2, halfH*2, 2.8, ent.Render.Color.R, ent.Render.Color.G, ent.Render.Color.B, 1.0)
-			} else {
-				app.emitRect(sp.X-halfW, sp.Y-halfH, halfW*2, halfH*2, ent.Render.Color.R, ent.Render.Color.G, ent.Render.Color.B, 0.95)
-				app.emitRectOutline(sp.X-halfW, sp.Y-halfH, halfW*2, halfH*2, 1.5, 1.0, 1.0, 1.0, 0.7)
+			rx0 := math.Max(r.X, sp.X-halfW)
+			ry0 := math.Max(r.Y, sp.Y-halfH)
+			rx1 := math.Min(r.X+r.W, sp.X+halfW)
+			ry1 := math.Min(r.Y+r.H, sp.Y+halfH)
+			if rx1 > rx0 && ry1 > ry0 {
+				if ent.Render.Wireframe {
+					app.emitRectOutline(rx0, ry0, rx1-rx0, ry1-ry0, 2.8, ent.Render.Color.R, ent.Render.Color.G, ent.Render.Color.B, 1.0)
+				} else {
+					app.emitRect(rx0, ry0, rx1-rx0, ry1-ry0, ent.Render.Color.R, ent.Render.Color.G, ent.Render.Color.B, 0.95)
+					app.emitRectOutline(rx0, ry0, rx1-rx0, ry1-ry0, 1.5, 1.0, 1.0, 1.0, 0.7)
+				}
 			}
 		} else {
 			app.emitCircle(sp.X, sp.Y, rad, ent.Render.Color.R, ent.Render.Color.G, ent.Render.Color.B, 0.95)

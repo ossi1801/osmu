@@ -679,13 +679,335 @@ component MineScannerHUD : Entity {
 }
 `
 
-// BuiltinProjects builds and returns the 4 standalone OSMU Game Projects.
+const FlappyBirdControllerScript = `namespace FlappyBird;
+
+component FlappyBirdController : Entity {
+    [Export] public float Gravity = 22.0f;
+    [Export] public float FlapVelocity = 8.2f;
+    [Export] public float PipeSpeed = 4.5f;
+    [Export] public float PipeGap = 3.6f;
+    [Export] public float PipeWidth = 1.6f;
+    [Export] public float PipeHeight = 8.0f;
+    [Export] public float BirdRadius = 0.55f;
+    [Export] public float FloorY = -5.8f;
+    [Export] public float CeilingY = 5.8f;
+
+    private float vy = 0.0f;
+    private int score = 0;
+    private int bestScore = 0;
+    private bool gameOver = false;
+    private bool manualControl = false;
+    private bool flapWasDown = false;
+    private bool rWasDown = false;
+    private float aiCooldown = 0.0f;
+    private int rngSeed = 7;
+
+    signal BirdFlapped(float yPos, float velY);
+    signal ScoreIncreased(int newScore, int best);
+    signal GameOver(int finalScore, int best);
+    signal GameReset();
+    signal EntityClicked(Entity target);
+
+    public void OnReady() {
+        Log("Flappy Bird ready! SPACE/W/UP/Click: Flap | R: Reset (Auto-Pilot active until input)");
+        this.ResetGame();
+    }
+
+    public void ResetGame() {
+        this.gameOver = false;
+        this.score = 0;
+        this.vy = 2.5f;
+        this.aiCooldown = 0.0f;
+        this.Position = Vec3(-3.5f, 0.5f, 0.2f);
+        this.Rotation = Vec3(0.0f, 0.0f, 12.0f);
+        this.Color = Color(1.0f, 0.85f, 0.15f, 1.0f);
+        this.Label = "0";
+        this.Score = 0.0f;
+
+        // Reset pipe pairs across the screen at X = 3.5, 9.0, 14.5, 20.0
+        List<Entity> topPipes = query Entities
+            where Tag == "PipeTop"
+            orderby Name asc;
+        List<Entity> botPipes = query Entities
+            where Tag == "PipeBottom"
+            orderby Name asc;
+
+        float startX = 3.5f;
+        float spacing = 5.5f;
+        int idx = 0;
+        while (idx < topPipes.Count && idx < botPipes.Count) {
+            Entity pt = topPipes[idx];
+            Entity pb = botPipes[idx];
+            float px = startX + idx * spacing;
+            float gapY = this.NextGapY(idx);
+            float halfGap = this.PipeGap * 0.5f;
+            float halfH = this.PipeHeight * 0.5f;
+
+            pt.Position = Vec3(px, gapY + halfGap + halfH, 0.0f);
+            pb.Position = Vec3(px, gapY - halfGap - halfH, 0.0f);
+            pt.Damage = gapY;
+            pb.Damage = gapY;
+            pt.MaxHealth = 0.0f;
+            pb.MaxHealth = 0.0f;
+            pt.Color = Color(0.22f, 0.78f, 0.35f, 1.0f);
+            pb.Color = Color(0.22f, 0.78f, 0.35f, 1.0f);
+            idx = idx + 1;
+        }
+
+        emit GameReset();
+    }
+
+    public float NextGapY(int step) {
+        this.rngSeed = this.rngSeed + 1 + step;
+        float wave = Sin(this.rngSeed * 1.85f) * 2.1f + Cos(this.rngSeed * 0.95f) * 0.8f;
+        return Clamp(wave, -2.4f, 2.4f);
+    }
+
+    public void Flap() {
+        if (this.gameOver) {
+            return;
+        }
+        this.vy = this.FlapVelocity;
+        this.Rotation = Vec3(0.0f, 0.0f, 25.0f);
+        emit BirdFlapped(this.Position.Y, this.vy);
+    }
+
+    public void OnUpdate(float dt) {
+        bool rDown = IsKeyDown("R");
+        if (rDown && !this.rWasDown) {
+            this.ResetGame();
+        }
+        this.rWasDown = rDown;
+
+        bool keyFlap = IsKeyDown("SPACE") || IsKeyDown("W") || IsKeyDown("UP") || IsKeyDown("E") || IsKeyDown("ENTER");
+        if (keyFlap && !this.flapWasDown) {
+            this.manualControl = true;
+            if (this.gameOver) {
+                this.ResetGame();
+            } else {
+                this.Flap();
+            }
+        }
+        this.flapWasDown = keyFlap;
+
+        if (this.gameOver) {
+            return;
+        }
+
+        // Scroll background clouds slowly for parallax depth
+        List<Entity> clouds = query Entities where Tag == "Cloud";
+        foreach (Entity cl in clouds) {
+            float cx = cl.Position.X - (this.PipeSpeed * 0.32f * dt);
+            if (cx < -13.0f) {
+                cx = 13.0f;
+            }
+            cl.Position = Vec3(cx, cl.Position.Y, cl.Position.Z);
+        }
+
+        // Scroll ground segments for continuous motion
+        List<Entity> grounds = query Entities where Tag == "GroundTile";
+        foreach (Entity gr in grounds) {
+            float gx = gr.Position.X - (this.PipeSpeed * dt);
+            if (gx < -12.0f) {
+                gx = gx + 24.0f;
+            }
+            gr.Position = Vec3(gx, gr.Position.Y, gr.Position.Z);
+        }
+
+        // Auto-pilot AI when player has not pressed any manual flap key yet
+        if (!this.manualControl) {
+            this.aiCooldown = this.aiCooldown - dt;
+            float targetY = 0.2f;
+
+            // Find the nearest upcoming pipe that hasn't been passed yet
+            List<Entity> upcoming = query Entities
+                where Tag == "PipeTop" && Position.X >= (this.Position.X - 1.1f)
+                orderby Position.X asc;
+
+            if (upcoming.Count > 0) {
+                Entity nextPipe = upcoming[0];
+                targetY = nextPipe.Damage - 0.35f;
+            }
+
+            if (this.aiCooldown <= 0.0f) {
+                if (this.Position.Y < targetY && this.vy < 1.8f) {
+                    this.Flap();
+                    this.aiCooldown = 0.14f;
+                } else if (this.Position.Y < (this.FloorY + 1.5f) && this.vy < 0.0f) {
+                    this.Flap();
+                    this.aiCooldown = 0.14f;
+                }
+            }
+        }
+
+        // Apply gravity & vertical velocity to Bird
+        this.vy = this.vy - (this.Gravity * dt);
+        this.vy = Clamp(this.vy, -14.0f, 12.0f);
+        float newY = this.Position.Y + (this.vy * dt);
+        this.Position = Vec3(this.Position.X, newY, this.Position.Z);
+
+        // Tilt bird nose up when rising, down when falling
+        float pitchAngle = Clamp(this.vy * 4.5f, -65.0f, 30.0f);
+        this.Rotation = Vec3(0.0f, 0.0f, pitchAngle);
+
+        // Move pipes left, recycle off-screen pipes, and check collisions & scoring
+        List<Entity> topPipes = query Entities
+            where Tag == "PipeTop"
+            orderby Name asc;
+        List<Entity> botPipes = query Entities
+            where Tag == "PipeBottom"
+            orderby Name asc;
+
+        float halfW = (this.PipeWidth * 0.5f) + this.BirdRadius - 0.12f;
+        float halfH = (this.PipeHeight * 0.5f) + this.BirdRadius - 0.12f;
+
+        int i = 0;
+        while (i < topPipes.Count && i < botPipes.Count) {
+            Entity pt = topPipes[i];
+            Entity pb = botPipes[i];
+
+            float nx = pt.Position.X - (this.PipeSpeed * dt);
+
+            // Recycle pipe pair to the right when it exits left of the screen
+            if (nx < -11.0f) {
+                nx = nx + 22.0f;
+                float newGapY = this.NextGapY(this.score + i);
+                float halfGap = this.PipeGap * 0.5f;
+                float pipeHalfH = this.PipeHeight * 0.5f;
+                pt.Position = Vec3(nx, newGapY + halfGap + pipeHalfH, 0.0f);
+                pb.Position = Vec3(nx, newGapY - halfGap - pipeHalfH, 0.0f);
+                pt.Damage = newGapY;
+                pb.Damage = newGapY;
+                pt.MaxHealth = 0.0f;
+                pb.MaxHealth = 0.0f;
+                pt.Color = Color(0.22f, 0.78f, 0.35f, 1.0f);
+                pb.Color = Color(0.22f, 0.78f, 0.35f, 1.0f);
+            } else {
+                pt.Position = Vec3(nx, pt.Position.Y, 0.0f);
+                pb.Position = Vec3(nx, pb.Position.Y, 0.0f);
+            }
+
+            // Score point when bird passes the center of the pipe pair
+            if (pt.MaxHealth < 0.5f && nx < this.Position.X) {
+                pt.MaxHealth = 1.0f;
+                pb.MaxHealth = 1.0f;
+                pt.Color = Color(0.32f, 0.92f, 0.48f, 1.0f);
+                pb.Color = Color(0.32f, 0.92f, 0.48f, 1.0f);
+                this.score = this.score + 1;
+                if (this.score > this.bestScore) {
+                    this.bestScore = this.score;
+                }
+                this.Score = this.score;
+                this.Label = "" + this.score;
+                Log("Pipe cleared! Score: " + this.score + " (Best: " + this.bestScore + ")");
+                emit ScoreIncreased(this.score, this.bestScore);
+            }
+
+            // AABB Collision check against Top Pipe and Bottom Pipe
+            float dx = this.Position.X - nx;
+            if (dx < 0.0f) {
+                dx = -dx;
+            }
+            if (dx < halfW) {
+                float dyTop = this.Position.Y - pt.Position.Y;
+                if (dyTop < 0.0f) {
+                    dyTop = -dyTop;
+                }
+                float dyBot = this.Position.Y - pb.Position.Y;
+                if (dyBot < 0.0f) {
+                    dyBot = -dyBot;
+                }
+                if (dyTop < halfH || dyBot < halfH) {
+                    pt.Color = Color(0.95f, 0.25f, 0.25f, 1.0f);
+                    pb.Color = Color(0.95f, 0.25f, 0.25f, 1.0f);
+                    this.TriggerGameOver("Hit " + pt.Name);
+                    return;
+                }
+            }
+
+            i = i + 1;
+        }
+
+        // Check floor / ceiling bounds
+        if (this.Position.Y <= this.FloorY) {
+            this.Position = Vec3(this.Position.X, this.FloorY, this.Position.Z);
+            this.TriggerGameOver("Hit the ground");
+            return;
+        }
+        if (this.Position.Y >= this.CeilingY) {
+            this.Position = Vec3(this.Position.X, this.CeilingY, this.Position.Z);
+            this.vy = 0.0f;
+        }
+    }
+
+    public void TriggerGameOver(string reason) {
+        if (this.gameOver) {
+            return;
+        }
+        this.gameOver = true;
+        this.vy = 0.0f;
+        this.Color = Color(0.98f, 0.22f, 0.25f, 1.0f);
+        this.Label = "X";
+        Log("GAME OVER (" + reason + ")! Final Score: " + this.score + " | Press R or SPACE to restart.");
+        emit GameOver(this.score, this.bestScore);
+    }
+
+    on EntityClicked(Entity target) {
+        this.manualControl = true;
+        if (this.gameOver) {
+            this.ResetGame();
+        } else {
+            this.Flap();
+        }
+    }
+}
+`
+
+const FlappyScoreHUDScript = `namespace FlappyBird;
+
+component FlappyScoreHUD : Entity {
+    private int currentScore = 0;
+    private int bestScore = 0;
+
+    signal ScoreIncreased(int newScore, int best);
+    signal GameOver(int finalScore, int best);
+    signal GameReset();
+
+    public void OnReady() {
+        this.currentScore = 0;
+        this.Label = "SCORE: 0";
+        this.Color = Color(0.20f, 0.68f, 0.98f, 1.0f);
+    }
+
+    on ScoreIncreased(int newScore, int best) {
+        this.currentScore = newScore;
+        this.bestScore = best;
+        this.Score = newScore;
+        this.Label = "S:" + newScore + " B:" + best;
+        this.Color = Color(0.22f, 0.88f, 0.52f, 1.0f);
+    }
+
+    on GameOver(int finalScore, int best) {
+        this.Label = "DEAD S:" + finalScore;
+        this.Color = Color(0.95f, 0.24f, 0.28f, 1.0f);
+    }
+
+    on GameReset() {
+        this.currentScore = 0;
+        this.Label = "S:0 B:" + this.bestScore;
+        this.Color = Color(0.20f, 0.68f, 0.98f, 1.0f);
+    }
+}
+`
+
+// BuiltinProjects builds and returns the 5 standalone OSMU Game Projects.
 func BuiltinProjects() []*Project {
 	return []*Project{
 		buildCyberSurvivorsProject(),
 		buildFortressSiegeProject(),
 		buildDungeonQuestProject(),
 		buildMinesweeperProject(),
+		buildFlappyBirdProject(),
 	}
 }
 
@@ -1263,7 +1585,168 @@ func buildMinesweeperProject() *Project {
 	}
 }
 
-// MaterializeExamples writes the 4 standalone example projects to `projects/` (and cleans up legacy `examples/`).
+func buildFlappyBirdProject() *Project {
+	sc := NewScene("Flappy Bird 2D - Sky Run", Mode2D)
+	sc.Description = "Playable 2D/3D Flappy Bird built in .osmu with Gravity/Flap Physics, Procedural Scrolling Pipes, Spatial Queries & Auto-Pilot AI"
+
+	// Parallax Sky Clouds
+	cloudPositions := [][3]float64{
+		{-7.5, 4.2, -0.5},
+		{-1.5, 4.8, -0.5},
+		{4.5, 3.9, -0.5},
+		{10.5, 4.5, -0.5},
+	}
+	for i, cp := range cloudPositions {
+		id := fmt.Sprintf("cloud_%d", i+1)
+		name := fmt.Sprintf("SkyCloud_0%d", i+1)
+		cl := engine.NewEntity(id, name, "Cloud", engine.MeshCircle2D, engine.V3(cp[0], cp[1], cp[2]), engine.RGB(0.22, 0.30, 0.44))
+		cl.Transform.Scale = engine.V3(2.2, 1.1, 0.4)
+		cl.Physics.Enabled = false
+		cl.Physics.IsStatic = true
+		sc.AddEntity(cl)
+	}
+
+	// 4 Scrolling Pipe Pairs (Top + Bottom)
+	initialGaps := []float64{0.6, -1.2, 1.4, -0.5}
+	for i := 0; i < 4; i++ {
+		px := 3.5 + float64(i)*5.5
+		gapY := initialGaps[i]
+		halfGap := 1.8
+		pipeH := 8.0
+		halfH := pipeH * 0.5
+
+		topID := fmt.Sprintf("pipe_top_%d", i+1)
+		topName := fmt.Sprintf("PipeTop_0%d", i+1)
+		pt := engine.NewEntity(topID, topName, "PipeTop", engine.MeshSprite2D, engine.V3(px, gapY+halfGap+halfH, 0.0), engine.RGB(0.22, 0.78, 0.35))
+		pt.Transform.Scale = engine.V3(1.6, pipeH, 1.2)
+		pt.Physics.Enabled = false
+		pt.Physics.IsStatic = true
+		pt.Health = 100.0
+		pt.MaxHealth = 0.0
+		pt.Properties["Damage"] = gapY
+		sc.AddEntity(pt)
+
+		botID := fmt.Sprintf("pipe_bot_%d", i+1)
+		botName := fmt.Sprintf("PipeBottom_0%d", i+1)
+		pb := engine.NewEntity(botID, botName, "PipeBottom", engine.MeshSprite2D, engine.V3(px, gapY-halfGap-halfH, 0.0), engine.RGB(0.22, 0.78, 0.35))
+		pb.Transform.Scale = engine.V3(1.6, pipeH, 1.2)
+		pb.Physics.Enabled = false
+		pb.Physics.IsStatic = true
+		pb.Health = 100.0
+		pb.MaxHealth = 0.0
+		pb.Properties["Damage"] = gapY
+		sc.AddEntity(pb)
+	}
+
+	// Scrolling Ground Segments (drawn on top of bottom pipe bases)
+	for i := 0; i < 6; i++ {
+		id := fmt.Sprintf("ground_seg_%d", i+1)
+		name := fmt.Sprintf("GroundStrip_0%d", i+1)
+		gx := -10.0 + float64(i)*4.0
+		gr := engine.NewEntity(id, name, "GroundTile", engine.MeshSprite2D, engine.V3(gx, -7.2, 0.1), engine.RGB(0.32, 0.62, 0.26))
+		gr.Transform.Scale = engine.V3(4.8, 2.4, 0.8)
+		gr.Physics.Enabled = false
+		gr.Physics.IsStatic = true
+		sc.AddEntity(gr)
+	}
+
+	// Scoreboard HUD Entity
+	hud := engine.NewEntity("flappy_hud", "FlappyScoreHUD", "HUD", engine.MeshSprite2D, engine.V3(-7.2, 4.8, 0.3), engine.RGB(0.20, 0.68, 0.98))
+	hud.Transform.Scale = engine.V3(2.8, 1.3, 0.5)
+	hud.Physics.Enabled = false
+	hud.Physics.IsStatic = true
+	hud.Render.Label = "SCORE: 0"
+	hud.Properties["Score"] = 0.0
+	hud.Scripts = []engine.ScriptAttachment{
+		{ScriptPath: "scripts/FlappyScoreHUD.osmu", ComponentName: "FlappyScoreHUD"},
+	}
+	sc.AddEntity(hud)
+
+	// Playable Flappy Bird Entity
+	bird := engine.NewEntity("flappy_bird", "FlappyBird", "Player", engine.MeshCircle2D, engine.V3(-3.5, 0.5, 0.2), engine.RGB(1.0, 0.85, 0.15))
+	bird.Transform.Scale = engine.V3(1.15, 1.15, 1.15)
+	bird.Physics.Enabled = false
+	bird.Physics.IsStatic = false
+	bird.Render.Label = "0"
+	bird.Properties["Score"] = 0.0
+	bird.Scripts = []engine.ScriptAttachment{
+		{
+			ScriptPath:    "scripts/FlappyBirdController.osmu",
+			ComponentName: "FlappyBirdController",
+			Properties: map[string]interface{}{
+				"Gravity":      22.0,
+				"FlapVelocity": 8.2,
+				"PipeSpeed":    4.5,
+				"PipeGap":      3.6,
+				"PipeWidth":    1.6,
+				"PipeHeight":   8.0,
+				"BirdRadius":   0.55,
+				"FloorY":       -5.8,
+				"CeilingY":     5.8,
+			},
+		},
+	}
+	sc.AddEntity(bird)
+
+	// Visual NodeGraph for Flappy Bird Signals & Queries
+	g := sc.NodeGraph
+	nSigScore := nodegraph.CreateNodeFromTemplate("fb_sig_score", "OnSignal", 16, 18)
+	nSigScore.Params["Signal"] = "ScoreIncreased"
+	nSigFlap := nodegraph.CreateNodeFromTemplate("fb_sig_flap", "OnSignal", 16, 148)
+	nSigFlap.Params["Signal"] = "BirdFlapped"
+
+	nQryPipes := nodegraph.CreateNodeFromTemplate("fb_qry_pipes", "QueryEntities", 260, 18)
+	nQryPipes.Params["Query"] = "Tag == \"PipeTop\" orderby Distance asc"
+
+	nQryHud := nodegraph.CreateNodeFromTemplate("fb_qry_hud", "QueryEntities", 260, 148)
+	nQryHud.Params["Query"] = "Tag == \"HUD\""
+
+	nAddScore := nodegraph.CreateNodeFromTemplate("fb_mod_score", "ModifyProperty", 508, 18)
+	nAddScore.Params["TargetTag"] = "HUD"
+	nAddScore.Params["Property"] = "Score"
+	nAddScore.Params["Mode"] = "Add"
+	nAddScore.Params["Value"] = "1"
+
+	nEmitPass := nodegraph.CreateNodeFromTemplate("fb_emit_pass", "EmitSignal", 508, 148)
+	nEmitPass.Params["Signal"] = "GateCleared"
+	nEmitPass.Params["Arg"] = " +1"
+
+	g.Nodes = []*nodegraph.Node{nSigScore, nSigFlap, nQryPipes, nQryHud, nAddScore, nEmitPass}
+	g.AddLink("fb_sig_score", "Trigger", "fb_qry_pipes", "In", nodegraph.SocketFlow)
+	g.AddLink("fb_sig_score", "Trigger", "fb_qry_hud", "In", nodegraph.SocketFlow)
+	g.AddLink("fb_sig_flap", "Trigger", "fb_qry_pipes", "In", nodegraph.SocketFlow)
+	g.AddLink("fb_qry_hud", "Found", "fb_mod_score", "In", nodegraph.SocketFlow)
+	g.AddLink("fb_qry_hud", "Entities", "fb_mod_score", "Targets", nodegraph.SocketEntityList)
+	g.AddLink("fb_qry_pipes", "Found", "fb_emit_pass", "In", nodegraph.SocketFlow)
+	g.AddLink("fb_qry_pipes", "Nearest", "fb_emit_pass", "Target", nodegraph.SocketEntity)
+
+	sc.ScriptFiles = []*ScriptFile{
+		{Path: "scripts/FlappyBirdController.osmu", Source: FlappyBirdControllerScript},
+		{Path: "scripts/FlappyScoreHUD.osmu", Source: FlappyScoreHUDScript},
+	}
+	sc.CompileScripts()
+
+	rootDir := filepath.Join("projects", "05_flappy_bird_2d")
+	sc.FilePath = filepath.Join(rootDir, "scenes", "main.osmu.json")
+	return &Project{
+		RootDir:      rootDir,
+		ManifestPath: filepath.Join(rootDir, "project.osmu.json"),
+		Manifest: ProjectManifest{
+			Name:         "Flappy Bird 2D",
+			Version:      "1.0.0",
+			Description:  sc.Description,
+			Genre:        "2D Arcade / Endless Flyer",
+			DefaultMode:  "2D",
+			DefaultScene: "scenes/main.osmu.json",
+			Scenes:       []string{"scenes/main.osmu.json"},
+			Scripts:      []string{"scripts/FlappyBirdController.osmu", "scripts/FlappyScoreHUD.osmu"},
+		},
+		LoadedScenes: []*Scene{sc},
+		ActiveScene:  sc,
+	}
+}
+
+// MaterializeExamples writes the 5 standalone example projects to `projects/` (and cleans up legacy `examples/`).
 func MaterializeExamples(baseDir string) error {
 	_ = os.RemoveAll(filepath.Join(baseDir, "examples"))
 	for _, proj := range BuiltinProjects() {
