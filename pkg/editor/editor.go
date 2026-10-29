@@ -36,8 +36,9 @@ type EditorApp struct {
 	SelectedEntityID string
 	SelectedNodeID   string
 
-	// Project Browser / Loader Modal state
+	// Project Browser / Loader Modal & Hamburger Menu state
 	ShowProjectModal  bool
+	ShowHamburgerMenu bool
 	ProjectPathInput  string
 	PathInputFocused  bool
 	StatusBanner      string
@@ -220,6 +221,26 @@ component HeroController : Entity {
 	app.ActivateProject(len(app.Projects) - 1)
 }
 
+// CloseProject unloads the currently active project and returns the editor to an empty state.
+func (app *EditorApp) CloseProject() {
+	if app.Scene != nil && app.Scene.Playing {
+		app.Scene.StopPlay()
+	}
+	app.CurrentProjectIdx = -1
+	app.CurrentProject = nil
+	app.Scenes = nil
+	app.CurrentSceneIdx = 0
+	app.Scene = nil
+	app.SelectedEntityID = ""
+	app.SelectedNodeID = ""
+	app.QueryMatches = make(map[string]bool)
+	app.QueryMatchCount = 0
+	app.setStatus("Closed project")
+	if app.Win != nil {
+		app.Win.SetTitle("OSMU — Overengineered System Manipulation Userinterface")
+	}
+}
+
 func (app *EditorApp) setStatus(msg string) {
 	app.StatusBanner = msg
 	app.StatusBannerTime = time.Now()
@@ -398,20 +419,25 @@ func (app *EditorApp) UpdateAndBuildDrawList(in *platform.InputState, dt float64
 		if in.KeysPressed["G"] && app.Scene != nil && app.Scene.NodeGraph != nil {
 			app.Scene.NodeGraph.AutoGroup = !app.Scene.NodeGraph.AutoGroup
 		}
-		if in.KeysPressed["Escape"] && app.ShowProjectModal {
-			app.ShowProjectModal = false
+		if in.KeysPressed["Escape"] {
+			if app.ShowHamburgerMenu {
+				app.ShowHamburgerMenu = false
+			} else if app.ShowProjectModal {
+				app.ShowProjectModal = false
+			}
 		}
 	}
 
-	// Pass subtle nil-ed clicks to underlying panels if modal is open so clicks inside modal don't click behind it
+	app.drawTopToolbar(topRect, in)
+
+	// Block clicks from reaching background panels when an overlay menu or modal is open
 	bgIn := in
-	if app.ShowProjectModal {
+	if app.ShowProjectModal || app.ShowHamburgerMenu {
 		copied := *in
 		copied.MouseClicked = [4]bool{}
 		bgIn = &copied
 	}
 
-	app.drawTopToolbar(topRect, bgIn)
 	app.drawLeftHierarchy(leftRect, bgIn)
 	app.drawCenterViewport(viewRect, bgIn)
 	app.drawNodeAndQueryPanel(nodeRect, bgIn)
@@ -419,6 +445,9 @@ func (app *EditorApp) UpdateAndBuildDrawList(in *platform.InputState, dt float64
 
 	if app.ShowProjectModal {
 		app.drawProjectBrowserModal(w, h, in)
+	}
+	if app.ShowHamburgerMenu {
+		app.drawHamburgerMenu(w, h, in)
 	}
 
 	return app.cmds
@@ -442,8 +471,15 @@ func (app *EditorApp) drawStandaloneHUD(w, h float64, in *platform.InputState) {
 	if app.Scene != nil && app.Scene.Mode == runtime.Mode3D {
 		modeStr = "3D"
 	}
-	app.emitRect(w-180, 5, 42, 22, 0.18, 0.22, 0.30, 1.0)
-	app.emitText(w-170, 10, modeStr, 1.2, 0.85, 0.90, 0.98, 1.0)
+	app.emitRect(w-250, 5, 42, 22, 0.18, 0.22, 0.30, 1.0)
+	app.emitText(w-240, 10, modeStr, 1.2, 0.85, 0.90, 0.98, 1.0)
+
+	// Return to Editor button
+	editorRect := Rect{w - 202, 4, 76, 24}
+	if app.drawButtonColor(editorRect, "EDITOR", false, 0.22, 0.44, 0.68, in) {
+		app.StandalonePlay = false
+		return
+	}
 
 	// Exit button
 	exitRect := Rect{w - 120, 4, 106, 24}
@@ -463,21 +499,46 @@ func (app *EditorApp) drawStandaloneHUD(w, h float64, in *platform.InputState) {
 	app.emitText(14, h-barH+6, controls, 1.15, 0.70, 0.82, 0.94, 1.0)
 }
 
-// --- Top Toolbar (with Project Loader, Scene Controls, and Compiler Status) ---
+// --- Top Toolbar (with Hamburger Menu, Project Loader, Active Project Indicator, and Transport Controls) ---
 
 func (app *EditorApp) drawTopToolbar(r Rect, in *platform.InputState) {
 	app.emitRect(r.X, r.Y, r.W, r.H, 0.11, 0.13, 0.17, 1.0)
 	app.emitLine(r.X, r.Y+r.H, r.X+r.W, r.Y+r.H, 1.5, 0.22, 0.26, 0.34, 1.0)
 
+	// Hamburger Menu Button (3 horizontal bars)
+	hamRect := Rect{8, 7, 34, 28}
+	hamHover := hamRect.Contains(in.MouseX, in.MouseY)
+	if app.ShowHamburgerMenu {
+		app.emitRect(hamRect.X, hamRect.Y, hamRect.W, hamRect.H, 0.22, 0.52, 0.88, 1.0)
+	} else if hamHover {
+		app.emitRect(hamRect.X, hamRect.Y, hamRect.W, hamRect.H, 0.24, 0.28, 0.36, 1.0)
+	} else {
+		app.emitRect(hamRect.X, hamRect.Y, hamRect.W, hamRect.H, 0.16, 0.19, 0.25, 1.0)
+	}
+	app.emitRectOutline(hamRect.X, hamRect.Y, hamRect.W, hamRect.H, 1.0, 0.32, 0.40, 0.52, 1.0)
+	// Draw 3 crisp horizontal bars inside the button
+	app.emitRect(hamRect.X+8, hamRect.Y+7, 18, 2.5, 0.92, 0.96, 1.0, 1.0)
+	app.emitRect(hamRect.X+8, hamRect.Y+13, 18, 2.5, 0.92, 0.96, 1.0, 1.0)
+	app.emitRect(hamRect.X+8, hamRect.Y+19, 18, 2.5, 0.92, 0.96, 1.0, 1.0)
+	if hamHover && in.MouseClicked[platform.MouseLeft] {
+		app.ShowHamburgerMenu = !app.ShowHamburgerMenu
+		if app.ShowHamburgerMenu {
+			app.ShowProjectModal = false
+		}
+		in.MouseClicked[platform.MouseLeft] = false
+	}
+
 	// Brand logo badge
-	app.emitRect(8, 7, 64, 28, 0.16, 0.48, 0.85, 1.0)
-	app.emitText(14, 15, "OSMU", 1.65, 1.0, 1.0, 1.0, 1.0)
+	app.emitRect(46, 7, 60, 28, 0.16, 0.48, 0.85, 1.0)
+	app.emitText(51, 15, "OSMU", 1.65, 1.0, 1.0, 1.0, 1.0)
 
 	// Project Manager / Loader & Save buttons
-	x := 78.0
+	x := 112.0
 	if app.drawButtonColor(Rect{x, 7, 114, 28}, "OPEN PROJECT", app.ShowProjectModal, 0.24, 0.38, 0.62, in) {
 		app.ShowProjectModal = !app.ShowProjectModal
+		app.ShowHamburgerMenu = false
 		app.PathInputFocused = true
+		in.MouseClicked[platform.MouseLeft] = false
 	}
 	x += 118
 	if app.drawButton(Rect{x, 7, 56, 28}, "SAVE", false, in) && app.CurrentProject != nil {
@@ -487,33 +548,34 @@ func (app *EditorApp) drawTopToolbar(r Rect, in *platform.InputState) {
 	}
 	x += 62
 
-	// Quick Project switcher tabs
-	maxTabs := 4
-	bw := 104.0
-	nameTrunc := 11
-	if len(app.Projects) >= 4 {
-		bw = 82.0
-		nameTrunc = 8
-	}
-	for i, proj := range app.Projects {
-		if i >= maxTabs {
-			break
+	// Active Project Indicator (shows ONLY the currently opened project, never unopened projects)
+	if app.CurrentProject != nil {
+		projLabel := "PROJECT: " + truncateStr(app.CurrentProject.Manifest.Name, 18)
+		tabW := 200.0
+		app.emitRect(x, 7, tabW, 28, 0.16, 0.28, 0.44, 1.0)
+		app.emitRectOutline(x, 7, tabW, 28, 1.2, 0.32, 0.62, 0.95, 1.0)
+		app.emitText(x+8, 15, projLabel, 1.25, 0.95, 0.98, 1.0, 1.0)
+		// Close project [X] button inside the active project badge
+		closeRect := Rect{x + tabW - 26, 9, 22, 24}
+		if app.drawButtonColor(closeRect, "X", false, 0.58, 0.22, 0.26, in) {
+			app.CloseProject()
+			in.MouseClicked[platform.MouseLeft] = false
 		}
-		active := app.CurrentProjectIdx == i
-		short := fmt.Sprintf("P%d:%s", i+1, truncateStr(proj.Manifest.Name, nameTrunc))
-		if app.drawButton(Rect{x, 7, bw, 28}, short, active, in) {
-			app.ActivateProject(i)
-		}
-		x += bw + 4
+		x += tabW + 8
+	} else {
+		noProjW := 164.0
+		app.emitRect(x, 7, noProjW, 28, 0.13, 0.15, 0.20, 1.0)
+		app.emitRectOutline(x, 7, noProjW, 28, 1.0, 0.24, 0.28, 0.36, 1.0)
+		app.emitText(x+10, 15, "NO PROJECT LOADED", 1.2, 0.58, 0.64, 0.74, 1.0)
+		x += noProjW + 8
 	}
 
 	// 3D / 2D Viewport Toggle
-	x += 6
 	is3D := app.Scene != nil && app.Scene.Mode == runtime.Mode3D
 	if app.drawButton(Rect{x, 7, 42, 28}, "3D", is3D, in) && app.Scene != nil {
 		app.Scene.Mode = runtime.Mode3D
 	}
-	if app.drawButton(Rect{x + 45, 7, 42, 28}, "2D", !is3D, in) && app.Scene != nil {
+	if app.drawButton(Rect{x + 45, 7, 42, 28}, "2D", app.Scene != nil && !is3D, in) && app.Scene != nil {
 		app.Scene.Mode = runtime.Mode2D
 	}
 
@@ -567,6 +629,97 @@ func (app *EditorApp) drawTopToolbar(r Rect, in *platform.InputState) {
 			app.emitRect(compRect.X, compRect.Y, compRect.W, compRect.H, 0.48, 0.18, 0.20, 1.0)
 			app.emitText(compRect.X+8, compRect.Y+9, fmt.Sprintf("Err: %d", diags), 1.3, 1.0, 0.65, 0.65, 1.0)
 		}
+	}
+}
+
+// --- Hamburger Dropdown Menu ---
+
+func (app *EditorApp) drawHamburgerMenu(w, h float64, in *platform.InputState) {
+	menuX := 8.0
+	menuY := 42.0
+	menuW := 230.0
+	menuH := 258.0
+	menuRect := Rect{menuX, menuY, menuW, menuH}
+
+	app.emitRect(menuRect.X, menuRect.Y, menuRect.W, menuRect.H, 0.12, 0.15, 0.21, 0.98)
+	app.emitRectOutline(menuRect.X, menuRect.Y, menuRect.W, menuRect.H, 1.5, 0.32, 0.56, 0.88, 1.0)
+
+	iy := menuY + 8.0
+	itemH := 30.0
+	itemW := menuW - 16.0
+
+	if app.drawButtonColor(Rect{menuX + 8, iy, itemW, itemH}, "OPEN PROJECT...", false, 0.20, 0.36, 0.58, in) {
+		app.ShowHamburgerMenu = false
+		app.ShowProjectModal = true
+		app.PathInputFocused = true
+		in.MouseClicked[platform.MouseLeft] = false
+		return
+	}
+	iy += 34
+
+	if app.drawButton(Rect{menuX + 8, iy, itemW, itemH}, "+ NEW 2D PROJECT", false, in) {
+		app.CreateNewProject(runtime.Mode2D)
+		app.ShowHamburgerMenu = false
+		app.ShowProjectModal = false
+		in.MouseClicked[platform.MouseLeft] = false
+		return
+	}
+	iy += 34
+
+	if app.drawButton(Rect{menuX + 8, iy, itemW, itemH}, "+ NEW 3D PROJECT", false, in) {
+		app.CreateNewProject(runtime.Mode3D)
+		app.ShowHamburgerMenu = false
+		app.ShowProjectModal = false
+		in.MouseClicked[platform.MouseLeft] = false
+		return
+	}
+	iy += 34
+
+	if app.drawButton(Rect{menuX + 8, iy, itemW, itemH}, "SAVE PROJECT", false, in) {
+		if app.CurrentProject != nil {
+			if err := app.CurrentProject.SaveProject(); err == nil {
+				app.setStatus("Saved project to " + app.CurrentProject.RootDir)
+			}
+		} else {
+			app.setStatus("No project open to save")
+		}
+		app.ShowHamburgerMenu = false
+		in.MouseClicked[platform.MouseLeft] = false
+		return
+	}
+	iy += 34
+
+	if app.drawButtonColor(Rect{menuX + 8, iy, itemW, itemH}, "STANDALONE GAME VIEW", false, 0.18, 0.52, 0.34, in) {
+		if app.Scene != nil {
+			app.StandalonePlay = true
+			app.Scene.StartPlay()
+		} else {
+			app.setStatus("Load a project first to play")
+		}
+		app.ShowHamburgerMenu = false
+		in.MouseClicked[platform.MouseLeft] = false
+		return
+	}
+	iy += 34
+
+	if app.drawButton(Rect{menuX + 8, iy, itemW, itemH}, "CLOSE PROJECT", false, in) {
+		app.CloseProject()
+		app.ShowHamburgerMenu = false
+		in.MouseClicked[platform.MouseLeft] = false
+		return
+	}
+	iy += 38
+
+	app.emitLine(menuX+8, iy-3, menuX+menuW-8, iy-3, 1.0, 0.25, 0.32, 0.44, 1.0)
+	if app.drawButtonColor(Rect{menuX + 8, iy, itemW, itemH}, "QUIT OSMU", false, 0.62, 0.22, 0.26, in) {
+		in.ShouldClose = true
+		app.ShowHamburgerMenu = false
+		return
+	}
+
+	// Clicking anywhere outside the menu closes it
+	if in.MouseClicked[platform.MouseLeft] && !menuRect.Contains(in.MouseX, in.MouseY) {
+		app.ShowHamburgerMenu = false
 	}
 }
 
@@ -1163,10 +1316,12 @@ func (app *EditorApp) drawViewport2D(r Rect, in *platform.InputState) {
 			continue
 		}
 		sp := toScreen(ent.Transform.Position)
-		if !r.Contains(sp.X, sp.Y) {
+		rad := math.Max(6.5, ent.Transform.Scale.X*zm*0.42)
+		halfW := math.Max(6.5, ent.Transform.Scale.X*zm*0.42)
+		halfH := math.Max(6.5, ent.Transform.Scale.Y*zm*0.42)
+		if sp.X+halfW < r.X || sp.X-halfW > r.X+r.W || sp.Y+halfH < r.Y || sp.Y-halfH > r.Y+r.H {
 			continue
 		}
-		rad := math.Max(6.5, ent.Transform.Scale.X*zm*0.42)
 		if ent.Tag == "Projectile" {
 			rad = 4.5
 		}
@@ -1175,10 +1330,10 @@ func (app *EditorApp) drawViewport2D(r Rect, in *platform.InputState) {
 		}
 		if ent.Render.Mesh == engine.MeshSprite2D {
 			if ent.Render.Wireframe {
-				app.emitRectOutline(sp.X-rad, sp.Y-rad, rad*2, rad*2, 2.8, ent.Render.Color.R, ent.Render.Color.G, ent.Render.Color.B, 1.0)
+				app.emitRectOutline(sp.X-halfW, sp.Y-halfH, halfW*2, halfH*2, 2.8, ent.Render.Color.R, ent.Render.Color.G, ent.Render.Color.B, 1.0)
 			} else {
-				app.emitRect(sp.X-rad, sp.Y-rad, rad*2, rad*2, ent.Render.Color.R, ent.Render.Color.G, ent.Render.Color.B, 0.95)
-				app.emitRectOutline(sp.X-rad, sp.Y-rad, rad*2, rad*2, 1.5, 1.0, 1.0, 1.0, 0.7)
+				app.emitRect(sp.X-halfW, sp.Y-halfH, halfW*2, halfH*2, ent.Render.Color.R, ent.Render.Color.G, ent.Render.Color.B, 0.95)
+				app.emitRectOutline(sp.X-halfW, sp.Y-halfH, halfW*2, halfH*2, 1.5, 1.0, 1.0, 1.0, 0.7)
 			}
 		} else {
 			app.emitCircle(sp.X, sp.Y, rad, ent.Render.Color.R, ent.Render.Color.G, ent.Render.Color.B, 0.95)
@@ -1186,16 +1341,16 @@ func (app *EditorApp) drawViewport2D(r Rect, in *platform.InputState) {
 		if ent.Tag == "Enemy" {
 			bw := 28.0
 			ratio := engine.Clamp(ent.Health/math.Max(1.0, ent.MaxHealth), 0, 1)
-			app.emitRect(sp.X-bw*0.5, sp.Y-rad-8, bw, 3.5, 0.15, 0.15, 0.18, 0.9)
-			app.emitRect(sp.X-bw*0.5, sp.Y-rad-8, bw*ratio, 3.5, 0.98, 0.35, 0.42, 0.95)
+			app.emitRect(sp.X-bw*0.5, sp.Y-halfH-8, bw, 3.5, 0.15, 0.15, 0.18, 0.9)
+			app.emitRect(sp.X-bw*0.5, sp.Y-halfH-8, bw*ratio, 3.5, 0.98, 0.35, 0.42, 0.95)
 		}
 		if !app.StandalonePlay && ent.ID == app.SelectedEntityID {
-			app.emitRectOutline(sp.X-rad-4, sp.Y-rad-4, (rad+4)*2, (rad+4)*2, 2.0, 1.0, 0.92, 0.35, 1.0)
+			app.emitRectOutline(sp.X-halfW-4, sp.Y-halfH-4, (halfW+4)*2, (halfH+4)*2, 2.0, 1.0, 0.92, 0.35, 1.0)
 		}
 		if ent.Render.Label != "" {
 			app.emitText(sp.X-float64(len(ent.Render.Label))*4.8, sp.Y-5.5, ent.Render.Label, 1.6, 1.0, 1.0, 1.0, 1.0)
-		} else if !app.StandalonePlay && ent.Tag != "Projectile" && ent.Tag != "Tile" {
-			app.emitText(sp.X-float64(len(ent.Name))*3.2, sp.Y+rad+5, ent.Name, 1.1, 0.85, 0.90, 0.98, 1.0)
+		} else if !app.StandalonePlay && ent.Tag != "Projectile" && ent.Tag != "Tile" && ent.Tag != "GroundTile" && ent.Tag != "Cloud" {
+			app.emitText(sp.X-float64(len(ent.Name))*3.2, sp.Y+halfH+5, ent.Name, 1.1, 0.85, 0.90, 0.98, 1.0)
 		}
 
 		if in.MouseClicked[platform.MouseLeft] && sp.Dist(engine.V2(in.MouseX, in.MouseY)) <= rad+3 {

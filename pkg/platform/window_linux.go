@@ -193,7 +193,7 @@ static void osmu_set_title(OsmuX11Window* xw, const char* title) {
     XFlush(xw->dpy);
 }
 
-static void osmu_begin_frame(OsmuX11Window* xw, int w, int h) {
+static void osmu_draw_batch(OsmuX11Window* xw, int w, int h, const float* verts, int vertexCount) {
     if (!xw) return;
     glViewport(0, 0, w, h);
     glMatrixMode(GL_PROJECTION);
@@ -204,61 +204,17 @@ static void osmu_begin_frame(OsmuX11Window* xw, int w, int h) {
     glDisable(GL_DEPTH_TEST);
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-}
-
-static void osmu_clear(float r, float g, float b, float a) {
-    glClearColor(r, g, b, a);
+    glClearColor(0.06f, 0.08f, 0.11f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-}
-
-static void osmu_draw_rect(float x, float y, float w, float h, float r, float g, float b, float a) {
-    glColor4f(r, g, b, a);
-    glBegin(GL_QUADS);
-    glVertex2f(x, y);
-    glVertex2f(x + w, y);
-    glVertex2f(x + w, y + h);
-    glVertex2f(x, y + h);
-    glEnd();
-}
-
-static void osmu_draw_triangle(float x1, float y1, float x2, float y2, float x3, float y3, float r, float g, float b, float a) {
-    glColor4f(r, g, b, a);
-    glBegin(GL_TRIANGLES);
-    glVertex2f(x1, y1);
-    glVertex2f(x2, y2);
-    glVertex2f(x3, y3);
-    glEnd();
-}
-
-static void osmu_draw_rect_outline(float x, float y, float w, float h, float thickness, float r, float g, float b, float a) {
-    glLineWidth(thickness);
-    glColor4f(r, g, b, a);
-    glBegin(GL_LINE_LOOP);
-    glVertex2f(x, y);
-    glVertex2f(x + w, y);
-    glVertex2f(x + w, y + h);
-    glVertex2f(x, y + h);
-    glEnd();
-}
-
-static void osmu_draw_line(float x1, float y1, float x2, float y2, float thickness, float r, float g, float b, float a) {
-    glLineWidth(thickness);
-    glColor4f(r, g, b, a);
-    glBegin(GL_LINES);
-    glVertex2f(x1, y1);
-    glVertex2f(x2, y2);
-    glEnd();
-}
-
-static void osmu_draw_circle(float cx, float cy, float rad, float r, float g, float b, float a) {
-    glColor4f(r, g, b, a);
-    glBegin(GL_TRIANGLE_FAN);
-    glVertex2f(cx, cy);
-    for (int i = 0; i <= 20; i++) {
-        float ang = (float)i * 6.2831853f / 20.0f;
-        glVertex2f(cx + cosf(ang) * rad, cy + sinf(ang) * rad);
+    if (verts && vertexCount > 0) {
+        glEnableClientState(GL_VERTEX_ARRAY);
+        glEnableClientState(GL_COLOR_ARRAY);
+        glVertexPointer(2, GL_FLOAT, 6 * sizeof(float), verts);
+        glColorPointer(4, GL_FLOAT, 6 * sizeof(float), verts + 2);
+        glDrawArrays(GL_TRIANGLES, 0, vertexCount);
+        glDisableClientState(GL_COLOR_ARRAY);
+        glDisableClientState(GL_VERTEX_ARRAY);
     }
-    glEnd();
 }
 
 static void osmu_swap(OsmuX11Window* xw) {
@@ -283,7 +239,8 @@ import (
 )
 
 type linuxWindow struct {
-	xw *C.OsmuX11Window
+	xw      *C.OsmuX11Window
+	vertBuf []float32
 }
 
 // NewWindow creates a native Linux X11 + OpenGL window with full WM decorations and min/max buttons.
@@ -295,7 +252,7 @@ func NewWindow(title string, width, height int) (Window, error) {
 	if xw == nil {
 		return nil, fmt.Errorf("could not open X11 display (headless environment or DISPLAY not set)")
 	}
-	return &linuxWindow{xw: xw}, nil
+	return &linuxWindow{xw: xw, vertBuf: make([]float32, 0, 65536)}, nil
 }
 
 func (w *linuxWindow) Minimize() {
@@ -429,80 +386,13 @@ func (w *linuxWindow) DrawOps(width, height int, ops []DrawCmd) {
 	if w.xw == nil {
 		return
 	}
-	C.osmu_begin_frame(w.xw, C.int(width), C.int(height))
-	for _, cmd := range ops {
-		switch cmd.Kind {
-		case CmdClear:
-			C.osmu_clear(C.float(cmd.R), C.float(cmd.G), C.float(cmd.B), C.float(cmd.A))
-		case CmdRect:
-			C.osmu_draw_rect(C.float(cmd.X), C.float(cmd.Y), C.float(cmd.W), C.float(cmd.H),
-				C.float(cmd.R), C.float(cmd.G), C.float(cmd.B), C.float(cmd.A))
-		case CmdTriangle:
-			C.osmu_draw_triangle(C.float(cmd.X), C.float(cmd.Y), C.float(cmd.X2), C.float(cmd.Y2), C.float(cmd.X3), C.float(cmd.Y3),
-				C.float(cmd.R), C.float(cmd.G), C.float(cmd.B), C.float(cmd.A))
-		case CmdRectOutline:
-			th := cmd.Thickness
-			if th <= 0 {
-				th = 1.0
-			}
-			C.osmu_draw_rect_outline(C.float(cmd.X), C.float(cmd.Y), C.float(cmd.W), C.float(cmd.H),
-				C.float(th), C.float(cmd.R), C.float(cmd.G), C.float(cmd.B), C.float(cmd.A))
-		case CmdLine:
-			th := cmd.Thickness
-			if th <= 0 {
-				th = 1.5
-			}
-			C.osmu_draw_line(C.float(cmd.X), C.float(cmd.Y), C.float(cmd.X2), C.float(cmd.Y2),
-				C.float(th), C.float(cmd.R), C.float(cmd.G), C.float(cmd.B), C.float(cmd.A))
-		case CmdPolyLine:
-			th := cmd.Thickness
-			if th <= 0 {
-				th = 2.0
-			}
-			for i := 0; i < len(cmd.Points)-1; i++ {
-				p1 := cmd.Points[i]
-				p2 := cmd.Points[i+1]
-				C.osmu_draw_line(C.float(p1[0]), C.float(p1[1]), C.float(p2[0]), C.float(p2[1]),
-					C.float(th), C.float(cmd.R), C.float(cmd.G), C.float(cmd.B), C.float(cmd.A))
-			}
-		case CmdCircle:
-			C.osmu_draw_circle(C.float(cmd.X), C.float(cmd.Y), C.float(cmd.Radius),
-				C.float(cmd.R), C.float(cmd.G), C.float(cmd.B), C.float(cmd.A))
-		case CmdText:
-			drawBitmapTextGL(cmd)
-		}
+	w.vertBuf = TessellateDrawCmds(width, height, ops, w.vertBuf, false)
+	vertCount := len(w.vertBuf) / 6
+	var ptr *C.float
+	if vertCount > 0 {
+		ptr = (*C.float)(unsafe.Pointer(&w.vertBuf[0]))
 	}
-}
-
-func drawBitmapTextGL(cmd DrawCmd) {
-	scale := cmd.Scale
-	if scale <= 0 {
-		scale = 1.5
-	}
-	cx := cmd.X
-	cy := cmd.Y
-	for i := 0; i < len(cmd.Text); i++ {
-		ch := cmd.Text[i]
-		glyph, ok := Font5x7[ch]
-		if !ok {
-			glyph = Font5x7['?']
-		}
-		for col := 0; col < 5; col++ {
-			colBits := glyph[col]
-			if colBits == 0 {
-				continue
-			}
-			for row := 0; row < 7; row++ {
-				if (colBits & (1 << row)) != 0 {
-					px := cx + float64(col)*scale
-					py := cy + float64(row)*scale
-					C.osmu_draw_rect(C.float(px), C.float(py), C.float(scale), C.float(scale),
-						C.float(cmd.R), C.float(cmd.G), C.float(cmd.B), C.float(cmd.A))
-				}
-			}
-		}
-		cx += 6.0 * scale
-	}
+	C.osmu_draw_batch(w.xw, C.int(width), C.int(height), ptr, C.int(vertCount))
 }
 
 func (w *linuxWindow) SwapBuffers() {

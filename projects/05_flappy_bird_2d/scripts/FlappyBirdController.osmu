@@ -1,0 +1,282 @@
+namespace FlappyBird;
+
+component FlappyBirdController : Entity {
+    [Export] public float Gravity = 22.0f;
+    [Export] public float FlapVelocity = 8.2f;
+    [Export] public float PipeSpeed = 4.5f;
+    [Export] public float PipeGap = 3.6f;
+    [Export] public float PipeWidth = 1.6f;
+    [Export] public float PipeHeight = 8.0f;
+    [Export] public float BirdRadius = 0.55f;
+    [Export] public float FloorY = -5.8f;
+    [Export] public float CeilingY = 5.8f;
+
+    private float vy = 0.0f;
+    private int score = 0;
+    private int bestScore = 0;
+    private bool gameOver = false;
+    private bool manualControl = false;
+    private bool flapWasDown = false;
+    private bool rWasDown = false;
+    private float aiCooldown = 0.0f;
+    private int rngSeed = 7;
+
+    signal BirdFlapped(float yPos, float velY);
+    signal ScoreIncreased(int newScore, int best);
+    signal GameOver(int finalScore, int best);
+    signal GameReset();
+    signal EntityClicked(Entity target);
+
+    public void OnReady() {
+        Log("Flappy Bird ready! SPACE/W/UP/Click: Flap | R: Reset (Auto-Pilot active until input)");
+        this.ResetGame();
+    }
+
+    public void ResetGame() {
+        this.gameOver = false;
+        this.score = 0;
+        this.vy = 2.5f;
+        this.aiCooldown = 0.0f;
+        this.Position = Vec3(-3.5f, 0.5f, 0.2f);
+        this.Rotation = Vec3(0.0f, 0.0f, 12.0f);
+        this.Color = Color(1.0f, 0.85f, 0.15f, 1.0f);
+        this.Label = "0";
+        this.Score = 0.0f;
+
+        // Reset pipe pairs across the screen at X = 3.0, 8.5, 14.0, 19.5
+        List<Entity> topPipes = query Entities
+            where Tag == "PipeTop"
+            orderby Name asc;
+        List<Entity> botPipes = query Entities
+            where Tag == "PipeBottom"
+            orderby Name asc;
+
+        float startX = 3.5f;
+        float spacing = 5.5f;
+        int idx = 0;
+        while (idx < topPipes.Count && idx < botPipes.Count) {
+            Entity pt = topPipes[idx];
+            Entity pb = botPipes[idx];
+            float px = startX + idx * spacing;
+            float gapY = this.NextGapY(idx);
+            float halfGap = this.PipeGap * 0.5f;
+            float halfH = this.PipeHeight * 0.5f;
+
+            pt.Position = Vec3(px, gapY + halfGap + halfH, 0.0f);
+            pb.Position = Vec3(px, gapY - halfGap - halfH, 0.0f);
+            pt.Damage = gapY;
+            pb.Damage = gapY;
+            pt.MaxHealth = 0.0f;
+            pb.MaxHealth = 0.0f;
+            pt.Color = Color(0.22f, 0.78f, 0.35f, 1.0f);
+            pb.Color = Color(0.22f, 0.78f, 0.35f, 1.0f);
+            idx = idx + 1;
+        }
+
+        emit GameReset();
+    }
+
+    public float NextGapY(int step) {
+        this.rngSeed = this.rngSeed + 1 + step;
+        float wave = Sin(this.rngSeed * 1.85f) * 2.1f + Cos(this.rngSeed * 0.95f) * 0.8f;
+        return Clamp(wave, -2.4f, 2.4f);
+    }
+
+    public void Flap() {
+        if (this.gameOver) {
+            return;
+        }
+        this.vy = this.FlapVelocity;
+        this.Rotation = Vec3(0.0f, 0.0f, 25.0f);
+        emit BirdFlapped(this.Position.Y, this.vy);
+    }
+
+    public void OnUpdate(float dt) {
+        bool rDown = IsKeyDown("R");
+        if (rDown && !this.rWasDown) {
+            this.ResetGame();
+        }
+        this.rWasDown = rDown;
+
+        bool keyFlap = IsKeyDown("SPACE") || IsKeyDown("W") || IsKeyDown("UP") || IsKeyDown("E") || IsKeyDown("ENTER");
+        if (keyFlap && !this.flapWasDown) {
+            this.manualControl = true;
+            if (this.gameOver) {
+                this.ResetGame();
+            } else {
+                this.Flap();
+            }
+        }
+        this.flapWasDown = keyFlap;
+
+        if (this.gameOver) {
+            return;
+        }
+
+        // Scroll background clouds slowly for parallax depth
+        List<Entity> clouds = query Entities where Tag == "Cloud";
+        foreach (Entity cl in clouds) {
+            float cx = cl.Position.X - (this.PipeSpeed * 0.32f * dt);
+            if (cx < -13.0f) {
+                cx = 13.0f;
+            }
+            cl.Position = Vec3(cx, cl.Position.Y, cl.Position.Z);
+        }
+
+        // Scroll ground segments for continuous motion
+        List<Entity> grounds = query Entities where Tag == "GroundTile";
+        foreach (Entity gr in grounds) {
+            float gx = gr.Position.X - (this.PipeSpeed * dt);
+            if (gx < -12.0f) {
+                gx = gx + 24.0f;
+            }
+            gr.Position = Vec3(gx, gr.Position.Y, gr.Position.Z);
+        }
+
+        // Auto-pilot AI when player has not pressed any manual flap key yet
+        if (!this.manualControl) {
+            this.aiCooldown = this.aiCooldown - dt;
+            float targetY = 0.2f;
+
+            // Find the nearest upcoming pipe that hasn't been passed yet
+            List<Entity> upcoming = query Entities
+                where Tag == "PipeTop" && Position.X >= (this.Position.X - 1.1f)
+                orderby Position.X asc;
+
+            if (upcoming.Count > 0) {
+                Entity nextPipe = upcoming[0];
+                targetY = nextPipe.Damage - 0.35f;
+            }
+
+            if (this.aiCooldown <= 0.0f) {
+                if (this.Position.Y < targetY && this.vy < 1.8f) {
+                    this.Flap();
+                    this.aiCooldown = 0.14f;
+                } else if (this.Position.Y < (this.FloorY + 1.5f) && this.vy < 0.0f) {
+                    this.Flap();
+                    this.aiCooldown = 0.14f;
+                }
+            }
+        }
+
+        // Apply gravity & vertical velocity to Bird
+        this.vy = this.vy - (this.Gravity * dt);
+        this.vy = Clamp(this.vy, -14.0f, 12.0f);
+        float newY = this.Position.Y + (this.vy * dt);
+        this.Position = Vec3(this.Position.X, newY, this.Position.Z);
+
+        // Tilt bird nose up when rising, down when falling
+        float pitchAngle = Clamp(this.vy * 4.5f, -65.0f, 30.0f);
+        this.Rotation = Vec3(0.0f, 0.0f, pitchAngle);
+
+        // Move pipes left, recycle off-screen pipes, and check collisions & scoring
+        List<Entity> topPipes = query Entities
+            where Tag == "PipeTop"
+            orderby Name asc;
+        List<Entity> botPipes = query Entities
+            where Tag == "PipeBottom"
+            orderby Name asc;
+
+        float halfW = (this.PipeWidth * 0.5f) + this.BirdRadius - 0.12f;
+        float halfH = (this.PipeHeight * 0.5f) + this.BirdRadius - 0.12f;
+
+        int i = 0;
+        while (i < topPipes.Count && i < botPipes.Count) {
+            Entity pt = topPipes[i];
+            Entity pb = botPipes[i];
+
+            float nx = pt.Position.X - (this.PipeSpeed * dt);
+
+            // Recycle pipe pair to the right when it exits left of the screen
+            if (nx < -11.0f) {
+                nx = nx + 22.0f;
+                float newGapY = this.NextGapY(this.score + i);
+                float halfGap = this.PipeGap * 0.5f;
+                float pipeHalfH = this.PipeHeight * 0.5f;
+                pt.Position = Vec3(nx, newGapY + halfGap + pipeHalfH, 0.0f);
+                pb.Position = Vec3(nx, newGapY - halfGap - pipeHalfH, 0.0f);
+                pt.Damage = newGapY;
+                pb.Damage = newGapY;
+                pt.MaxHealth = 0.0f;
+                pb.MaxHealth = 0.0f;
+                pt.Color = Color(0.22f, 0.78f, 0.35f, 1.0f);
+                pb.Color = Color(0.22f, 0.78f, 0.35f, 1.0f);
+            } else {
+                pt.Position = Vec3(nx, pt.Position.Y, 0.0f);
+                pb.Position = Vec3(nx, pb.Position.Y, 0.0f);
+            }
+
+            // Score point when bird passes the center of the pipe pair
+            if (pt.MaxHealth < 0.5f && nx < this.Position.X) {
+                pt.MaxHealth = 1.0f;
+                pb.MaxHealth = 1.0f;
+                pt.Color = Color(0.32f, 0.92f, 0.48f, 1.0f);
+                pb.Color = Color(0.32f, 0.92f, 0.48f, 1.0f);
+                this.score = this.score + 1;
+                if (this.score > this.bestScore) {
+                    this.bestScore = this.score;
+                }
+                this.Score = this.score;
+                this.Label = "" + this.score;
+                Log("Pipe cleared! Score: " + this.score + " (Best: " + this.bestScore + ")");
+                emit ScoreIncreased(this.score, this.bestScore);
+            }
+
+            // AABB Collision check against Top Pipe and Bottom Pipe
+            float dx = this.Position.X - nx;
+            if (dx < 0.0f) {
+                dx = -dx;
+            }
+            if (dx < halfW) {
+                float dyTop = this.Position.Y - pt.Position.Y;
+                if (dyTop < 0.0f) {
+                    dyTop = -dyTop;
+                }
+                float dyBot = this.Position.Y - pb.Position.Y;
+                if (dyBot < 0.0f) {
+                    dyBot = -dyBot;
+                }
+                if (dyTop < halfH || dyBot < halfH) {
+                    pt.Color = Color(0.95f, 0.25f, 0.25f, 1.0f);
+                    pb.Color = Color(0.95f, 0.25f, 0.25f, 1.0f);
+                    this.TriggerGameOver("Hit " + pt.Name);
+                    return;
+                }
+            }
+
+            i = i + 1;
+        }
+
+        // Check floor / ceiling bounds
+        if (this.Position.Y <= this.FloorY) {
+            this.Position = Vec3(this.Position.X, this.FloorY, this.Position.Z);
+            this.TriggerGameOver("Hit the ground");
+            return;
+        }
+        if (this.Position.Y >= this.CeilingY) {
+            this.Position = Vec3(this.Position.X, this.CeilingY, this.Position.Z);
+            this.vy = 0.0f;
+        }
+    }
+
+    public void TriggerGameOver(string reason) {
+        if (this.gameOver) {
+            return;
+        }
+        this.gameOver = true;
+        this.vy = 0.0f;
+        this.Color = Color(0.98f, 0.22f, 0.25f, 1.0f);
+        this.Label = "X";
+        Log("GAME OVER (" + reason + ")! Final Score: " + this.score + " | Press R or SPACE to restart.");
+        emit GameOver(this.score, this.bestScore);
+    }
+
+    on EntityClicked(Entity target) {
+        this.manualControl = true;
+        if (this.gameOver) {
+            this.ResetGame();
+        } else {
+            this.Flap();
+        }
+    }
+}

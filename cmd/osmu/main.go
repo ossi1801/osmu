@@ -310,7 +310,9 @@ func runEditor(args []string) {
 				if maxFrames > 0 && frames >= maxFrames {
 					break
 				}
-				time.Sleep(16 * time.Millisecond)
+				if elapsed := time.Since(now); elapsed < 8*time.Millisecond {
+					time.Sleep(8*time.Millisecond - elapsed)
+				}
 			}
 			return
 		}
@@ -434,7 +436,9 @@ func runPlayGame(args []string) {
 				if maxFrames > 0 && frames >= maxFrames {
 					break
 				}
-				time.Sleep(16 * time.Millisecond)
+				if elapsed := time.Since(now); elapsed < 8*time.Millisecond {
+					time.Sleep(8*time.Millisecond - elapsed)
+				}
 			}
 			return
 		}

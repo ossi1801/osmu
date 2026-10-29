@@ -608,6 +608,9 @@ func DiscoverProjects(baseDir string) []*Project {
 		if err != nil || info == nil {
 			return nil
 		}
+		if info.IsDir() && len(info.Name()) > 1 && strings.HasPrefix(info.Name(), ".") {
+			return filepath.SkipDir
+		}
 		if !info.IsDir() && info.Name() == "project.osmu.json" {
 			manifestPaths = append(manifestPaths, path)
 		}

@@ -1,0 +1,35 @@
+namespace FlappyBird;
+
+component FlappyScoreHUD : Entity {
+    private int currentScore = 0;
+    private int bestScore = 0;
+
+    signal ScoreIncreased(int newScore, int best);
+    signal GameOver(int finalScore, int best);
+    signal GameReset();
+
+    public void OnReady() {
+        this.currentScore = 0;
+        this.Label = "SCORE: 0";
+        this.Color = Color(0.20f, 0.68f, 0.98f, 1.0f);
+    }
+
+    on ScoreIncreased(int newScore, int best) {
+        this.currentScore = newScore;
+        this.bestScore = best;
+        this.Score = newScore;
+        this.Label = "S:" + newScore + " B:" + best;
+        this.Color = Color(0.22f, 0.88f, 0.52f, 1.0f);
+    }
+
+    on GameOver(int finalScore, int best) {
+        this.Label = "DEAD S:" + finalScore;
+        this.Color = Color(0.95f, 0.24f, 0.28f, 1.0f);
+    }
+
+    on GameReset() {
+        this.currentScore = 0;
+        this.Label = "S:0 B:" + this.bestScore;
+        this.Color = Color(0.20f, 0.68f, 0.98f, 1.0f);
+    }
+}

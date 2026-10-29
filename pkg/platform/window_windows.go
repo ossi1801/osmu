@@ -4,7 +4,6 @@ package platform
 
 import (
 	"fmt"
-	"math"
 	"syscall"
 	"unsafe"
 )
@@ -31,22 +30,21 @@ var (
 	procSetPixelFormat    = gdi32.NewProc("SetPixelFormat")
 	procSwapBuffers       = gdi32.NewProc("SwapBuffers")
 
-	procWglCreateContext = opengl32.NewProc("wglCreateContext")
-	procWglMakeCurrent   = opengl32.NewProc("wglMakeCurrent")
-	procWglDeleteContext = opengl32.NewProc("wglDeleteContext")
-	procGlViewport       = opengl32.NewProc("glViewport")
-	procGlMatrixMode     = opengl32.NewProc("glMatrixMode")
-	procGlLoadIdentity   = opengl32.NewProc("glLoadIdentity")
-	procGlOrtho          = opengl32.NewProc("glOrtho")
-	procGlClearColor     = opengl32.NewProc("glClearColor")
-	procGlClear          = opengl32.NewProc("glClear")
-	procGlEnable         = opengl32.NewProc("glEnable")
-	procGlBlendFunc      = opengl32.NewProc("glBlendFunc")
-	procGlBegin          = opengl32.NewProc("glBegin")
-	procGlEnd            = opengl32.NewProc("glEnd")
-	procGlColor4f        = opengl32.NewProc("glColor4f")
-	procGlVertex2f       = opengl32.NewProc("glVertex2f")
-	procGlLineWidth      = opengl32.NewProc("glLineWidth")
+	procWglCreateContext     = opengl32.NewProc("wglCreateContext")
+	procWglMakeCurrent       = opengl32.NewProc("wglMakeCurrent")
+	procWglDeleteContext     = opengl32.NewProc("wglDeleteContext")
+	procGlViewport           = opengl32.NewProc("glViewport")
+	procGlMatrixMode         = opengl32.NewProc("glMatrixMode")
+	procGlLoadIdentity       = opengl32.NewProc("glLoadIdentity")
+	procGlClear              = opengl32.NewProc("glClear")
+	procGlEnable             = opengl32.NewProc("glEnable")
+	procGlDisable            = opengl32.NewProc("glDisable")
+	procGlBlendFunc          = opengl32.NewProc("glBlendFunc")
+	procGlEnableClientState  = opengl32.NewProc("glEnableClientState")
+	procGlDisableClientState = opengl32.NewProc("glDisableClientState")
+	procGlVertexPointer      = opengl32.NewProc("glVertexPointer")
+	procGlColorPointer       = opengl32.NewProc("glColorPointer")
+	procGlDrawArrays         = opengl32.NewProc("glDrawArrays")
 )
 
 const (
@@ -78,16 +76,16 @@ const (
 
 	glColorBufferBit   = 0x00004000
 	glDepthBufferBit   = 0x00000100
+	glDepthTest        = 0x0B71
 	glProjection       = 0x1701
 	glModelView        = 0x1700
 	glBlend            = 0x0BE2
 	glSrcAlpha         = 0x0302
 	glOneMinusSrcAlpha = 0x0303
-	glLines            = 0x0001
-	glLineLoop         = 0x0002
 	glTriangles        = 0x0004
-	glTriangleFan      = 0x0006
-	glQuads            = 0x0007
+	glFloat            = 0x1406
+	glVertexArray      = 0x8074
+	glColorArray       = 0x8076
 )
 
 type wndClassExW struct {
@@ -150,6 +148,7 @@ type win32Window struct {
 	hdc       uintptr
 	hglrc     uintptr
 	maximized bool
+	vertBuf   []float32
 }
 
 func wndProc(hwnd uintptr, msg uint32, wParam, lParam uintptr) uintptr {
@@ -312,15 +311,6 @@ func (w *win32Window) SetTitle(title string) {
 	procSetWindowTextW.Call(w.hwnd, uintptr(unsafe.Pointer(t)))
 }
 
-func f32bits(f float64) uintptr {
-	return uintptr(math.Float32bits(float32(f)))
-}
-
-func f64bits(f float64) (uintptr, uintptr) {
-	u := math.Float64bits(f)
-	return uintptr(u & 0xFFFFFFFF), uintptr(u >> 32)
-}
-
 func (w *win32Window) PollEvents(in *InputState) {
 	in.IsMaximized = w.maximized
 	activeWinInput = in
@@ -339,104 +329,27 @@ func (w *win32Window) DrawOps(width, height int, ops []DrawCmd) {
 	procGlViewport.Call(0, 0, uintptr(width), uintptr(height))
 	procGlMatrixMode.Call(glProjection)
 	procGlLoadIdentity.Call()
-	l0, h0 := f64bits(0)
-	lw, hw := f64bits(float64(width))
-	lh, hh := f64bits(float64(height))
-	ln, hn := f64bits(-1)
-	lf, hf := f64bits(1)
-	procGlOrtho.Call(l0, h0, lw, hw, lh, hh, l0, h0, ln, hn, lf, hf)
 	procGlMatrixMode.Call(glModelView)
 	procGlLoadIdentity.Call()
 	procGlEnable.Call(glBlend)
 	procGlBlendFunc.Call(glSrcAlpha, glOneMinusSrcAlpha)
 
-	for _, cmd := range ops {
-		switch cmd.Kind {
-		case CmdClear:
-			procGlClearColor.Call(f32bits(cmd.R), f32bits(cmd.G), f32bits(cmd.B), f32bits(cmd.A))
-			procGlClear.Call(glColorBufferBit | glDepthBufferBit)
-		case CmdRect:
-			winDrawRect(cmd.X, cmd.Y, cmd.W, cmd.H, cmd.R, cmd.G, cmd.B, cmd.A)
-		case CmdTriangle:
-			procGlColor4f.Call(f32bits(cmd.R), f32bits(cmd.G), f32bits(cmd.B), f32bits(cmd.A))
-			procGlBegin.Call(glTriangles)
-			procGlVertex2f.Call(f32bits(cmd.X), f32bits(cmd.Y))
-			procGlVertex2f.Call(f32bits(cmd.X2), f32bits(cmd.Y2))
-			procGlVertex2f.Call(f32bits(cmd.X3), f32bits(cmd.Y3))
-			procGlEnd.Call()
-		case CmdRectOutline:
-			procGlLineWidth.Call(f32bits(math.Max(1.0, cmd.Thickness)))
-			procGlColor4f.Call(f32bits(cmd.R), f32bits(cmd.G), f32bits(cmd.B), f32bits(cmd.A))
-			procGlBegin.Call(glLineLoop)
-			procGlVertex2f.Call(f32bits(cmd.X), f32bits(cmd.Y))
-			procGlVertex2f.Call(f32bits(cmd.X+cmd.W), f32bits(cmd.Y))
-			procGlVertex2f.Call(f32bits(cmd.X+cmd.W), f32bits(cmd.Y+cmd.H))
-			procGlVertex2f.Call(f32bits(cmd.X), f32bits(cmd.Y+cmd.H))
-			procGlEnd.Call()
-		case CmdLine:
-			procGlLineWidth.Call(f32bits(math.Max(1.5, cmd.Thickness)))
-			procGlColor4f.Call(f32bits(cmd.R), f32bits(cmd.G), f32bits(cmd.B), f32bits(cmd.A))
-			procGlBegin.Call(glLines)
-			procGlVertex2f.Call(f32bits(cmd.X), f32bits(cmd.Y))
-			procGlVertex2f.Call(f32bits(cmd.X2), f32bits(cmd.Y2))
-			procGlEnd.Call()
-		case CmdPolyLine:
-			procGlLineWidth.Call(f32bits(math.Max(1.5, cmd.Thickness)))
-			procGlColor4f.Call(f32bits(cmd.R), f32bits(cmd.G), f32bits(cmd.B), f32bits(cmd.A))
-			procGlBegin.Call(glLines)
-			for i := 0; i < len(cmd.Points)-1; i++ {
-				p1 := cmd.Points[i]
-				p2 := cmd.Points[i+1]
-				procGlVertex2f.Call(f32bits(p1[0]), f32bits(p1[1]))
-				procGlVertex2f.Call(f32bits(p2[0]), f32bits(p2[1]))
-			}
-			procGlEnd.Call()
-		case CmdCircle:
-			procGlColor4f.Call(f32bits(cmd.R), f32bits(cmd.G), f32bits(cmd.B), f32bits(cmd.A))
-			procGlBegin.Call(glTriangleFan)
-			procGlVertex2f.Call(f32bits(cmd.X), f32bits(cmd.Y))
-			for i := 0; i <= 20; i++ {
-				ang := float64(i) * 2 * math.Pi / 20.0
-				procGlVertex2f.Call(f32bits(cmd.X+math.Cos(ang)*cmd.Radius), f32bits(cmd.Y+math.Sin(ang)*cmd.Radius))
-			}
-			procGlEnd.Call()
-		case CmdText:
-			scale := cmd.Scale
-			if scale <= 0 {
-				scale = 1.5
-			}
-			cx := cmd.X
-			cy := cmd.Y
-			for i := 0; i < len(cmd.Text); i++ {
-				glyph, ok := Font5x7[cmd.Text[i]]
-				if !ok {
-					glyph = Font5x7['?']
-				}
-				for col := 0; col < 5; col++ {
-					bits := glyph[col]
-					if bits == 0 {
-						continue
-					}
-					for row := 0; row < 7; row++ {
-						if (bits & (1 << row)) != 0 {
-							winDrawRect(cx+float64(col)*scale, cy+float64(row)*scale, scale, scale, cmd.R, cmd.G, cmd.B, cmd.A)
-						}
-					}
-				}
-				cx += 6.0 * scale
-			}
-		}
-	}
-}
+	procGlClear.Call(glColorBufferBit | glDepthBufferBit)
 
-func winDrawRect(x, y, w, h, r, g, b, a float64) {
-	procGlColor4f.Call(f32bits(r), f32bits(g), f32bits(b), f32bits(a))
-	procGlBegin.Call(glQuads)
-	procGlVertex2f.Call(f32bits(x), f32bits(y))
-	procGlVertex2f.Call(f32bits(x+w), f32bits(y))
-	procGlVertex2f.Call(f32bits(x+w), f32bits(y+h))
-	procGlVertex2f.Call(f32bits(x), f32bits(y+h))
-	procGlEnd.Call()
+	w.vertBuf = TessellateDrawCmds(width, height, ops, w.vertBuf, true)
+	vertCount := len(w.vertBuf) / 6
+	if vertCount == 0 {
+		return
+	}
+
+	const stride = 6 * 4 // 6 float32s per vertex
+	procGlEnableClientState.Call(glVertexArray)
+	procGlEnableClientState.Call(glColorArray)
+	procGlVertexPointer.Call(2, glFloat, stride, uintptr(unsafe.Pointer(&w.vertBuf[0])))
+	procGlColorPointer.Call(4, glFloat, stride, uintptr(unsafe.Pointer(&w.vertBuf[2])))
+	procGlDrawArrays.Call(glTriangles, 0, uintptr(vertCount))
+	procGlDisableClientState.Call(glColorArray)
+	procGlDisableClientState.Call(glVertexArray)
 }
 
 func (w *win32Window) SwapBuffers() {
