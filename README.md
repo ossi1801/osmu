@@ -202,6 +202,13 @@ OSMU includes an enterprise CLI orchestrating all aspects of development, compil
 osmu editor
 osmu open projects/02_fortress_siege_3d
 
+# Launch a project in standalone game player mode
+osmu play projects/05_flappy_bird_2d
+
+# Export a standalone executable binary (Linux ELF or Windows .exe)
+osmu export projects/05_flappy_bird_2d flappy_bird
+osmu export projects/05_flappy_bird_2d flappy_bird.exe --os windows
+
 # Discover and list all local projects and scene manifests
 osmu projects
 
@@ -272,7 +279,8 @@ go build -o osmu cmd/osmu/main.go
     ├── 01_cyber_survivors_2d # 2D action survivor simulation
     ├── 02_fortress_siege_3d  # 3D tactical tower defense simulation
     ├── 03_dungeon_quest_3d   # 3D spatial dungeon exploration
-    └── 04_minesweeper_2d     # 2D reactive logic and puzzle system
+    ├── 04_minesweeper_2d     # 2D reactive logic and puzzle system
+    └── 05_flappy_bird_2d     # 2D arcade endless flyer simulation
 ```
 
 ---

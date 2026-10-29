@@ -73,13 +73,16 @@ Launches a project directly in full-window standalone player mode without the su
 ```bash
 # Play by project path
 ./osmu play projects/04_minesweeper_2d
+./osmu play projects/05_flappy_bird_2d
 
 # Play by project name or substring match
 ./osmu play "Cyber Survivors"
 ./osmu play minesweeper
+./osmu play flappy
 
 # Play by project index (from 'osmu projects')
 ./osmu play 0
+./osmu play 4
 
 # Play in Web Browser mode only
 ./osmu play projects/01_cyber_survivors_2d --web --web-port 8420
@@ -89,7 +92,38 @@ Launches a project directly in full-window standalone player mode without the su
 
 ---
 
-### 3.3 List and Initialize Projects (`projects` / `init-projects`)
+### 3.3 Export Standalone Game Binary / `.exe` (`export` / `build-exe`)
+
+Compiles a single, self-contained standalone executable binary (Linux ELF binary or Windows `.exe`) that launches directly into the specified game in standalone player mode with zero command-line arguments required.
+
+```bash
+# Syntax: ./osmu export <path/to/project> [output_binary] [--os linux|windows] [--arch amd64|arm64]
+
+# Export Flappy Bird 2D as a native Linux executable
+./osmu export projects/05_flappy_bird_2d flappy_bird
+./flappy_bird
+
+# Export Flappy Bird 2D as a standalone Windows .exe (cross-compiled from Linux/macOS or built on Windows)
+./osmu export projects/05_flappy_bird_2d flappy_bird.exe --os windows
+
+# Export using default output filename (derived from project directory name)
+./osmu export projects/05_flappy_bird_2d
+./osmu export projects/05_flappy_bird_2d --os windows
+```
+
+**Manual `go build` Equivalent (Under the Hood):**
+
+```bash
+# Linux standalone game binary
+go build -ldflags "-s -w -X 'main.embeddedProject=projects/05_flappy_bird_2d'" -o flappy_bird ./cmd/osmu
+
+# Windows standalone .exe (cross-compiled with zero Cgo dependencies)
+GOOS=windows GOARCH=amd64 CGO_ENABLED=0 go build -ldflags "-s -w -X 'main.embeddedProject=projects/05_flappy_bird_2d'" -o flappy_bird.exe ./cmd/osmu
+```
+
+---
+
+### 3.4 List and Initialize Projects (`projects` / `init-projects`)
 
 ```bash
 # List all discovered projects in the projects/ directory
@@ -104,10 +138,11 @@ Launches a project directly in full-window standalone player mode without the su
 * `[1]` `projects/02_fortress_siege_3d` (3D Tactical Defense)
 * `[2]` `projects/03_dungeon_quest_3d` (3D Dungeon Adventure)
 * `[3]` `projects/04_minesweeper_2d` (2D Logic Puzzle)
+* `[4]` `projects/05_flappy_bird_2d` (2D Arcade / Endless Flyer)
 
 ---
 
-### 3.4 Compile and Type-Check `.osmu` Scripts (`check` / `compile` / `osmuc`)
+### 3.5 Compile and Type-Check `.osmu` Scripts (`check` / `compile` / `osmuc`)
 
 Statically parses, compiles, and verifies type contracts, component fields, and signals across `.osmu` script files or directories.
 
@@ -117,16 +152,16 @@ Statically parses, compiles, and verifies type contracts, component fields, and 
 ./osmu check projects/
 
 # Check a specific project directory
-./osmu check projects/01_cyber_survivors_2d
+./osmu check projects/05_flappy_bird_2d
 
 # Check a single .osmu script file
-./osmu check projects/01_cyber_survivors_2d/scripts/cyber_survivors.osmu
-./osmu projects/01_cyber_survivors_2d/scripts/cyber_survivors.osmu
+./osmu check projects/05_flappy_bird_2d/scripts/FlappyBirdController.osmu
+./osmu projects/05_flappy_bird_2d/scripts/FlappyBirdController.osmu
 ```
 
 ---
 
-### 3.5 Run Headless Simulation (`run`)
+### 3.6 Run Headless Simulation (`run`)
 
 Executes a project's active scene simulation deterministically in the terminal without opening any GUI window, then prints emitted signals and `.osmu` script logs.
 
@@ -135,15 +170,15 @@ Executes a project's active scene simulation deterministically in the terminal w
 ./osmu run
 
 # Run a specific project path for N simulation steps (dt = 0.05s per step)
-./osmu run projects/01_cyber_survivors_2d --steps 50
+./osmu run projects/05_flappy_bird_2d --steps 150
 
 # Run by project index
-./osmu run 2 --steps 100
+./osmu run 4 --steps 100
 ```
 
 ---
 
-### 3.6 Render Headless PNG Screenshots (`screenshot`)
+### 3.7 Render Headless PNG Screenshots (`screenshot`)
 
 Uses the built-in pure-Go software rasterizer to render a 1280x760 frame of the editor or standalone game directly to a `.png` file.
 
@@ -153,19 +188,19 @@ Uses the built-in pure-Go software rasterizer to render a 1280x760 frame of the 
 # Render default project (index 0) after 12 simulation steps
 ./osmu screenshot preview.png
 
-# Render project index 1 (Fortress Siege 3D) after 30 simulation steps
-./osmu screenshot fortress.png 1 30
+# Render project index 4 (Flappy Bird 2D) after 65 simulation steps
+./osmu screenshot flappy_editor.png 4 65
 
 # Render with the Project Hub modal open
 ./osmu screenshot hub.png 0 12 --modal
 
 # Render in standalone game player mode (no editor UI)
-./osmu screenshot game_view.png 3 5 --play
+./osmu screenshot flappy_play.png 4 65 --play
 ```
 
 ---
 
-### 3.7 Start the Language Server (`lsp`)
+### 3.8 Start the Language Server (`lsp`)
 
 Starts the `.osmu` Language Server Protocol (LSP) server over `stdio` (JSON-RPC 2.0) for integration with code editors like VS Code, Neovim, or Helix.
 
