@@ -4,6 +4,9 @@ import (
 	"fmt"
 	"net/http"
 	"os"
+	"os/exec"
+	"path/filepath"
+	goruntime "runtime"
 	"strconv"
 	"strings"
 	"time"
@@ -16,8 +19,14 @@ import (
 	"osmu/pkg/runtime"
 )
 
+var embeddedProject string
+
 func main() {
 	args := os.Args[1:]
+	if embeddedProject != "" && (len(args) == 0 || strings.HasPrefix(args[0], "-")) {
+		runPlayGame(append([]string{embeddedProject}, args...))
+		return
+	}
 	cmd := "editor"
 	var subArgs []string
 	if len(args) > 0 {
@@ -35,6 +44,8 @@ func main() {
 		runEditor(subArgs)
 	case "play", "game":
 		runPlayGame(subArgs)
+	case "export", "build-exe":
+		runExportGame(subArgs)
 	case "projects", "list":
 		runListProjects()
 	case "init-projects":
@@ -68,14 +79,15 @@ func printUsage() {
 	fmt.Println(`OSMU — Overengineered System Manipulation Userinterface (2D/3D Game Engine & Editor)
 
 Usage:
-  osmu [editor] [path/to/project]       Launch the 2D/3D Graphical Editor (optionally loading a project)
-  osmu play <path/to/project>           Launch the game in standalone player mode (full window, no editor UI)
-  osmu open <path/to/project>           Open a specific project folder or project.osmu.json in the Editor
-  osmu projects                         List all discovered OSMU projects on disk
-  osmu check [dir | file.osmu]          Compile & statically type-check .osmu scripts
-  osmu lsp                              Start the .osmu Language Server Protocol (LSP) over stdio
-  osmu run [path/to/project] [--steps N] Run a project simulation
-  osmu screenshot <out.png> [projIdx]   Render a frame of the OSMU Editor to a PNG file`)
+  osmu [editor] [path/to/project]              Launch the 2D/3D Graphical Editor (optionally loading a project)
+  osmu play <path/to/project>                  Launch the game in standalone player mode (full window, no editor UI)
+  osmu export <path/to/project> [out] [--os X] Export a standalone executable binary (.exe / Linux binary) for a game
+  osmu open <path/to/project>                  Open a specific project folder or project.osmu.json in the Editor
+  osmu projects                                List all discovered OSMU projects on disk
+  osmu check [dir | file.osmu]                 Compile & statically type-check .osmu scripts
+  osmu lsp                                     Start the .osmu Language Server Protocol (LSP) over stdio
+  osmu run [path/to/project] [--steps N]        Run a project simulation
+  osmu screenshot <out.png> [projIdx]          Render a frame of the OSMU Editor to a PNG file`)
 }
 
 func runListProjects() {
@@ -384,15 +396,31 @@ func runPlayGame(args []string) {
 			}
 		}
 		if !matched {
-			if err := app.LoadProjectFromPath(target); err != nil {
-				fmt.Fprintf(os.Stderr, "Error: could not load project %q: %v\n", target, err)
-				os.Exit(1)
+			if err := app.LoadProjectFromPath(target); err == nil {
+				matched = true
 			}
+		}
+		if !matched {
+			builtins := runtime.BuiltinProjects()
+			for _, bp := range builtins {
+				if strings.EqualFold(bp.Manifest.Name, target) ||
+					strings.Contains(strings.ToLower(bp.Manifest.Name), strings.ToLower(target)) ||
+					strings.Contains(strings.ToLower(bp.RootDir), strings.ToLower(target)) {
+					app.Projects = append(app.Projects, bp)
+					app.ActivateProject(len(app.Projects) - 1)
+					matched = true
+					break
+				}
+			}
+		}
+		if !matched {
+			fmt.Fprintf(os.Stderr, "Error: could not load project %q\n", target)
+			os.Exit(1)
 		}
 	} else {
 		fmt.Fprintln(os.Stderr, "Error: No project specified to play.")
 		fmt.Fprintln(os.Stderr, "Usage: osmu play <path/to/project>")
-		fmt.Fprintln(os.Stderr, "Example: osmu play projects/04_minesweeper_2d")
+		fmt.Fprintln(os.Stderr, "Example: osmu play projects/05_flappy_bird_2d")
 		os.Exit(1)
 	}
 
@@ -457,4 +485,79 @@ func runPlayGame(args []string) {
 		return
 	}
 	select {}
+}
+
+func runExportGame(args []string) {
+	target := ""
+	outPath := ""
+	targetOS := goruntime.GOOS
+	targetArch := goruntime.GOARCH
+
+	for i := 0; i < len(args); i++ {
+		switch args[i] {
+		case "--os", "-os":
+			if i+1 < len(args) {
+				targetOS = strings.ToLower(args[i+1])
+				i++
+			}
+		case "--arch", "-arch":
+			if i+1 < len(args) {
+				targetArch = strings.ToLower(args[i+1])
+				i++
+			}
+		case "-o", "--out":
+			if i+1 < len(args) {
+				outPath = args[i+1]
+				i++
+			}
+		default:
+			if !strings.HasPrefix(args[i], "-") {
+				if target == "" {
+					target = args[i]
+				} else if outPath == "" {
+					outPath = args[i]
+				}
+			}
+		}
+	}
+
+	if target == "" {
+		fmt.Fprintln(os.Stderr, "Usage: osmu export <path/to/project> [output_binary] [--os linux|windows]")
+		fmt.Fprintln(os.Stderr, "Example (Linux binary): ./osmu export projects/05_flappy_bird_2d flappy_bird")
+		fmt.Fprintln(os.Stderr, "Example (Windows .exe): ./osmu export projects/05_flappy_bird_2d flappy_bird.exe --os windows")
+		os.Exit(1)
+	}
+
+	if strings.HasSuffix(strings.ToLower(outPath), ".exe") && targetOS == goruntime.GOOS && goruntime.GOOS != "windows" {
+		targetOS = "windows"
+	}
+
+	if outPath == "" {
+		base := filepath.Base(strings.TrimRight(target, "/\\"))
+		if base == "." || base == "" {
+			base = "osmu_game"
+		}
+		outPath = base
+		if targetOS == "windows" && !strings.HasSuffix(strings.ToLower(outPath), ".exe") {
+			outPath += ".exe"
+		}
+	}
+
+	ldflags := fmt.Sprintf("-s -w -X 'main.embeddedProject=%s'", target)
+	cmd := exec.Command("go", "build", "-ldflags", ldflags, "-o", outPath, "./cmd/osmu")
+	env := os.Environ()
+	env = append(env, "GOOS="+targetOS, "GOARCH="+targetArch)
+	if targetOS == "windows" && goruntime.GOOS != "windows" {
+		env = append(env, "CGO_ENABLED=0")
+	}
+	cmd.Env = env
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+
+	fmt.Printf("Exporting standalone OSMU game %q for %s/%s -> %s ...\n", target, targetOS, targetArch, outPath)
+	if err := cmd.Run(); err != nil {
+		fmt.Fprintf(os.Stderr, "Export failed: %v\n", err)
+		os.Exit(1)
+	}
+	fmt.Printf("[OK] Standalone executable created: %s\n", outPath)
 }
